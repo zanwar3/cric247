@@ -26,8 +26,17 @@ const BallSchema = new Schema(
         balls: { type: Number, default: 0 }
       }
     ],
+    // Bowling info
+    bowling:
+      {
+        bowler: { type: String, required: true },
+        totalRuns: { type: Number, default: 0 },
+        totalBallBowled: { type: Number, default: 0 },   // runs conceded on this ball
+        currentOverStats: { type: Object, default: {} }
+      },
+
     striker: { type: String, default: null },     // just player name/id
-    nonStriker: { type: String, default: null } , 
+    nonStriker: { type: String, default: null } ,
     bowler: {
       type: String,
       required: true,
@@ -62,7 +71,7 @@ const BallSchema = new Schema(
     commentary: {
       type: String,
       default: "",
-    }, 
+    },
   },
   { timestamps: true }
 );

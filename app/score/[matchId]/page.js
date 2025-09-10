@@ -19,9 +19,9 @@ export default function ScorePage() {
   const [ballHistory, setBallHistory] = useState([]);
 
   // Current match state
-  const [currentBowler, setCurrentBowler] = useState({name:'shaheen'});
-  const [striker, setStriker] = useState({name:'Baber'});
-  const [nonStriker, setNonStriker] = useState({name:'Rizwan'});
+  const [currentBowler, setCurrentBowler] = useState({ name: 'shaheen' });
+  const [striker, setStriker] = useState({ name: 'Baber' });
+  const [nonStriker, setNonStriker] = useState({ name: 'Rizwan' });
   const [currentOver, setCurrentOver] = useState(1);
   const [currentBall, setCurrentBall] = useState(0);
 
@@ -44,38 +44,39 @@ export default function ScorePage() {
     }
   };
 
- const updateCurrentInnings = async (data) => {
-   setCurrentInnings(data?.ball);
-   setCurrentOver(data?.ball?.over);
+  const updateCurrentInnings = async (data) => {
+    setCurrentInnings(data?.ball);
+    setCurrentOver(data?.ball?.over);
+    setBallHistory(data?.ball?.bowling?.currentOverStats?.balls);
 
- }
+  }
 
   const recordBall = async (ballData) => {
     try {
       // Compute ball number
-    let ballNumber = (currentBall || 0) + 1;
-    let over = currentOver;
-    let updatedStriker = striker;
-    let updatedNonStriker = nonStriker;
+      let ballNumber = (currentBall || 0) + 1;
+      let over = currentOver;
+      let updatedStriker = striker;
+      let updatedNonStriker = nonStriker;
 
-    if (ballData.isValidBall) {
-      // rotate on odd runs
-      if (ballData.runs % 2 === 1) {
+      if (ballData.isValidBall) {
+        // rotate on odd runs
+        if (ballData.runs % 2 === 1) {
+          const temp = updatedStriker;
+          updatedStriker = updatedNonStriker;
+          updatedNonStriker = temp;
+        }
+
+      }
+      // Increment over if last ball of over
+      if (ballNumber > 6) {
+        ballNumber = 1;
+        over = currentOver + 1;
+        setCurrentOver(over);
         const temp = updatedStriker;
         updatedStriker = updatedNonStriker;
         updatedNonStriker = temp;
       }
-
-    }
-    // Increment over if last ball of over
-    if (ballNumber > 6) {
-      ballNumber = 1;
-      over = currentOver + 1;
-      setCurrentOver(over);
-      const temp = updatedStriker;
-      updatedStriker = updatedNonStriker;
-      updatedNonStriker = temp;
-    }
       const response = await fetch(`/api/matches/${matchId}/ball`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -136,19 +137,50 @@ export default function ScorePage() {
       runs: strikerStats.runs + runs,
       balls: strikerStats.balls + 1,
     };
-  
+
     const nonStrikerUpdate = {
       player: nonStriker.name,
       runs: nonStrikerStats.runs,
       balls: nonStrikerStats.balls,
     };
 
+    const prevBowling = currentInnings.bowling || {}; // fallback if undefined
+    const prevOverStats = prevBowling.currentOverStats || { balls: [] };
+
+    // Add new ball to over
+    const newBall = {
+      ballNumber: (currentBall + 1),
+      runs,
+      isWicket: false,
+      extras: {},
+    };
+
+    const updatedBalls = [...prevOverStats.balls, newBall];
+
+    const bowlingStats = {
+      bowler: currentBowler.name,
+      totalRuns: runs + (prevBowling.totalRuns || 0),
+      totalBallBowled: (prevBowling.totalBallBowled || 0) + 1,
+      currentOverStats: {
+        over: currentOver || 1,
+        balls: updatedBalls, // store all balls of current over
+        runs: (prevOverStats.runs || 0) + runs,
+        wickets: prevOverStats.wickets || 0,
+        maidens: prevOverStats.maidens || 0,
+        wides: prevOverStats.wides || 0,
+        noBalls: prevOverStats.noBalls || 0,
+        economy: ((runs + (prevBowling.totalRuns || 0)) / (((prevBowling.totalBallBowled || 0) + 1) / 6)).toFixed(2),
+      },
+    };
+
+
     recordBall({
       runs,
       totalRuns: runs + (currentInnings.totalRuns || 0),
       isValidBall: true,
       extras: {}, // no extras
-      batting: [strikerUpdate, nonStrikerUpdate]
+      batting: [strikerUpdate, nonStrikerUpdate],
+      bowling: bowlingStats
     });
   };
 
@@ -168,17 +200,17 @@ export default function ScorePage() {
 
   const handleExtras = (extraData) => {
     const isValidBall = extraData.type === "bye" || extraData.type === "legbye";
-  recordBall({
-    runs: extraData.runs,
-    totalRuns: (currentInnings.totalRuns || 0) + extraData.runs,
-    ballType: extraData.type,
-    isValidBall,
-    extras: {
-      isExtra: true,
-      type: extraData.type,
+    recordBall({
       runs: extraData.runs,
-    },
-  });
+      totalRuns: (currentInnings.totalRuns || 0) + extraData.runs,
+      ballType: extraData.type,
+      isValidBall,
+      extras: {
+        isExtra: true,
+        type: extraData.type,
+        runs: extraData.runs,
+      },
+    });
     setShowExtrasPanel(false);
   };
 
@@ -231,15 +263,15 @@ export default function ScorePage() {
             <div className="text-slate-300">
               <div className="font-medium">{striker?.name || "Select Striker"} *</div>
               <div className="text-xs text-slate-400">
-                {currentInnings?.batting?.find(b => b.player === striker?._id)?.runs || 0}
-                ({currentInnings?.batting?.find(b => b.player === striker?._id)?.balls || 0})
+                {currentInnings?.batting?.find(b => b.player === striker?.name)?.runs || 0}
+                ({currentInnings?.batting?.find(b => b.player === striker?.name)?.balls || 0})
               </div>
             </div>
             <div className="text-slate-300 text-right">
               <div className="font-medium">{nonStriker?.name || "Select Non-Striker"}</div>
               <div className="text-xs text-slate-400">
-                {currentInnings?.batting?.find(b => b.player === nonStriker?._id)?.runs || 0}
-                ({currentInnings?.batting?.find(b => b.player === nonStriker?._id)?.balls || 0})
+                {currentInnings?.batting?.find(b => b.player === nonStriker?.name)?.runs || 0}
+                ({currentInnings?.batting?.find(b => b.player === nonStriker?.name)?.balls || 0})
               </div>
             </div>
           </div>
@@ -247,9 +279,9 @@ export default function ScorePage() {
           <div className="text-center mt-2 text-sm text-slate-300">
             <span className="font-medium">{currentBowler?.name || "Select Bowler"}</span>
             <span className="text-slate-400 text-xs ml-2">
-              {currentInnings?.bowling?.find(b => b.player === currentBowler?._id)?.overs || 0}-
-              {currentInnings?.bowling?.find(b => b.player === currentBowler?._id)?.runs || 0}-
-              {currentInnings?.bowling?.find(b => b.player === currentBowler?._id)?.wickets || 0}
+              {/*{currentInnings?.bowling?.(b => b.player === currentBowler?._id)?.overs || 0}-*/}
+              {/*{currentInnings?.bowling?.find(b => b.player === currentBowler?._id)?.runs || 0}-*/}
+              {/*{currentInnings?.bowling?.find(b => b.player === currentBowler?._id)?.wickets || 0}*/}
             </span>
           </div>
         </div>
@@ -259,22 +291,21 @@ export default function ScorePage() {
           <div className="text-center">
             <div className="text-slate-200 text-sm font-medium mb-2">This Over</div>
             <div className="flex justify-center space-x-2">
-              {Array.from({ length: 6 }, (_, i) => {
-                const ball = ballHistory.filter(b => b.over === currentOver && b.isValidBall)[i];
+              {Array.from({ length: ballHistory.length }, (_, i) => {
+                const ball = ballHistory[i];
                 return (
                   <div
                     key={i}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
-                      ball
-                        ? ball.wicket?.isWicket
-                          ? "bg-red-600 text-white"
-                          : ball.runs === 4
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${ball
+                      ? ball.wicket?.isWicket
+                        ? "bg-red-600 text-white"
+                        : ball.runs === 4
                           ? "bg-green-600 text-white"
                           : ball.runs === 6
-                          ? "bg-purple-600 text-white"
-                          : "bg-blue-600 text-white"
-                        : "bg-slate-600 text-slate-400"
-                    }`}
+                            ? "bg-purple-600 text-white"
+                            : "bg-blue-600 text-white"
+                      : "bg-slate-600 text-slate-400"
+                      }`}
                   >
                     {ball ? (ball.wicket?.isWicket ? "W" : ball.runs) : "•"}
                   </div>
@@ -292,15 +323,14 @@ export default function ScorePage() {
               <button
                 key={runs}
                 onClick={() => handleRunsScored(runs)}
-                className={`h-16 rounded-lg font-bold text-lg transition-all ${
-                  runs === 0
-                    ? "bg-slate-600 hover:bg-slate-500 text-white"
-                    : runs === 4
+                className={`h-16 rounded-lg font-bold text-lg transition-all ${runs === 0
+                  ? "bg-slate-600 hover:bg-slate-500 text-white"
+                  : runs === 4
                     ? "bg-green-600 hover:bg-green-700 text-white"
                     : runs === 6
-                    ? "bg-purple-600 hover:bg-purple-700 text-white"
-                    : "bg-blue-600 hover:bg-blue-700 text-white"
-                }`}
+                      ? "bg-purple-600 hover:bg-purple-700 text-white"
+                      : "bg-blue-600 hover:bg-blue-700 text-white"
+                  }`}
               >
                 {runs}
               </button>
@@ -420,11 +450,10 @@ function WicketPanel({ onClose, onWicket, currentBowler, striker }) {
                 <button
                   key={type}
                   onClick={() => setDismissalType(type)}
-                  className={`p-3 rounded-lg text-sm font-medium transition-all ${
-                    dismissalType === type
-                      ? "bg-red-600 text-white"
-                      : "bg-slate-700 text-slate-300 hover:bg-slate-600"
-                  }`}
+                  className={`p-3 rounded-lg text-sm font-medium transition-all ${dismissalType === type
+                    ? "bg-red-600 text-white"
+                    : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                    }`}
                 >
                   {type}
                 </button>
@@ -507,11 +536,10 @@ function ExtrasPanel({ onClose, onExtra }) {
                 <button
                   key={extra.type}
                   onClick={() => setExtraType(extra.type)}
-                  className={`p-3 rounded-lg text-sm font-medium transition-all ${
-                    extraType === extra.type
-                      ? extra.color + " text-white"
-                      : "bg-slate-700 text-slate-300 hover:bg-slate-600"
-                  }`}
+                  className={`p-3 rounded-lg text-sm font-medium transition-all ${extraType === extra.type
+                    ? extra.color + " text-white"
+                    : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                    }`}
                 >
                   {extra.label}
                 </button>
@@ -526,11 +554,10 @@ function ExtrasPanel({ onClose, onExtra }) {
                 <button
                   key={runValue}
                   onClick={() => setRuns(runValue)}
-                  className={`w-12 h-12 rounded-lg font-bold transition-all ${
-                    runs === runValue
-                      ? "bg-blue-600 text-white"
-                      : "bg-slate-700 text-slate-300 hover:bg-slate-600"
-                  }`}
+                  className={`w-12 h-12 rounded-lg font-bold transition-all ${runs === runValue
+                    ? "bg-blue-600 text-white"
+                    : "bg-slate-700 text-slate-300 hover:bg-slate-600"
+                    }`}
                 >
                   {runValue}
                 </button>
