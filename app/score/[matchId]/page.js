@@ -117,8 +117,12 @@ export default function ScorePage() {
 
   const undoLastBall = async () => {
     try {
+      console.log(currentInnings);
       const response = await fetch(`/api/matches/${matchId}/undo`, {
         method: "POST",
+        body: JSON.stringify({
+          _id: currentInnings._id
+        })
       });
 
       if (response.ok) {
@@ -185,34 +189,148 @@ export default function ScorePage() {
   };
 
   const handleWicket = (wicketData) => {
+    const strikerStats =
+      currentInnings?.batting?.find(b => b.player === striker.name) || { runs: 0, balls: 0 };
+  
+    const strikerUpdate = {
+      player: striker.name,
+      runs: strikerStats.runs,
+      balls: strikerStats.balls + 1, // faced the ball
+      isOut: true,
+      dismissalType: wicketData.dismissalType,
+    };
+  
+    const nonStrikerStats =
+      currentInnings?.batting?.find(b => b.player === nonStriker.name) || { runs: 0, balls: 0 };
+  
+    const nonStrikerUpdate = {
+      player: nonStriker.name,
+      runs: nonStrikerStats.runs,
+      balls: nonStrikerStats.balls,
+    };
+  
+    const prevBowling = currentInnings.bowling || {};
+    const prevOverStats = prevBowling.currentOverStats || { balls: [] };
+  
+    // Record new ball in this over
+    const newBall = {
+      ballNumber: (currentBall + 1),
+      runs: 0,
+      isWicket: true,
+      wicket: wicketData,
+      extras: {},
+    };
+  
+    const updatedBalls = [...prevOverStats.balls, newBall];
+  
+    const bowlingStats = {
+      bowler: currentBowler.name,
+      totalRuns: prevBowling.totalRuns || 0,
+      totalBallBowled: (prevBowling.totalBallBowled || 0) + 1,
+      currentOverStats: {
+        over: currentOver || 1,
+        balls: updatedBalls,
+        runs: prevOverStats.runs || 0,
+        wickets: (prevOverStats.wickets || 0) + 1,
+        maidens: prevOverStats.maidens || 0,
+        wides: prevOverStats.wides || 0,
+        noBalls: prevOverStats.noBalls || 0,
+        economy: (
+          (prevBowling.totalRuns || 0) /
+          (((prevBowling.totalBallBowled || 0) + 1) / 6)
+        ).toFixed(2),
+      },
+    };
+  
     recordBall({
       runs: 0,
-      totalRuns: 0,
-      ballType: "legal",
+      totalRuns: currentInnings.totalRuns || 0, // no runs added
       isValidBall: true,
       wicket: {
         isWicket: true,
-        ...wicketData
-      }
+        ...wicketData,
+      },
+      batting: [strikerUpdate, nonStrikerUpdate],
+      bowling: bowlingStats,
     });
+  
     setShowWicketPanel(false);
   };
+  
 
   const handleExtras = (extraData) => {
+    const prevBowling = currentInnings.bowling || {};
+    const prevOverStats = prevBowling.currentOverStats || { balls: [] };
+  
     const isValidBall = extraData.type === "bye" || extraData.type === "legbye";
+    const runs = extraData.runs || 1;
+  
+    // --- Batting Updates (bye/legbye count as balls faced) ---
+    const strikerStats = currentInnings?.batting?.find(b => b.player === striker.name) || { runs: 0, balls: 0 };
+    const nonStrikerStats = currentInnings?.batting?.find(b => b.player === nonStriker.name) || { runs: 0, balls: 0 };
+  
+    const strikerUpdate = {
+      player: striker.name,
+      runs: strikerStats.runs + (extraData.type === "bye" || extraData.type === "legbye" ? 0 : runs),
+      balls: strikerStats.balls + (isValidBall ? 1 : 0),
+    };
+  
+    const nonStrikerUpdate = {
+      player: nonStriker.name,
+      runs: nonStrikerStats.runs,
+      balls: nonStrikerStats.balls,
+    };
+  
+    // --- Ball Object ---
+    const newBall = {
+      ballNumber: (currentBall + 1),
+      runs,
+      isWicket: false,
+      extras: {
+        type: extraData.type,
+        runs,
+      },
+    };
+  
+    const updatedBalls = [...prevOverStats.balls, newBall];
+  
+    // --- Bowling Stats ---
+    const bowlingStats = {
+      bowler: currentBowler.name,
+      totalRuns: runs + (prevBowling.totalRuns || 0),
+      totalBallBowled: (prevBowling.totalBallBowled || 0) + (isValidBall ? 1 : 0),
+      currentOverStats: {
+        over: currentOver || 1,
+        balls: updatedBalls,
+        runs: (prevOverStats.runs || 0) + runs,
+        wickets: prevOverStats.wickets || 0,
+        maidens: prevOverStats.maidens || 0,
+        wides: prevOverStats.wides + (extraData.type === "wide" ? 1 : 0) || 0,
+        noBalls: prevOverStats.noBalls + (extraData.type === "noball" ? 1 : 0) || 0,
+        economy: (
+          (runs + (prevBowling.totalRuns || 0)) /
+          (((prevBowling.totalBallBowled || 0) + (isValidBall ? 1 : 0)) / 6 || 1)
+        ).toFixed(2),
+      },
+    };
+  
+    // --- Send Ball Record ---
     recordBall({
-      runs: extraData.runs,
-      totalRuns: (currentInnings.totalRuns || 0) + extraData.runs,
-      ballType: extraData.type,
+      runs,
+      totalRuns: (currentInnings.totalRuns || 0) + runs,
       isValidBall,
       extras: {
         isExtra: true,
         type: extraData.type,
-        runs: extraData.runs,
+        runs,
       },
+      batting: [strikerUpdate, nonStrikerUpdate],
+      bowling: bowlingStats,
     });
+  
     setShowExtrasPanel(false);
   };
+  
 
   if (loading) {
     return (
@@ -291,7 +409,7 @@ export default function ScorePage() {
           <div className="text-center">
             <div className="text-slate-200 text-sm font-medium mb-2">This Over</div>
             <div className="flex justify-center space-x-2">
-              {Array.from({ length: ballHistory.length }, (_, i) => {
+              {Array.from({ length: ballHistory.length || 6 }, (_, i) => {
                 const ball = ballHistory[i];
                 return (
                   <div
@@ -307,7 +425,7 @@ export default function ScorePage() {
                       : "bg-slate-600 text-slate-400"
                       }`}
                   >
-                    {ball ? (ball.wicket?.isWicket ? "W" : ball.runs) : "•"}
+                    {ball ? (ball.isWicket ? "W" : ball.runs) : "•"}
                   </div>
                 );
               })}
@@ -367,7 +485,7 @@ export default function ScorePage() {
               onClick={() => setShowPlayerPanel(true)}
               className="h-10 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-all"
             >
-              Players
+              Update players
             </button>
             <button className="h-10 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-all">
               5/7/P
@@ -403,6 +521,13 @@ export default function ScorePage() {
             match={match}
             currentInnings={currentInnings}
             onPlayersUpdate={fetchMatch}
+            striker={striker}
+            nonStriker={nonStriker}
+            bowler={currentBowler}
+            setStriker={setStriker}
+            setNonStriker={setNonStriker}
+            setBowler={setCurrentBowler}
+            setBallHistory={setBallHistory}
           />
         )}
       </div>
@@ -586,29 +711,88 @@ function ExtrasPanel({ onClose, onExtra }) {
   );
 }
 
-// Player Panel Component (Placeholder)
-function PlayerPanel({ onClose, match, currentInnings, onPlayersUpdate }) {
+// Player Panel Component (Updated with Proper Dropdown Alignment)
+function PlayerPanel({ onClose, striker, nonStriker, bowler, setStriker, setNonStriker, setBowler, setBallHistory }) {
+  const players = ["Player 1", "Player 2", "Player 3", "Player 4", "Player 5"];
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-800 rounded-lg p-6 w-full max-w-md border border-slate-700">
-        <div className="flex justify-between items-center mb-4">
+      <div className="bg-slate-800 rounded-lg p-6 w-full max-w-md border border-slate-700 relative">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-bold text-slate-100">Player Management</h3>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-200">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-slate-200"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
 
-        <div className="text-center text-slate-300">
-          <p>Player management features will be implemented here</p>
-          <p className="text-sm text-slate-400 mt-2">
-            - Add/Remove players during match
-            - Change batting order
-            - Assign new bowler
-          </p>
+        {/* Player Dropdowns */}
+        <div className="space-y-4">
+          <div className="flex flex-col text-left">
+            <label className="text-slate-300 mb-1">Striker</label>
+            <select
+              onChange={(e) => setStriker({name: e.target.value})}
+              className="w-full px-3 py-2 rounded-lg bg-slate-700 text-slate-200 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              defaultValue={striker.name}
+            >
+              {players.map((p, idx) => (
+                <option key={idx} value={p}>
+                  {p}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col text-left">
+            <label className="text-slate-300 mb-1">Non-Striker</label>
+            <select
+              className="w-full px-3 py-2 rounded-lg bg-slate-700 text-slate-200 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              defaultValue={nonStriker.name}
+              onChange={(e) => setNonStriker({name: e.target.value})}
+            >
+              {players.map((p, idx) => (
+                <option key={idx} value={p}>
+                  {p}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col text-left">
+            <label className="text-slate-300 mb-1">Bowler</label>
+            <select
+              className="w-full px-3 py-2 rounded-lg bg-slate-700 text-slate-200 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              defaultValue={bowler.name}
+              onChange={(e) => {
+                setBowler({name: e.target.value})
+                setBallHistory([])
+              }}
+            >
+              {players.map((p, idx) => (
+                <option key={idx} value={p}>
+                  {p}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
+        {/* Close Button */}
         <button
           onClick={onClose}
           className="w-full mt-6 bg-slate-600 hover:bg-slate-700 text-slate-200 py-2 px-4 rounded-lg font-medium transition-colors"
@@ -619,3 +803,6 @@ function PlayerPanel({ onClose, match, currentInnings, onPlayersUpdate }) {
     </div>
   );
 }
+
+
+
