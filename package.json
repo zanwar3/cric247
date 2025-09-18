@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "country-flag-icons": "^1.5.20",
     "mongoose": "^8.18.0",
     "next": "15.5.2",
     "next-auth": "^4.24.11",

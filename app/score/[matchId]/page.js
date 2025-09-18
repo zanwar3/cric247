@@ -44,6 +44,13 @@ export default function ScorePage() {
     }
   };
 
+  const fetchBallHistory = async () => {
+    const response = await fetch(`/api/matches/${matchId}/ball`);
+    const data = await response.json();
+    const updatedInnings = await response.json();
+        updateCurrentInnings(updatedInnings);
+  }
+
   const updateCurrentInnings = async (data) => {
     setCurrentInnings(data?.ball);
     setCurrentOver(data?.ball?.over);
