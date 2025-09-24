@@ -7,7 +7,9 @@ export default function CreateMatchPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [teams, setTeams] = useState([]);
+  const [tournaments, setTournaments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [matchType, setMatchType] = useState(null);
 
   // Match Configuration State
   const [matchData, setMatchData] = useState({
@@ -22,11 +24,13 @@ export default function CreateMatchPage() {
     totalOvers: 20,
     venue: "",
     date: "",
-    time: ""
+    time: "",
+    tournament: ""
   });
 
   useEffect(() => {
     fetchTeams();
+    fetchTournaments();
   }, []);
 
   const fetchTeams = async () => {
@@ -34,6 +38,15 @@ export default function CreateMatchPage() {
       const response = await fetch("/api/teams");
       const data = await response.json();
       setTeams(data);
+    } catch (error) {
+      console.error("Error fetching teams:", error)
+    }
+  };
+  const fetchTournaments= async () => {
+    try {
+      const response = await fetch("/api/tournaments");
+      const data = await response.json();
+      setTournaments(data);
     } catch (error) {
       console.error("Error fetching teams:", error);
     }
@@ -88,6 +101,7 @@ export default function CreateMatchPage() {
   const handleMatchTypeSelect = (type) => {
     setMatchData({ ...matchData, matchType: type });
     setStep(2);
+    setMatchType(type);
   };
 
   const handleGameTypeSelect = (gameType) => {
@@ -109,6 +123,10 @@ export default function CreateMatchPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           matchNumber: `${matchData.matchType} Match`,
+          tournament:{
+            _id: matchData.tournament || null,
+            name: tournaments.filter(g => g.id === matchData.tournament)[0].name,
+          },
           status: "upcoming",
           teams: {
             teamA: matchData.team1,
@@ -126,8 +144,7 @@ export default function CreateMatchPage() {
 
       if (response.ok) {
         const newMatch = await response.json();
-        alert("Match created successfully!");
-        router.push(`/ongoing-matches`);
+        router.push(`/matches`);
       } else {
         const errorData = await response.json();
         console.error("Error creating match:", errorData);
@@ -357,6 +374,24 @@ export default function CreateMatchPage() {
                 </div>
               </div>
 
+              {/* Tournament Details */}
+              {matchType == 'tournament' && <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
+                <h3 className="text-lg font-semibold text-slate-100 mb-4">Tournament Details</h3>
+                <div>
+                  <label className="block text-sm font-medium text-slate-200 mb-2">tournament</label>
+                  <select
+                    value={matchData?.tournament}
+                    onChange={(e) => setMatchData({...matchData, tournament: e.target.value})}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100"
+                  >
+                    <option value="">Select Tournament</option>
+                    {tournaments?.map((item) => (
+                      <option key={item._id} value={item._id}>{item.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              }
               {/* Powerplay Settings */}
               {matchData.gameType !== "Test" && (
                 <div className="bg-slate-800 rounded-xl p-6 border border-slate-700">
@@ -416,6 +451,12 @@ export default function CreateMatchPage() {
                       {teams.find(t => t._id === matchData.team1)?.name} vs {teams.find(t => t._id === matchData.team2)?.name}
                     </span>
                   </div>
+                  {matchType === 'tournament' && <div className="flex justify-between">
+                    <span className="text-slate-400">Tournament:</span>
+                    <span className="text-slate-100">
+                      {tournaments.find(t => t._id === matchData.tournament)?.name}
+                    </span>
+                  </div>}
                   <div className="flex justify-between">
                     <span className="text-slate-400">Venue:</span>
                     <span className="text-slate-100">{matchData.venue}</span>

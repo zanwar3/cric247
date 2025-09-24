@@ -1,8 +1,34 @@
 "use client";
-import React from "react";
-import { PK, IN } from "country-flag-icons/react/3x2"; // Pakistan & India
+import React, {useState, useEffect} from "react";
+import { PK, IN } from "country-flag-icons/react/3x2";
+import {useParams} from "next/navigation"; // Pakistan & India
 
 export default function Page() {
+  const params = useParams();
+  const matchId = params.matchId;
+  const [batting, setBatting] = useState([]);
+  const [bowling, setBowling] = useState([]);
+  const [currentInnings, setCurrentInnings] = useState(null);
+
+  useEffect(() => {
+    if (matchId) {
+      fetchBallHistory();
+    }
+  }, [matchId]);
+
+  const fetchBallHistory = async () => {
+    const response = await fetch(`/api/matches/${matchId}/ball`);
+    const data = await response.json();
+    if(data.success) {
+      updateData(data.ball)
+    }
+  }
+
+  const updateData = (ball) => {
+    setBatting(ball.batting);
+    setBowling(ball.bowling);
+    setCurrentInnings(ball);
+  }
   return (
     <div className="relative min-h-screen flex flex-col bg-gray-100">
       {/* Page Content */}
@@ -43,13 +69,13 @@ export default function Page() {
                 >
                   <path d="M498.1 14.1c-18.8-18.8-49.2-18.8-67.9 0l-63 63-18.7-18.7-42.4 42.4 18.7 18.7L63 382.3l-42.4 42.4c-18.8 18.8-18.8 49.2 0 67.9s49.2 18.8 67.9 0l42.4-42.4L392.3 178l18.7 18.7 42.4-42.4-18.7-18.7 63-63c-18.9-18.8 18.9-49.2 0-67.9z" />
                 </svg>
-                <span className="text-gray-400 text-[11px] sm:text-sm truncate">H NAWAZ*</span>
+                <span className="text-gray-400 text-[11px] sm:text-sm truncate">{batting?.[0]?.player}*</span>
                 <span className="text-white text-[11px] sm:text-sm font-semibold">5 (7)</span>
               </div>
 
               {/* Farhan */}
               <div className="flex items-center gap-1 sm:gap-2 truncate">
-                <span className="text-gray-400 text-[11px] sm:text-sm truncate">FARHAN</span>
+                <span className="text-gray-400 text-[11px] sm:text-sm truncate">{batting?.[1]?.player}</span>
                 <span className="text-white text-[11px] sm:text-sm font-semibold">32 (36)</span>
               </div>
             </div>

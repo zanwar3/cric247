@@ -54,7 +54,7 @@ export default function OngoingMatchesPage() {
     if (!match.innings || match.innings.length === 0) {
       return "Match not started";
     }
-    
+
     const currentInnings = match.innings[match.innings.length - 1];
     return `${currentInnings.totalRuns}/${currentInnings.totalWickets} (${currentInnings.totalOvers}.${currentInnings.totalBalls % 6})`;
   };
@@ -152,14 +152,35 @@ export default function OngoingMatchesPage() {
                         {formatMatchTime(match.scheduledDate)}
                       </span>
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-100">
-                      {match.matchNumber || `${match.teams?.teamA?.name || "Team A"} vs ${match.teams?.teamB?.name || "Team B"}`}
-                    </h3>
-                    {match.venue?.name && (
-                      <p className="text-slate-400 text-sm mt-1">
-                        📍 {match.venue.name}, {match.venue.city}
-                      </p>
-                    )}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-semibold text-slate-100">
+                          {match.matchNumber || `${match.teams?.teamA?.name || "Team A"} vs ${match.teams?.teamB?.name || "Team B"}`}
+                        </h3>
+                        {match.venue?.name && (
+                          <p className="text-slate-400 text-sm mt-1">
+                            📍 {match.venue.name}, {match.venue.city}
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        {match.tournament && (
+                          <>
+                            <h3 className="text-lg font-semibold text-slate-100">
+                              Tournament
+                            </h3>
+                            {match.venue?.name && (
+                              <p className="text-slate-400 text-sm mt-1">
+                                {match.tournament}
+                              </p>
+                            )}
+                          </>
+                        )}
+                      </div>
+
+                    </div>
+
+
                   </div>
 
                   {/* Current Score */}

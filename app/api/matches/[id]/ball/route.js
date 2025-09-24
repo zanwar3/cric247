@@ -139,3 +139,30 @@ export async function POST(request, { params }) {
     );
   }
 }
+
+
+export async function GET(request, { params }) {
+  try {
+    await dbConnect();
+
+    const { id } = await params;
+    const ball = await Ball.findOne(
+      { match_id: id },
+      null, // no projection, fetch all fields
+      { sort: { created_at: -1 } }
+    );
+    return NextResponse.json({
+      success: true,
+      ball
+    });
+
+  } catch (error) {
+    console.error("Error reading ball:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
+

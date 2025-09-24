@@ -5,8 +5,6 @@ const TournamentSchema = new Schema({
   description: String,
   format: {
     type: String,
-    enum: ["Round Robin", "Knockout", "League + Knockout", "T20", "ODI", "Test"],
-    required: true
   },
   startDate: { type: Date, required: true },
   endDate: Date,
@@ -17,20 +15,15 @@ const TournamentSchema = new Schema({
     email: String,
     phone: String
   },
-  prizePool: {
-    total: Number,
-    winner: Number,
-    runnerUp: Number,
-    other: String // For other prizes description
-  },
+  prizePool: String,
   entryFee: { type: Number, default: 0 },
   maxTeams: { type: Number, default: 16 },
   minTeams: { type: Number, default: 4 },
   teams: [{
     team: { type: Schema.Types.ObjectId, ref: "Team" },
     registrationDate: { type: Date, default: Date.now },
-    paymentStatus: { 
-      type: String, 
+    paymentStatus: {
+      type: String,
       enum: ["Pending", "Paid", "Refunded"],
       default: "Pending"
     },
@@ -47,7 +40,7 @@ const TournamentSchema = new Schema({
   matches: [{ type: Schema.Types.ObjectId, ref: "Match" }],
   status: {
     type: String,
-    enum: ["Draft", "Registration Open", "Registration Closed", "Ongoing", "Completed", "Cancelled"],
+    enum: ["Draft", "Registration Open", "Registration Closed",'upcoming', "ongoing", "completed", "cancelled"],
     default: "Draft"
   },
   rules: {
@@ -70,7 +63,7 @@ TournamentSchema.virtual('registrationProgress').get(function() {
 
 TournamentSchema.virtual('isRegistrationOpen').get(function() {
   const now = new Date();
-  return this.status === "Registration Open" && 
+  return this.status === "Registration Open" &&
          (!this.registrationDeadline || now <= this.registrationDeadline) &&
          this.teams.length < this.maxTeams;
 });

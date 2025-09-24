@@ -42,7 +42,7 @@ export default function TeamsPage() {
     try {
       const url = editingTeam ? `/api/teams/${editingTeam._id}` : "/api/teams";
       const method = editingTeam ? "PUT" : "POST";
-      
+
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
@@ -62,7 +62,7 @@ export default function TeamsPage() {
         setShowForm(false);
         setEditingTeam(null);
         fetchTeams();
-        alert(editingTeam ? "Team updated successfully!" : "Team created successfully!");
+        setActiveTab("list");
       } else {
         const errorData = await response.json();
         alert(errorData.error || "Failed to save team");
@@ -90,7 +90,7 @@ export default function TeamsPage() {
 
   const handleDelete = async () => {
     if (!teamToDelete) return;
-    
+
     try {
       const response = await fetch(`/api/teams/${teamToDelete._id}`, {
         method: "DELETE",
@@ -368,7 +368,7 @@ function TeamForm({ formData, setFormData, onSubmit, editingTeam, onCancel }) {
       <h2 className="text-xl font-semibold text-slate-100 mb-6">
         {editingTeam ? "Edit Team" : "Create New Team"}
       </h2>
-      
+
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
@@ -383,7 +383,7 @@ function TeamForm({ formData, setFormData, onSubmit, editingTeam, onCancel }) {
               placeholder="Team name"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">City</label>
             <input
@@ -395,7 +395,7 @@ function TeamForm({ formData, setFormData, onSubmit, editingTeam, onCancel }) {
               placeholder="City"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Captain</label>
             <input
@@ -407,7 +407,7 @@ function TeamForm({ formData, setFormData, onSubmit, editingTeam, onCancel }) {
               placeholder="Team captain"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Coach</label>
             <input
@@ -419,7 +419,7 @@ function TeamForm({ formData, setFormData, onSubmit, editingTeam, onCancel }) {
               placeholder="Team coach"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Founded Year</label>
             <input
@@ -431,7 +431,7 @@ function TeamForm({ formData, setFormData, onSubmit, editingTeam, onCancel }) {
               placeholder="Year founded"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Home Ground</label>
             <input
@@ -444,7 +444,7 @@ function TeamForm({ formData, setFormData, onSubmit, editingTeam, onCancel }) {
             />
           </div>
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-slate-200 mb-2">Description</label>
           <textarea
@@ -456,7 +456,7 @@ function TeamForm({ formData, setFormData, onSubmit, editingTeam, onCancel }) {
             placeholder="Team description"
           />
         </div>
-        
+
         <div className="flex space-x-3 pt-4">
           <button
             type="submit"

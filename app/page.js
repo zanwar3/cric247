@@ -20,13 +20,28 @@ export default function Home() {
 
   const fetchUserStats = async () => {
     try {
+
+      const matches = await fetch("/api/matches");
+      const matchesData = await matches.json();
+      const totalMatches = matchesData.length;
+
+      const teams = await fetch("/api/teams");
+      const teamsData = await teams.json();
+      const totalTeams = teamsData.length;
+
+      const players = await fetch("/api/profiles");
+      const playersData = await players.json();
+      const totalPlayers = playersData.length;
+
+      const activeMatches = matchesData.filter(match => match.status === "ongoing").length;
       // You can implement API calls to get real stats
       setStats({
-        activeMatches: 2,
-        totalMatches: 15,
-        totalTeams: 3,
-        totalPlayers: 25
+        activeMatches: activeMatches,
+        totalMatches: totalMatches,
+        totalTeams: totalTeams,
+        totalPlayers: totalPlayers
       });
+
     } catch (error) {
       console.error("Error fetching stats:", error);
     }
@@ -43,9 +58,9 @@ export default function Home() {
         </div>
 
         {/* Main Menu Cards */}
-        <div className="p-4 -mt-4">
+        <div className="p-4 -mt-2">
           <div className="grid grid-cols-1 gap-4 mb-6">
-            
+
             {/* Profile Card */}
             <Link href="/profile" className="block">
               <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 hover:border-blue-500 transition-all">
@@ -57,7 +72,7 @@ export default function Home() {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-slate-100">Profile</h3>
-                    <p className="text-slate-400 text-sm">View/Edit Personal Details, Past Matches, Teams Created</p>
+                    <p className="text-slate-400 text-sm">View/Edit Personal Details</p>
                   </div>
                   <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -87,71 +102,71 @@ export default function Home() {
             </Link>
 
             {/* Ongoing Matches Card */}
-            <Link href="/ongoing-matches" className="block">
-              <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 hover:border-orange-500 transition-all">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-slate-100">
-                      Ongoing Matches 
-                      {stats.activeMatches > 0 && (
-                        <span className="ml-2 bg-orange-600 text-white text-xs px-2 py-1 rounded-full">
-                          {stats.activeMatches}
-                        </span>
-                      )}
-                    </h3>
-                    <p className="text-slate-400 text-sm">Continue or View Matches in Progress</p>
-                  </div>
-                  <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </div>
-            </Link>
+            {/*<Link href="/ongoing-matches" className="block">*/}
+            {/*  <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 hover:border-orange-500 transition-all">*/}
+            {/*    <div className="flex items-center space-x-4">*/}
+            {/*      <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center">*/}
+            {/*        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">*/}
+            {/*          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />*/}
+            {/*        </svg>*/}
+            {/*      </div>*/}
+            {/*      <div className="flex-1">*/}
+            {/*        <h3 className="text-lg font-semibold text-slate-100">*/}
+            {/*          Ongoing Matches*/}
+            {/*          {stats.activeMatches > 0 && (*/}
+            {/*            <span className="ml-2 bg-orange-600 text-white text-xs px-2 py-1 rounded-full">*/}
+            {/*              {stats.activeMatches}*/}
+            {/*            </span>*/}
+            {/*          )}*/}
+            {/*        </h3>*/}
+            {/*        <p className="text-slate-400 text-sm">Continue or View Matches in Progress</p>*/}
+            {/*      </div>*/}
+            {/*      <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">*/}
+            {/*        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />*/}
+            {/*      </svg>*/}
+            {/*    </div>*/}
+            {/*  </div>*/}
+            {/*</Link>*/}
 
             {/* Past Matches Card */}
-            <Link href="/past-matches" className="block">
-              <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 hover:border-purple-500 transition-all">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-slate-100">Past Matches</h3>
-                    <p className="text-slate-400 text-sm">Access History, Scorecards, and Player Stats</p>
-                  </div>
-                  <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </div>
-            </Link>
+            {/*<Link href="/past-matches" className="block">*/}
+            {/*  <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 hover:border-purple-500 transition-all">*/}
+            {/*    <div className="flex items-center space-x-4">*/}
+            {/*      <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center">*/}
+            {/*        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">*/}
+            {/*          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />*/}
+            {/*        </svg>*/}
+            {/*      </div>*/}
+            {/*      <div className="flex-1">*/}
+            {/*        <h3 className="text-lg font-semibold text-slate-100">Past Matches</h3>*/}
+            {/*        <p className="text-slate-400 text-sm">Access History, Scorecards, and Player Stats</p>*/}
+            {/*      </div>*/}
+            {/*      <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">*/}
+            {/*        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />*/}
+            {/*      </svg>*/}
+            {/*    </div>*/}
+            {/*  </div>*/}
+            {/*</Link>*/}
 
             {/* My Cricket Card */}
-            <Link href="/my-cricket" className="block">
-              <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 hover:border-yellow-500 transition-all">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-yellow-600 rounded-full flex items-center justify-center">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-slate-100">My Cricket</h3>
-                    <p className="text-slate-400 text-sm">Personal Match Record, Batting & Bowling Stats</p>
-                  </div>
-                  <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </div>
-            </Link>
+            {/*<Link href="/my-cricket" className="block">*/}
+            {/*  <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 hover:border-yellow-500 transition-all">*/}
+            {/*    <div className="flex items-center space-x-4">*/}
+            {/*      <div className="w-12 h-12 bg-yellow-600 rounded-full flex items-center justify-center">*/}
+            {/*        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">*/}
+            {/*          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />*/}
+            {/*        </svg>*/}
+            {/*      </div>*/}
+            {/*      <div className="flex-1">*/}
+            {/*        <h3 className="text-lg font-semibold text-slate-100">My Cricket</h3>*/}
+            {/*        <p className="text-slate-400 text-sm">Personal Match Record, Batting & Bowling Stats</p>*/}
+            {/*      </div>*/}
+            {/*      <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">*/}
+            {/*        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />*/}
+            {/*      </svg>*/}
+            {/*    </div>*/}
+            {/*  </div>*/}
+            {/*</Link>*/}
           </div>
 
           {/* Quick Stats */}

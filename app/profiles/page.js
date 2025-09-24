@@ -1,10 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import MobileLayout from "@/components/MobileLayout";
+import Loader from "@/components/Loader";
 
 export default function ProfilesPage() {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [createLoading, setCreateLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("list");
   const [showForm, setShowForm] = useState(false);
   const [editingProfile, setEditingProfile] = useState(null);
@@ -28,6 +30,7 @@ export default function ProfilesPage() {
 
   const fetchProfiles = async () => {
     try {
+      setLoading(true);
       const response = await fetch("/api/profiles");
       const data = await response.json();
       setProfiles(data);
@@ -41,9 +44,10 @@ export default function ProfilesPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setCreateLoading(true)
       const url = editingProfile ? `/api/profiles/${editingProfile._id}` : "/api/profiles";
       const method = editingProfile ? "PUT" : "POST";
-      
+
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
@@ -63,10 +67,15 @@ export default function ProfilesPage() {
         });
         setShowForm(false);
         setEditingProfile(null);
+        setCreateLoading(false)
+        setActiveTab("list");
         fetchProfiles();
+
       }
     } catch (error) {
       console.error("Error saving profile:", error);
+    }finally {
+      setCreateLoading(false);
     }
   };
 
@@ -88,7 +97,7 @@ export default function ProfilesPage() {
 
   const handleDelete = async () => {
     if (!profileToDelete) return;
-    
+
     try {
       const response = await fetch(`/api/profiles/${profileToDelete._id}`, {
         method: "DELETE",
@@ -211,6 +220,7 @@ export default function ProfilesPage() {
               setFormData={setFormData}
               onSubmit={handleSubmit}
               editingProfile={editingProfile}
+              createLoading={createLoading}
               onCancel={() => {
                 setShowForm(false);
                 setEditingProfile(null);
@@ -370,7 +380,8 @@ function ProfileCard({ profile, onEdit, onDelete }) {
   );
 }
 
-function ProfileForm({ formData, setFormData, onSubmit, editingProfile, onCancel }) {
+function ProfileForm({ formData, setFormData, onSubmit, editingProfile, onCancel, createLoading }) {
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -381,7 +392,7 @@ function ProfileForm({ formData, setFormData, onSubmit, editingProfile, onCancel
       <h2 className="text-xl font-semibold text-slate-100 mb-6">
         {editingProfile ? "Edit Profile" : "Create New Profile"}
       </h2>
-      
+
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
@@ -396,7 +407,7 @@ function ProfileForm({ formData, setFormData, onSubmit, editingProfile, onCancel
               placeholder="Player name"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Email *</label>
             <input
@@ -409,7 +420,7 @@ function ProfileForm({ formData, setFormData, onSubmit, editingProfile, onCancel
               placeholder="player@email.com"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Phone</label>
             <input
@@ -421,7 +432,7 @@ function ProfileForm({ formData, setFormData, onSubmit, editingProfile, onCancel
               placeholder="Phone number"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Age</label>
             <input
@@ -433,7 +444,7 @@ function ProfileForm({ formData, setFormData, onSubmit, editingProfile, onCancel
               placeholder="Age"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Role</label>
             <select
@@ -449,7 +460,7 @@ function ProfileForm({ formData, setFormData, onSubmit, editingProfile, onCancel
               <option value="Wicket-keeper">Wicket-keeper</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Experience (years)</label>
             <input
@@ -462,7 +473,7 @@ function ProfileForm({ formData, setFormData, onSubmit, editingProfile, onCancel
             />
           </div>
         </div>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Batting Style</label>
@@ -473,13 +484,11 @@ function ProfileForm({ formData, setFormData, onSubmit, editingProfile, onCancel
               className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="">Select batting style</option>
-              <option value="Right-handed">Right-handed</option>
-              <option value="Left-handed">Left-handed</option>
-              <option value="Aggressive">Aggressive</option>
-              <option value="Defensive">Defensive</option>
+              <option value="Right-Handed">Right-handed</option>
+              <option value="Left-Handed">Left-handed</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Bowling Style</label>
             <select
@@ -494,16 +503,19 @@ function ProfileForm({ formData, setFormData, onSubmit, editingProfile, onCancel
               <option value="Spin">Spin</option>
               <option value="Leg-spin">Leg-spin</option>
               <option value="Off-spin">Off-spin</option>
+              <option value="None">None</option>
             </select>
           </div>
         </div>
-        
+
         <div className="flex space-x-3 pt-4">
           <button
             type="submit"
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors"
-          >
-            {editingProfile ? "Update Profile" : "Create Profile"}
+            className="flex-1 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors "
+          >{
+            createLoading ?
+              <Loader text = "Saving..." />:
+          editingProfile ? "Update Profile" : "Create Profile"}
           </button>
           <button
             type="button"

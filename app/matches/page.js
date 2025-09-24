@@ -60,7 +60,7 @@ export default function MatchesPage() {
     try {
       const url = editingMatch ? `/api/matches/${editingMatch._id}` : "/api/matches";
       const method = editingMatch ? "PUT" : "POST";
-      
+
       const matchData = {
         matchNumber: formData.matchNumber,
         teams: {
@@ -100,14 +100,12 @@ export default function MatchesPage() {
         setEditingMatch(null);
         setActiveTab("list");
         fetchMatches();
-        alert(editingMatch ? "Match updated successfully!" : "Match created successfully!");
+
       } else {
         const errorData = await response.json();
-        alert(errorData.error || "Failed to save match");
       }
     } catch (error) {
       console.error("Error saving match:", error);
-      alert("Failed to save match. Please try again.");
     }
   };
 
@@ -132,7 +130,7 @@ export default function MatchesPage() {
 
   const handleDelete = async () => {
     if (!matchToDelete) return;
-    
+
     try {
       const response = await fetch(`/api/matches/${matchToDelete._id}`, {
         method: "DELETE",
@@ -142,13 +140,9 @@ export default function MatchesPage() {
         fetchMatches();
         setShowDeleteDialog(false);
         setMatchToDelete(null);
-        alert("Match deleted successfully!");
-      } else {
-        alert("Failed to delete match");
       }
     } catch (error) {
       console.error("Error deleting match:", error);
-      alert("Failed to delete match");
     }
   };
 
@@ -203,12 +197,12 @@ export default function MatchesPage() {
               Back to Home
             </Link>
             <div className="flex space-x-2">
-              <Link
-                href="/score/demo"
-                className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm transition-colors"
-              >
-                Demo Scoring
-              </Link>
+              {/*<Link*/}
+              {/*  href="/score/demo"*/}
+              {/*  className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm transition-colors"*/}
+              {/*>*/}
+              {/*  Demo Scoring*/}
+              {/*</Link>*/}
               <Link
                 href="/create-match"
                 className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition-colors"
@@ -241,24 +235,7 @@ export default function MatchesPage() {
               </svg>
               All Matches ({matches.length})
             </button>
-            <button
-              onClick={() => {
-                setActiveTab("form");
-                setShowForm(true);
-                setEditingMatch(null);
-                setFormData({
-                  matchNumber: "",
-                  team1: "",
-                  team2: "",
-                  venue: "",
-                  city: "",
-                  date: "",
-                  time: "",
-                  matchType: "T20",
-                  status: "Scheduled",
-                  notes: ""
-                });
-              }}
+            <Link href='/create-match'
               className={`flex-1 py-4 px-6 text-center font-medium transition-colors ${
                 activeTab === "form"
                   ? "text-green-400 border-b-2 border-green-400 bg-slate-700"
@@ -269,7 +246,7 @@ export default function MatchesPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
               {editingMatch ? "Edit Match" : "Create Match"}
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -287,22 +264,18 @@ export default function MatchesPage() {
                   </div>
                   <h3 className="text-lg font-medium text-slate-200 mb-2">No Matches Yet</h3>
                   <p className="text-slate-400 mb-6">Create your first match to get started with cricket management.</p>
-                  <button
-                    onClick={() => {
-                      setActiveTab("form");
-                      setShowForm(true);
-                    }}
+                  <Link href="/create-match"
                     className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
                   >
                     Create First Match
-                  </button>
+                  </Link>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {matches.map((match) => (
-                    <MatchCard 
-                      key={match._id} 
-                      match={match} 
+                    <MatchCard
+                      key={match._id}
+                      match={match}
                       onEdit={handleEdit}
                       onDelete={(match) => {
                         setMatchToDelete(match);
@@ -320,7 +293,7 @@ export default function MatchesPage() {
 
           {/* Match Form */}
           {activeTab === "form" && (
-            <MatchForm 
+            <MatchForm
               formData={formData}
               setFormData={setFormData}
               teams={teams}
@@ -337,7 +310,7 @@ export default function MatchesPage() {
 
         {/* Delete Confirmation Dialog */}
         {showDeleteDialog && (
-          <DeleteDialog 
+          <DeleteDialog
             match={matchToDelete}
             onConfirm={handleDelete}
             onCancel={() => {
@@ -364,6 +337,9 @@ function MatchCard({ match, onEdit, onDelete, getTeamName, getStatusColor, forma
             </span>
             <span className="text-slate-400 text-sm">{match.matchType || "T20"}</span>
           </div>
+          {match?.tournament && <span className="text-slate-400 text-xs">
+            {match?.tournament?.name}
+          </span>}
           <span className="text-slate-400 text-xs">
             {formatDate(match.scheduledDate)}
           </span>

@@ -1,10 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import MobileLayout from "@/components/MobileLayout";
+import Loader from "@/components/Loader";
 
 export default function TournamentsPage() {
   const [tournaments, setTournaments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [createLoading, setCreateLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("list");
   const [showForm, setShowForm] = useState(false);
   const [editingTournament, setEditingTournament] = useState(null);
@@ -28,6 +30,7 @@ export default function TournamentsPage() {
 
   const fetchTournaments = async () => {
     try {
+      setLoading(true);
       const response = await fetch("/api/tournaments");
       const data = await response.json();
       setTournaments(data);
@@ -41,9 +44,10 @@ export default function TournamentsPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setCreateLoading(true);
       const url = editingTournament ? `/api/tournaments/${editingTournament._id}` : "/api/tournaments";
       const method = editingTournament ? "PUT" : "POST";
-      
+
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
@@ -63,6 +67,8 @@ export default function TournamentsPage() {
         });
         setShowForm(false);
         setEditingTournament(null);
+        setCreateLoading(false);
+        setActiveTab("list");
         fetchTournaments();
       }
     } catch (error) {
@@ -71,6 +77,7 @@ export default function TournamentsPage() {
   };
 
   const handleEdit = (tournament) => {
+    console.log("ahmad",tournament);
     setEditingTournament(tournament);
     setFormData({
       name: tournament.name || "",
@@ -88,7 +95,7 @@ export default function TournamentsPage() {
 
   const handleDelete = async () => {
     if (!tournamentToDelete) return;
-    
+
     try {
       const response = await fetch(`/api/tournaments/${tournamentToDelete._id}`, {
         method: "DELETE",
@@ -403,7 +410,7 @@ function TournamentCard({ tournament, onEdit, onDelete, getStatusColor, getStatu
   );
 }
 
-function TournamentForm({ formData, setFormData, onSubmit, editingTournament, onCancel }) {
+function TournamentForm({ formData, setFormData, onSubmit, editingTournament, onCancel, createLoading }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -414,7 +421,7 @@ function TournamentForm({ formData, setFormData, onSubmit, editingTournament, on
       <h2 className="text-xl font-semibold text-slate-100 mb-6">
         {editingTournament ? "Edit Tournament" : "Create New Tournament"}
       </h2>
-      
+
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
@@ -429,7 +436,7 @@ function TournamentForm({ formData, setFormData, onSubmit, editingTournament, on
               placeholder="Tournament name"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Status</label>
             <select
@@ -444,29 +451,29 @@ function TournamentForm({ formData, setFormData, onSubmit, editingTournament, on
               <option value="cancelled">Cancelled</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Start Date</label>
             <input
               type="date"
               name="startDate"
-              value={formData.startDate}
+              value={formData?.startDate ? formData?.startDate?.split("T")[0] : ""}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">End Date</label>
             <input
               type="date"
               name="endDate"
-              value={formData.endDate}
+              value={formData?.endDate ?  formData?.endDate?.split("T")[0] : ""}
               onChange={handleChange}
               className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Venue</label>
             <input
@@ -478,7 +485,7 @@ function TournamentForm({ formData, setFormData, onSubmit, editingTournament, on
               placeholder="Tournament venue"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-200 mb-2">Format</label>
             <select
@@ -496,7 +503,7 @@ function TournamentForm({ formData, setFormData, onSubmit, editingTournament, on
             </select>
           </div>
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-slate-200 mb-2">Prize Pool</label>
           <input
@@ -508,7 +515,7 @@ function TournamentForm({ formData, setFormData, onSubmit, editingTournament, on
             placeholder="e.g., $10,000"
           />
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-slate-200 mb-2">Description</label>
           <textarea
@@ -520,13 +527,14 @@ function TournamentForm({ formData, setFormData, onSubmit, editingTournament, on
             placeholder="Tournament description"
           />
         </div>
-        
+
         <div className="flex space-x-3 pt-4">
           <button
             type="submit"
             className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-medium transition-colors"
           >
-            {editingTournament ? "Update Tournament" : "Create Tournament"}
+            {  createLoading ? <Loader/>    :
+              editingTournament ? "Update Tournament" : "Create Tournament"}
           </button>
           <button
             type="button"

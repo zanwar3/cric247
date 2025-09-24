@@ -21,10 +21,10 @@ const BallSchema = new Schema({
   },
   wicket: {
     isWicket: { type: Boolean, default: false },
-    dismissalType: { 
-      type: String, 
-      enum: ["Bowled", "Caught", "LBW", "Run Out", "Stumped", "Hit Wicket", "Obstructing", "Retired"], 
-      default: null 
+    dismissalType: {
+      type: String,
+      enum: ["Bowled", "Caught", "LBW", "Run Out", "Stumped", "Hit Wicket", "Obstructing", "Retired"],
+      default: null
     },
     bowler: { type: Schema.Types.ObjectId, ref: "Profile", default: null },
     fielder: { type: Schema.Types.ObjectId, ref: "Profile", default: null },
@@ -37,7 +37,10 @@ const BallSchema = new Schema({
 
 const MatchSchema = new Schema({
   matchNumber: String, // e.g., "Match 1", "Semi Final 1", "Final"
-  tournament: { type: Schema.Types.ObjectId, ref: "Tournament" },
+  tournament: {
+    _id: { type: Schema.Types.ObjectId, ref: "Tournament" },
+    name: String
+  },
   teams: {
     teamA: { type: Schema.Types.ObjectId, ref: "Team", required: true },
     teamB: { type: Schema.Types.ObjectId, ref: "Team", required: true }
@@ -83,8 +86,8 @@ const MatchSchema = new Schema({
       fours: { type: Number, default: 0 },
       sixes: { type: Number, default: 0 },
       dismissal: {
-        type: { 
-          type: String, 
+        type: {
+          type: String,
           enum: ["Bowled", "Caught", "LBW", "Run Out", "Stumped", "Hit Wicket", "Not Out", "Retired"]
         },
         bowler: { type: Schema.Types.ObjectId, ref: "Profile" },
@@ -113,9 +116,9 @@ const MatchSchema = new Schema({
   }],
   result: {
     winner: { type: Schema.Types.ObjectId, ref: "Team" },
-    winType: { 
-      type: String, 
-      enum: ["Runs", "Wickets", "No Result", "Tie", "Draw"] 
+    winType: {
+      type: String,
+      enum: ["Runs", "Wickets", "No Result", "Tie", "Draw"]
     },
     winMargin: Number, // runs or wickets
     playerOfTheMatch: { type: Schema.Types.ObjectId, ref: "Profile" }
@@ -138,7 +141,7 @@ const MatchSchema = new Schema({
 // Virtual for current score display
 MatchSchema.virtual('currentScore').get(function() {
   if (this.innings.length === 0) return "Match not started";
-  
+
   const latestInning = this.innings[this.innings.length - 1];
   return `${latestInning.totalRuns}/${latestInning.totalWickets} (${latestInning.totalOvers}.${latestInning.totalBalls % 6})`;
 });

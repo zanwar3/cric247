@@ -1,18 +1,19 @@
 import mongoose, { Schema } from "mongoose";
 
 const ProfileSchema = new Schema({
-  fullName: { type: String, required: true },
-  gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
+  name: { type: String, required: true },
+  gender: { type: String, enum: ["Male", "Female", "Other"], default: "Male" },
   city: String,
-  mobileNumber: String,
+  age: String,
+  phone: String,
+  experience: String,
   email: { type: String, required: true },
-  primaryRole: {
+  role: {
     type: String,
-    enum: ["Top-Order Batter", "Middle-Order Batter", "All-Rounder", "Wicketkeeper-Batter", "Bowler"],
+    enum: ["Batsman", "Bowler", "All-Rounder", "Wicket-keeper"],
     required: true,
   },
-  battingHand: { type: String, enum: ["Right-Handed", "Left-Handed"] },
-  bowlingHand: { type: String, enum: ["Right-Handed", "Left-Handed"] },
+  battingStyle: { type: String, enum: ["Right-Handed", "Left-Handed"] },
   bowlingStyle: String,
 }, { timestamps: true });
 
