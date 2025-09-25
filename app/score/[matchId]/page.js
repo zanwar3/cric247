@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import MobileLayout from "@/components/MobileLayout";
+import { Shuffle } from "lucide-react";
 
 export default function ScorePage() {
   const params = useParams();
@@ -28,6 +29,7 @@ export default function ScorePage() {
   useEffect(() => {
     if (matchId) {
       fetchMatch();
+      fetchBallHistory()
     }
   }, [matchId]);
 
@@ -47,43 +49,46 @@ export default function ScorePage() {
   const fetchBallHistory = async () => {
     const response = await fetch(`/api/matches/${matchId}/ball`);
     const data = await response.json();
-    const updatedInnings = await response.json();
-        updateCurrentInnings(updatedInnings);
+        updateCurrentInnings(data);
   }
 
   const updateCurrentInnings = async (data) => {
+    console.log("current innings data", data?.ball);
     setCurrentInnings(data?.ball);
-    setCurrentOver(data?.ball?.over);
+    setCurrentOver(data?.ball?.over || 1);
     setBallHistory(data?.ball?.bowling?.currentOverStats?.balls);
-
+    setCurrentBall(data?.ball?.bowling?.currentOverStats?.balls?.length || 0);
   }
 
   const recordBall = async (ballData) => {
     try {
       // Compute ball number
+      if(ballData?.isValidBall && currentBall == 6){
+         alert("please change bowler")
+        return setShowPlayerPanel(true)
+      }
+
+
       let ballNumber = (currentBall || 0) + 1;
-      let over = currentOver;
       let updatedStriker = striker;
       let updatedNonStriker = nonStriker;
 
       if (ballData.isValidBall) {
         // rotate on odd runs
-        if (ballData.runs % 2 === 1) {
+        if (ballData.runs % 2 === 1 && ballNumber <= 6) {
           const temp = updatedStriker;
           updatedStriker = updatedNonStriker;
           updatedNonStriker = temp;
         }
 
+        // Increment over if last ball of over
+        if (ballNumber > 6) {
+          ballNumber = 1
+          setCurrentOver(currentOver + 1);
+        }
+
       }
-      // Increment over if last ball of over
-      if (ballNumber > 6) {
-        ballNumber = 1;
-        over = currentOver + 1;
-        setCurrentOver(over);
-        const temp = updatedStriker;
-        updatedStriker = updatedNonStriker;
-        updatedNonStriker = temp;
-      }
+
       const response = await fetch(`/api/matches/${matchId}/ball`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -91,7 +96,7 @@ export default function ScorePage() {
           ...ballData,
           match_id: matchId,
           innings_id: 1,
-          over,
+          over: currentOver,
           ballNumber,
           striker: striker.name,
           nonStriker: nonStriker.name,
@@ -112,12 +117,20 @@ export default function ScorePage() {
   };
 
   const calculateCRR = () => {
-    const totalRuns = currentInnings?.totalRuns || 0;
+    console.log(currentInnings,"crr")
+    if(currentInnings?.ballNumber < 6)
+      return '0.00'
 
+    const totalRuns = currentInnings?.totalRuns || 0;
     // Calculate overs faced as: completed overs + fraction of current over
-    const oversCompleted = currentOver - 1;
+    const oversCompleted = currentInnings?.ballNumber / 6;
     const ballsInCurrentOver = currentBall || 0;
-    const oversFaced = oversCompleted + ballsInCurrentOver / 6;
+    let oversFaced = oversCompleted + ballsInCurrentOver / 6;
+
+    if (oversCompleted == 1)
+        oversFaced = 1
+
+    console.log("CRR", { totalRuns, oversFaced, oversCompleted, ballsInCurrentOver });
 
     return oversFaced > 0 ? (totalRuns / oversFaced).toFixed(2) : "0.00";
   };
@@ -155,7 +168,7 @@ export default function ScorePage() {
       balls: nonStrikerStats.balls,
     };
 
-    const prevBowling = currentInnings.bowling || {}; // fallback if undefined
+    const prevBowling = currentInnings?.bowling || {}; // fallback if undefined
     const prevOverStats = prevBowling.currentOverStats || { balls: [] };
 
     // Add new ball to over
@@ -187,7 +200,7 @@ export default function ScorePage() {
 
     recordBall({
       runs,
-      totalRuns: runs + (currentInnings.totalRuns || 0),
+      totalRuns: runs + (currentInnings?.totalRuns || 0),
       isValidBall: true,
       extras: {}, // no extras
       batting: [strikerUpdate, nonStrikerUpdate],
@@ -198,7 +211,7 @@ export default function ScorePage() {
   const handleWicket = (wicketData) => {
     const strikerStats =
       currentInnings?.batting?.find(b => b.player === striker.name) || { runs: 0, balls: 0 };
-  
+
     const strikerUpdate = {
       player: striker.name,
       runs: strikerStats.runs,
@@ -206,19 +219,19 @@ export default function ScorePage() {
       isOut: true,
       dismissalType: wicketData.dismissalType,
     };
-  
+
     const nonStrikerStats =
       currentInnings?.batting?.find(b => b.player === nonStriker.name) || { runs: 0, balls: 0 };
-  
+
     const nonStrikerUpdate = {
       player: nonStriker.name,
       runs: nonStrikerStats.runs,
       balls: nonStrikerStats.balls,
     };
-  
+
     const prevBowling = currentInnings.bowling || {};
     const prevOverStats = prevBowling.currentOverStats || { balls: [] };
-  
+
     // Record new ball in this over
     const newBall = {
       ballNumber: (currentBall + 1),
@@ -227,9 +240,9 @@ export default function ScorePage() {
       wicket: wicketData,
       extras: {},
     };
-  
+
     const updatedBalls = [...prevOverStats.balls, newBall];
-  
+
     const bowlingStats = {
       bowler: currentBowler.name,
       totalRuns: prevBowling.totalRuns || 0,
@@ -248,7 +261,7 @@ export default function ScorePage() {
         ).toFixed(2),
       },
     };
-  
+
     recordBall({
       runs: 0,
       totalRuns: currentInnings.totalRuns || 0, // no runs added
@@ -260,34 +273,34 @@ export default function ScorePage() {
       batting: [strikerUpdate, nonStrikerUpdate],
       bowling: bowlingStats,
     });
-  
+
     setShowWicketPanel(false);
   };
-  
+
 
   const handleExtras = (extraData) => {
     const prevBowling = currentInnings.bowling || {};
     const prevOverStats = prevBowling.currentOverStats || { balls: [] };
-  
+
     const isValidBall = extraData.type === "bye" || extraData.type === "legbye";
     const runs = extraData.runs || 1;
-  
+
     // --- Batting Updates (bye/legbye count as balls faced) ---
     const strikerStats = currentInnings?.batting?.find(b => b.player === striker.name) || { runs: 0, balls: 0 };
     const nonStrikerStats = currentInnings?.batting?.find(b => b.player === nonStriker.name) || { runs: 0, balls: 0 };
-  
+
     const strikerUpdate = {
       player: striker.name,
       runs: strikerStats.runs + (extraData.type === "bye" || extraData.type === "legbye" ? 0 : runs),
       balls: strikerStats.balls + (isValidBall ? 1 : 0),
     };
-  
+
     const nonStrikerUpdate = {
       player: nonStriker.name,
       runs: nonStrikerStats.runs,
       balls: nonStrikerStats.balls,
     };
-  
+
     // --- Ball Object ---
     const newBall = {
       ballNumber: (currentBall + 1),
@@ -298,9 +311,9 @@ export default function ScorePage() {
         runs,
       },
     };
-  
+
     const updatedBalls = [...prevOverStats.balls, newBall];
-  
+
     // --- Bowling Stats ---
     const bowlingStats = {
       bowler: currentBowler.name,
@@ -320,7 +333,7 @@ export default function ScorePage() {
         ).toFixed(2),
       },
     };
-  
+
     // --- Send Ball Record ---
     recordBall({
       runs,
@@ -334,10 +347,10 @@ export default function ScorePage() {
       batting: [strikerUpdate, nonStrikerUpdate],
       bowling: bowlingStats,
     });
-  
+
     setShowExtrasPanel(false);
   };
-  
+
 
   if (loading) {
     return (
@@ -375,11 +388,11 @@ export default function ScorePage() {
               {currentInnings?.totalRuns || 0}/{currentInnings?.totalWickets || 0}
             </div>
             <div className="text-slate-300 text-sm">
-              ({currentInnings?.over || 0}.{currentInnings?.ballNumber || 0}/{match.matchType === "T20" ? "20" : "50"} Overs)
+              ({(currentInnings?.over - 1) || 0}.{currentInnings?.ballNumber || 0}/{match.matchType === "T20" ? "20" : "50"} Overs)
             </div>
             <div className="text-slate-400 text-xs mt-1">
               CRR: {calculateCRR()}
-              {currentInnings?.totalOvers > 0 && " • RRR: " + ((currentInnings.target - currentInnings.totalRuns) / ((match.matchType === "T20" ? 20 : 50) - currentInnings.totalOvers)).toFixed(2)}
+              {/*{currentInnings?.totalOvers > 0 && " • RRR: " + ((currentInnings.target - currentInnings.totalRuns) / ((match.matchType === "T20" ? 20 : 50) - currentInnings.totalOvers)).toFixed(2)}*/}
             </div>
           </div>
 
@@ -391,6 +404,19 @@ export default function ScorePage() {
                 {currentInnings?.batting?.find(b => b.player === striker?.name)?.runs || 0}
                 ({currentInnings?.batting?.find(b => b.player === striker?.name)?.balls || 0})
               </div>
+            </div>
+            {/* Swap Icon in Center */}
+            <div className="flex justify-center">
+              <button
+                onClick={() => {
+                  const temp = striker;
+                  setStriker(nonStriker);
+                  setNonStriker(temp);
+                }}
+                className="p-2 rounded-full hover:bg-gray-200 transition"
+              >
+                <Shuffle className="w-6 h-6 text-indigo-600" />
+              </button>
             </div>
             <div className="text-slate-300 text-right">
               <div className="font-medium">{nonStriker?.name || "Select Non-Striker"}</div>
@@ -416,8 +442,8 @@ export default function ScorePage() {
           <div className="text-center">
             <div className="text-slate-200 text-sm font-medium mb-2">This Over</div>
             <div className="flex justify-center space-x-2">
-              {Array.from({ length: ballHistory.length || 6 }, (_, i) => {
-                const ball = ballHistory[i];
+              {Array.from({ length: ballHistory?.length || 6 }, (_, i) => {
+                const ball = ballHistory?.[i];
                 return (
                   <div
                     key={i}
