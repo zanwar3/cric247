@@ -10,6 +10,13 @@ export default function TeamsPage() {
   const [editingTeam, setEditingTeam] = useState(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [teamToDelete, setTeamToDelete] = useState(null);
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [showPlayersModal, setShowPlayersModal] = useState(false);
+  const [profiles, setProfiles] = useState([]);
+  const [teamPlayers, setTeamPlayers] = useState([]);
+  const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [playerRole, setPlayerRole] = useState("Batsman");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -111,6 +118,83 @@ export default function TeamsPage() {
     setShowDeleteDialog(true);
   };
 
+  const handlePlayersClick = async (team) => {
+    setSelectedTeam(team);
+    setShowPlayersModal(true);
+    await fetchTeamPlayers(team._id);
+    await fetchProfiles();
+  };
+
+  const fetchTeamPlayers = async (teamId) => {
+    try {
+      const response = await fetch(`/api/teams/${teamId}`);
+      const team = await response.json();
+      setTeamPlayers(team.players || []);
+    } catch (error) {
+      console.error("Error fetching team players:", error);
+    }
+  };
+
+  const fetchProfiles = async () => {
+    try {
+      const response = await fetch("/api/profiles");
+      const data = await response.json();
+      setProfiles(data);
+    } catch (error) {
+      console.error("Error fetching profiles:", error);
+    }
+  };
+
+  const handleAddPlayer = async () => {
+    if (!selectedPlayer || !selectedTeam) return;
+
+    try {
+      const response = await fetch(`/api/teams/${selectedTeam._id}/players`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          playerId: selectedPlayer._id,
+          role: playerRole
+        }),
+      });
+
+      if (response.ok) {
+        await fetchTeamPlayers(selectedTeam._id);
+        setShowAddPlayerModal(false);
+        setSelectedPlayer(null);
+        setPlayerRole("Batsman");
+      } else {
+        const errorData = await response.json();
+        alert(errorData.error || "Failed to add player");
+      }
+    } catch (error) {
+      console.error("Error adding player:", error);
+      alert("Failed to add player. Please try again.");
+    }
+  };
+
+  const handleRemovePlayer = async (playerId) => {
+    if (!selectedTeam) return;
+
+    try {
+      const response = await fetch(`/api/teams/${selectedTeam._id}/players`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ playerId }),
+      });
+
+      if (response.ok) {
+        await fetchTeamPlayers(selectedTeam._id);
+      } else {
+        const errorData = await response.json();
+        alert(errorData.error || "Failed to remove player");
+      }
+    } catch (error) {
+      console.error("Error removing player:", error);
+      alert("Failed to remove player. Please try again.");
+    }
+  };
+
   if (loading) {
     return (
       <MobileLayout>
@@ -199,6 +283,7 @@ export default function TeamsPage() {
                       team={team}
                       onEdit={handleEdit}
                       onDelete={openDeleteDialog}
+                      onPlayers={handlePlayersClick}
                     />
                   ))}
                 </div>
@@ -256,11 +341,150 @@ export default function TeamsPage() {
           </div>
         </div>
       )}
+
+      {/* Players Modal */}
+      {showPlayersModal && selectedTeam && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 rounded-lg p-6 max-w-2xl w-full border border-slate-700 max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-semibold text-slate-100">
+                {selectedTeam.name} - Players
+              </h3>
+              <button
+                onClick={() => setShowPlayersModal(false)}
+                className="text-slate-400 hover:text-slate-200"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Add Player Button */}
+            <div className="mb-6">
+              <button
+                onClick={() => setShowAddPlayerModal(true)}
+                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <span>Add Player</span>
+              </button>
+            </div>
+
+            {/* Players List */}
+            <div className="space-y-3">
+              {teamPlayers.length === 0 ? (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-medium text-slate-200 mb-2">No players yet</h3>
+                  <p className="text-slate-400">Add players to this team to get started</p>
+                </div>
+              ) : (
+                teamPlayers.map((teamPlayer) => (
+                  <div key={teamPlayer._id} className="bg-slate-700 rounded-lg p-4 flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center">
+                        <span className="text-white font-semibold text-sm">
+                          {teamPlayer.player?.name?.charAt(0)?.toUpperCase() || "P"}
+                        </span>
+                      </div>
+                      <div>
+                        <h4 className="text-slate-100 font-medium">{teamPlayer.player?.name || "Unknown Player"}</h4>
+                        <p className="text-slate-300 text-sm">{teamPlayer.role}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handleRemovePlayer(teamPlayer.player._id)}
+                      className="text-red-400 hover:text-red-300 p-1"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Player Modal */}
+      {showAddPlayerModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 rounded-lg p-6 max-w-md w-full border border-slate-700">
+            <h3 className="text-lg font-semibold text-slate-100 mb-4">Add Player to Team</h3>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-200 mb-2">Select Player</label>
+                <select
+                  value={selectedPlayer?._id || ""}
+                  onChange={(e) => {
+                    const player = profiles.find(p => p._id === e.target.value);
+                    setSelectedPlayer(player);
+                  }}
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                >
+                  <option value="">Choose a player</option>
+                  {profiles
+                    .filter(profile => !teamPlayers.some(tp => tp.player._id === profile._id))
+                    .map((profile) => (
+                      <option key={profile._id} value={profile._id}>
+                        {profile.name} - {profile.role}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-200 mb-2">Role in Team</label>
+                <select
+                  value={playerRole}
+                  onChange={(e) => setPlayerRole(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                >
+                  <option value="Batsman">Batsman</option>
+                  <option value="Bowler">Bowler</option>
+                  <option value="All-rounder">All-rounder</option>
+                  <option value="Wicket-keeper">Wicket-keeper</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex space-x-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowAddPlayerModal(false);
+                  setSelectedPlayer(null);
+                  setPlayerRole("Batsman");
+                }}
+                className="flex-1 px-4 py-2 text-slate-300 hover:text-slate-100 border border-slate-600 rounded-lg hover:bg-slate-700 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAddPlayer}
+                disabled={!selectedPlayer}
+                className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+              >
+                Add Player
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </MobileLayout>
   );
 }
 
-function TeamCard({ team, onEdit, onDelete }) {
+function TeamCard({ team, onEdit, onDelete, onPlayers }) {
   return (
     <div className="bg-slate-800 rounded-xl shadow-sm border border-slate-700 overflow-hidden">
       {/* Header */}
@@ -333,6 +557,15 @@ function TeamCard({ team, onEdit, onDelete }) {
       {/* Footer with Actions */}
       <div className="bg-slate-700 px-4 py-3 border-t border-slate-600">
         <div className="flex justify-end space-x-2">
+        <button
+            onClick={() => onPlayers(team)}
+            className="px-3 py-1.5 bg-yellow-600 hover:bg-yellow-700 text-white text-sm rounded-md transition-colors flex items-center space-x-1"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            <span>Players</span>
+          </button>
           <button
             onClick={() => onEdit(team)}
             className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-md transition-colors flex items-center space-x-1"

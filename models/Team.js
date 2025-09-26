@@ -16,7 +16,13 @@ const TeamSchema = new Schema({
     totalRuns: { type: Number, default: 0 },
     totalWickets: { type: Number, default: 0 }
   },
-  isActive: { type: Boolean, default: true }
+  isActive: { type: Boolean, default: true },
+  players: [{
+    player: { type: Schema.Types.ObjectId, ref: 'Profile' },
+    role: { type: String, default: 'Batsman' },
+    joinedDate: { type: Date, default: Date.now },
+    isActive: { type: Boolean, default: true }
+  }]
 }, { timestamps: true });
 
 // Virtual for win percentage
