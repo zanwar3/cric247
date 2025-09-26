@@ -7,8 +7,8 @@ export async function POST(request, { params }) {
   try {
     await dbConnect();
     const ballData = await request.json();
-    const { id } = params;
-    
+    const { id } = await params;
+
     const match = await Match.findById(id);
     if (!match) {
       return NextResponse.json({ error: "Match not found" }, { status: 404 });
@@ -16,8 +16,8 @@ export async function POST(request, { params }) {
 
     const ball = await Ball.deleteOne({ _id: ballData._id });
 
-    return NextResponse.json({ 
-      success: true, 
+    return NextResponse.json({
+      success: true,
       match,
       undoneAt: new Date(),
       removedBall: ball

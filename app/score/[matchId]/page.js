@@ -13,6 +13,12 @@ export default function ScorePage() {
   const [loading, setLoading] = useState(true);
   const [currentInnings, setCurrentInnings] = useState({});
 
+  // Team players state
+  const [team1Players, setTeam1Players] = useState([]);
+  const [team2Players, setTeam2Players] = useState([]);
+  const [battingTeamPlayers, setBattingTeamPlayers] = useState([]);
+  const [bowlingTeamPlayers, setBowlingTeamPlayers] = useState([]);
+
   // Scoring state
   const [showWicketPanel, setShowWicketPanel] = useState(false);
   const [showExtrasPanel, setShowExtrasPanel] = useState(false);
@@ -20,11 +26,13 @@ export default function ScorePage() {
   const [ballHistory, setBallHistory] = useState([]);
 
   // Current match state
-  const [currentBowler, setCurrentBowler] = useState({ name: 'shaheen' });
-  const [striker, setStriker] = useState({ name: 'Baber' });
-  const [nonStriker, setNonStriker] = useState({ name: 'Rizwan' });
+  const [currentBowler, setCurrentBowler] = useState({ name: '', _id: '' });
+  const [striker, setStriker] = useState({ name: '', _id: '' });
+  const [nonStriker, setNonStriker] = useState({ name: '', _id: '' });
   const [currentOver, setCurrentOver] = useState(1);
   const [currentBall, setCurrentBall] = useState(0);
+  const [battingTeam, setBattingTeam] = useState({ name: '', _id: '' });
+  const [bowlingTeam, setBowlingTeam] = useState({ name: '', _id: '' });
 
   useEffect(() => {
     if (matchId) {
@@ -38,6 +46,10 @@ export default function ScorePage() {
       const response = await fetch(`/api/matches/${matchId}`);
       const data = await response.json();
       setMatch(data);
+      // Fetch team players if match has team IDs
+      if (Object.keys(data.teams).length > 0) {
+        await fetchTeamPlayers(data.teams);
+      }
 
     } catch (error) {
       console.error("Error fetching match:", error);
@@ -46,48 +58,104 @@ export default function ScorePage() {
     }
   };
 
+  const fetchTeamPlayers = async (teams) => {
+    try {
+      // Fetch both teams' players in parallel
+      const [team1Response, team2Response] = await Promise.all([
+        fetch(`/api/teams/${teams.teamA}`),
+        fetch(`/api/teams/${teams.teamB}`)
+      ]);
+
+      const team1Data = await team1Response.json();
+      const team2Data = await team2Response.json();
+
+      setBattingTeam({ name: team1Data.name, _id: team1Data._id });
+      setBowlingTeam({ name: team2Data.name, _id: team2Data._id });
+
+      setTeam1Players(team1Data.players || []);
+      setTeam2Players(team2Data.players || []);
+
+      // Set initial batting and bowling teams (team1 bats first by default)
+      setBattingTeamPlayers(team1Data.players || []);
+      setBowlingTeamPlayers(team2Data.players || []);
+
+    } catch (error) {
+      console.error("Error fetching team players:", error);
+    }
+  };
+
+  const switchTeams = () => {
+
+    // Switch batting and bowling teams (for innings change)
+    setBattingTeamPlayers(bowlingTeamPlayers);
+    setBowlingTeamPlayers(battingTeamPlayers);
+    setBattingTeam(bowlingTeam);
+    setBowlingTeam(battingTeam);
+
+    // Reset current players
+    setStriker({ name: '', _id: '' });
+    setNonStriker({ name: '', _id: '' });
+    setCurrentBowler({ name: '', _id: '' });
+    setBallHistory([]);
+  };
+
   const fetchBallHistory = async () => {
     const response = await fetch(`/api/matches/${matchId}/ball`);
     const data = await response.json();
         updateCurrentInnings(data);
   }
 
-  const updateCurrentInnings = async (data) => {
+  const updateCurrentInnings = async (data, updatedStriker = null, updatedNonStriker) => {
     console.log("current innings data", data?.ball);
     setCurrentInnings(data?.ball);
     setCurrentOver(data?.ball?.over || 1);
     setBallHistory(data?.ball?.bowling?.currentOverStats?.balls);
     setCurrentBall(data?.ball?.bowling?.currentOverStats?.balls?.length || 0);
+    const strikerData = {
+      name:data?.ball?.batting[0].player,
+      _id: data?.ball?.batting[0]._id
+    }
+    const nonStrikerData = {
+      name: data?.ball?.batting[1].player,
+      _id: data?.ball?.batting[0]._id
+    }
+    const bowlerData = {
+      name: data?.ball?.bowling.bowler,
+      _id: data?.ball?.bowling._id
+    }
+    setStriker(updatedStriker ? updatedStriker : strikerData)
+    setNonStriker(updatedNonStriker? updatedNonStriker : nonStrikerData)
+    setCurrentBowler(bowlerData)
+
   }
 
   const recordBall = async (ballData) => {
     try {
-      // Compute ball number
-      if(ballData?.isValidBall && currentBall == 6){
-         alert("please change bowler")
-        return setShowPlayerPanel(true)
-      }
 
-
-      let ballNumber = (currentBall || 0) + 1;
+      let ballNumber = currentInnings?.ballNumber || 0;
+      let latestCurrentBall = currentBall
       let updatedStriker = striker;
       let updatedNonStriker = nonStriker;
+      let over = 1
 
       if (ballData.isValidBall) {
-        // rotate on odd runs
-        if (ballData.runs % 2 === 1 && ballNumber <= 6) {
+
+        if (currentBall >=6 && ballNumber % 6 === 0) {
+          return setShowPlayerPanel(true);
+        }
+
+          ballNumber++
+          latestCurrentBall ++
+        if (ballData.runs % 2 === 1 && latestCurrentBall <= 6) {
           const temp = updatedStriker;
           updatedStriker = updatedNonStriker;
           updatedNonStriker = temp;
         }
 
-        // Increment over if last ball of over
-        if (ballNumber > 6) {
-          ballNumber = 1
-          setCurrentOver(currentOver + 1);
-        }
-
       }
+
+      if(ballNumber > 6 )
+        over = Math.floor(ballNumber / 6)+1
 
       const response = await fetch(`/api/matches/${matchId}/ball`, {
         method: "POST",
@@ -96,7 +164,7 @@ export default function ScorePage() {
           ...ballData,
           match_id: matchId,
           innings_id: 1,
-          over: currentOver,
+          over: over,
           ballNumber,
           striker: striker.name,
           nonStriker: nonStriker.name,
@@ -106,10 +174,11 @@ export default function ScorePage() {
 
       if (response.ok) {
         const updatedInnings = await response.json();
-        updateCurrentInnings(updatedInnings);
-        setStriker(updatedStriker);
-        setNonStriker(updatedNonStriker);
-        setCurrentBall(ballNumber);
+        if(ballData?.wicket?.isWicket){
+          updatedStriker= {name: '', _id: ''}
+        }
+
+        updateCurrentInnings(updatedInnings, updatedStriker, updatedNonStriker);
       }
     } catch (error) {
       console.error("Error recording ball:", error);
@@ -117,23 +186,22 @@ export default function ScorePage() {
   };
 
   const calculateCRR = () => {
-    console.log(currentInnings,"crr")
-    if(currentInnings?.ballNumber < 6)
-      return '0.00'
+    if (!currentInnings) return "0.00";
 
     const totalRuns = currentInnings?.totalRuns || 0;
-    // Calculate overs faced as: completed overs + fraction of current over
-    const oversCompleted = currentInnings?.ballNumber / 6;
-    const ballsInCurrentOver = currentBall || 0;
-    let oversFaced = oversCompleted + ballsInCurrentOver / 6;
+    const totalBalls = currentInnings?.ballNumber || 0;
 
-    if (oversCompleted == 1)
-        oversFaced = 1
+    // If less than one over bowled, return 0
+    if (totalBalls === 0) return "0.00";
 
-    console.log("CRR", { totalRuns, oversFaced, oversCompleted, ballsInCurrentOver });
+    // Overs faced in cricket = completed overs + remaining balls/6
+    const oversFaced = Math.floor(totalBalls / 6) + (totalBalls % 6) / 6;
+
+    console.log("CRR", { totalRuns, totalBalls, oversFaced });
 
     return oversFaced > 0 ? (totalRuns / oversFaced).toFixed(2) : "0.00";
   };
+
 
   const undoLastBall = async () => {
     try {
@@ -145,8 +213,9 @@ export default function ScorePage() {
         })
       });
 
-      if (response.ok) {
+      if (response) {
         await fetchMatch();
+        await fetchBallHistory();
       }
     } catch (error) {
       console.error("Error undoing ball:", error);
@@ -154,6 +223,7 @@ export default function ScorePage() {
   };
 
   const handleRunsScored = (runs) => {
+
     const strikerStats = currentInnings?.batting?.find(b => b.player === striker.name) || { runs: 0, balls: 0 };
     const nonStrikerStats = currentInnings?.batting?.find(b => b.player === nonStriker.name) || { runs: 0, balls: 0 };
     const strikerUpdate = {
@@ -168,8 +238,13 @@ export default function ScorePage() {
       balls: nonStrikerStats.balls,
     };
 
-    const prevBowling = currentInnings?.bowling || {}; // fallback if undefined
-    const prevOverStats = prevBowling.currentOverStats || { balls: [] };
+    let prevBowling = currentInnings?.bowling || {}; // fallback if undefined
+    let prevOverStats = prevBowling.currentOverStats || { balls: [] };
+
+    if(currentBall == 0){
+      prevBowling = {}
+      prevOverStats = { balls: [] };
+    }
 
     // Add new ball to over
     const newBall = {
@@ -178,11 +253,10 @@ export default function ScorePage() {
       isWicket: false,
       extras: {},
     };
-
     const updatedBalls = [...prevOverStats.balls, newBall];
-
     const bowlingStats = {
       bowler: currentBowler.name,
+      _id:currentBowler._id,
       totalRuns: runs + (prevBowling.totalRuns || 0),
       totalBallBowled: (prevBowling.totalBallBowled || 0) + 1,
       currentOverStats: {
@@ -209,6 +283,7 @@ export default function ScorePage() {
   };
 
   const handleWicket = (wicketData) => {
+    console.log(wicketData,"wicketData");
     const strikerStats =
       currentInnings?.batting?.find(b => b.player === striker.name) || { runs: 0, balls: 0 };
 
@@ -388,7 +463,7 @@ export default function ScorePage() {
               {currentInnings?.totalRuns || 0}/{currentInnings?.totalWickets || 0}
             </div>
             <div className="text-slate-300 text-sm">
-              ({(currentInnings?.over - 1) || 0}.{currentInnings?.ballNumber || 0}/{match.matchType === "T20" ? "20" : "50"} Overs)
+              ({Math.floor(currentInnings?.ballNumber / 6) || 0}.{(currentInnings?.ballNumber % 6) || 0}/{match.matchType === "T20" ? "20" : "50"} Overs)
             </div>
             <div className="text-slate-400 text-xs mt-1">
               CRR: {calculateCRR()}
@@ -499,10 +574,11 @@ export default function ScorePage() {
           {/* Extras and Actions */}
           <div className="grid grid-cols-2 gap-3 mb-4">
             <button
-              onClick={() => setShowExtrasPanel(true)}
+              // onClick={() => setShowExtrasPanel(true)}
+              onClick={() => setShowPlayerPanel(true)}
               className="h-12 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-medium transition-all"
             >
-              Extras
+              Update Players
             </button>
             <button
               onClick={undoLastBall}
@@ -515,17 +591,18 @@ export default function ScorePage() {
           {/* Quick Actions */}
           <div className="grid grid-cols-3 gap-3">
             <button
-              onClick={() => setShowPlayerPanel(true)}
+              disabled={true}
+              onClick={() => setShowExtrasPanel(true)}
               className="h-10 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-all"
             >
-              Update players
+              Extras (coming soon)
             </button>
-            <button className="h-10 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-all">
-              5/7/P
-            </button>
-            <button className="h-10 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-all">
-              Options
-            </button>
+            {/*<button className="h-10 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-all">*/}
+            {/*  5/7/P*/}
+            {/*</button>*/}
+            {/*<button className="h-10 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-all">*/}
+            {/*  Options*/}
+            {/*</button>*/}
           </div>
         </div>
 
@@ -561,6 +638,12 @@ export default function ScorePage() {
             setNonStriker={setNonStriker}
             setBowler={setCurrentBowler}
             setBallHistory={setBallHistory}
+            battingTeamPlayers={battingTeamPlayers}
+            bowlingTeamPlayers={bowlingTeamPlayers}
+            battingTeam={battingTeam}
+            bowlingTeam={bowlingTeam}
+            switchTeams={switchTeams}
+            setCurrentBall={setCurrentBall}
           />
         )}
       </div>
@@ -744,13 +827,12 @@ function ExtrasPanel({ onClose, onExtra }) {
   );
 }
 
-// Player Panel Component (Updated with Proper Dropdown Alignment)
-function PlayerPanel({ onClose, striker, nonStriker, bowler, setStriker, setNonStriker, setBowler, setBallHistory }) {
-  const players = ["Player 1", "Player 2", "Player 3", "Player 4", "Player 5"];
+// Player Panel Component (Updated with Real Team Players)
+function PlayerPanel({ onClose, striker, nonStriker, bowler, setStriker, setNonStriker, setBowler, setBallHistory, battingTeamPlayers, bowlingTeamPlayers, battingTeam, bowlingTeam, switchTeams, setCurrentBall }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-800 rounded-lg p-6 w-full max-w-md border border-slate-700 relative">
+      <div className="bg-slate-800 rounded-lg p-6 w-full max-w-lg border border-slate-700 relative max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-bold text-slate-100">Player Management</h3>
@@ -774,56 +856,127 @@ function PlayerPanel({ onClose, striker, nonStriker, bowler, setStriker, setNonS
           </button>
         </div>
 
+        {/* Team Information */}
+        <div className="mb-6 p-3 bg-slate-700 rounded-lg">
+          <div className="text-sm text-slate-300 mb-2">
+            <span className="font-medium text-green-400">Batting Team:</span>{battingTeam.name} ({battingTeamPlayers.length} players)
+          </div>
+          <div className="text-sm text-slate-300 mb-3">
+            <span className="font-medium text-blue-400">Bowling Team:</span>{bowlingTeam.name} ({bowlingTeamPlayers.length} players)
+          </div>
+          <button
+            onClick={() => {
+              switchTeams()
+            }}
+            disabled={true}
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+          >
+            Switch Teams (Innings Change) (in Progress)
+          </button>
+        </div>
+
         {/* Player Dropdowns */}
         <div className="space-y-4">
-          <div className="flex flex-col text-left">
-            <label className="text-slate-300 mb-1">Striker</label>
-            <select
-              onChange={(e) => setStriker({name: e.target.value})}
-              className="w-full px-3 py-2 rounded-lg bg-slate-700 text-slate-200 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              defaultValue={striker.name}
-            >
-              {players.map((p, idx) => (
-                <option key={idx} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
+          {/* Batting Team Players */}
+          <div className="space-y-3">
+            <h4 className="text-slate-200 font-medium text-sm border-b border-slate-600 pb-2">Batting Team Players</h4>
+
+            <div className="flex flex-col text-left">
+              <label className="text-slate-300 mb-1">Striker *</label>
+              <select
+                onChange={(e) => {
+                  const selectedPlayer = battingTeamPlayers.find(p => p.player._id === e.target.value);
+                  setStriker({name: selectedPlayer?.player?.name || e.target.value, _id: selectedPlayer?.player?._id});
+                }}
+                className="w-full px-3 py-2 rounded-lg bg-slate-700 text-slate-200 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+                value={striker?._id || ""}
+              >
+                <option value="">Select Striker</option>
+                {battingTeamPlayers
+                  .filter(teamPlayer => teamPlayer.player._id !== nonStriker._id)
+                  .map((teamPlayer) => (
+                    <option key={teamPlayer.player._id} value={teamPlayer.player._id}>
+                      {teamPlayer.player.name} - {teamPlayer.role}
+                    </option>
+                  ))}
+              </select>
+            </div>
+
+            <div className="flex flex-col text-left">
+              <label className="text-slate-300 mb-1">Non-Striker</label>
+              <select
+                className="w-full px-3 py-2 rounded-lg bg-slate-700 text-slate-200 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+                value={nonStriker?._id || ""}
+                onChange={(e) => {
+                  const selectedPlayer = battingTeamPlayers.find(p => p.player._id === e.target.value);
+                  setNonStriker({name: selectedPlayer?.player?.name || e.target.value, _id: selectedPlayer?.player?._id});
+                }}
+              >
+                <option value="">Select Non-Striker</option>
+                {battingTeamPlayers
+                  .filter(teamPlayer => teamPlayer.player._id !== striker._id)
+                  .map((teamPlayer) => (
+                    <option key={teamPlayer.player._id} value={teamPlayer.player._id}>
+                      {teamPlayer.player.name} - {teamPlayer.role}
+                    </option>
+                  ))}
+              </select>
+            </div>
           </div>
 
-          <div className="flex flex-col text-left">
-            <label className="text-slate-300 mb-1">Non-Striker</label>
-            <select
-              className="w-full px-3 py-2 rounded-lg bg-slate-700 text-slate-200 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              defaultValue={nonStriker.name}
-              onChange={(e) => setNonStriker({name: e.target.value})}
-            >
-              {players.map((p, idx) => (
-                <option key={idx} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* Bowling Team Players */}
+          <div className="space-y-3">
+            <h4 className="text-slate-200 font-medium text-sm border-b border-slate-600 pb-2">Bowling Team Players</h4>
 
-          <div className="flex flex-col text-left">
-            <label className="text-slate-300 mb-1">Bowler</label>
-            <select
-              className="w-full px-3 py-2 rounded-lg bg-slate-700 text-slate-200 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              defaultValue={bowler.name}
-              onChange={(e) => {
-                setBowler({name: e.target.value})
-                setBallHistory([])
-              }}
-            >
-              {players.map((p, idx) => (
-                <option key={idx} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
+            <div className="flex flex-col text-left">
+              <label className="text-slate-300 mb-1">Bowler</label>
+              <select
+                className="w-full px-3 py-2 rounded-lg bg-slate-700 text-slate-200 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={bowler._id || ""}
+                onChange={(e) => {
+                  const selectedPlayer = bowlingTeamPlayers.find(p => p.player._id === e.target.value);
+                  setBowler({name: selectedPlayer?.player?.name || e.target.value, _id: selectedPlayer?.player?._id});
+                  setBallHistory([]);
+                  setCurrentBall(0);
+                }}
+              >
+                <option value="">Select Bowler</option>
+                {bowlingTeamPlayers.map((teamPlayer) => (
+                  <option key={teamPlayer.player._id} value={teamPlayer.player._id}>
+                    {teamPlayer.player.name} - {teamPlayer.role}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
+
+        {/* Player Stats Display */}
+        {(striker.name || nonStriker.name || bowler.name) && (
+          <div className="mt-6 p-3 bg-slate-700 rounded-lg">
+            <h4 className="text-slate-200 font-medium text-sm mb-3">Current Players</h4>
+            <div className="space-y-2 text-sm">
+              {striker.name && (
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Striker:</span>
+                  <span className="text-green-400 font-medium">{striker.name}</span>
+                </div>
+              )}
+              {nonStriker.name && (
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Non-Striker:</span>
+                  <span className="text-green-400 font-medium">{nonStriker.name}</span>
+                </div>
+              )}
+              {bowler.name && (
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Bowler:</span>
+                  <span className="text-blue-400 font-medium">{bowler.name}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Close Button */}
         <button

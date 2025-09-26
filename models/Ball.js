@@ -49,6 +49,10 @@ const BallSchema = new Schema(
       type: Number,
       default: 0,
     },
+    totalBalls: {
+      type: Number,
+      default: 0,
+    },
     isValidBall: {
       type: Boolean,
       default: true,
@@ -60,9 +64,9 @@ const BallSchema = new Schema(
       legBye: { type: Boolean, default: false },
     },
     wicket: {
-      isOut: { type: Boolean, default: false },
-      type: { type: String, enum: [null, "bowled", "caught", "run_out", "lbw", "stumped"], default: null },
-      playerOut: { type: String, default: null },
+      isWicket: { type: Boolean, default: false },
+      dismissalType: { type: String, enum: [null, "Bowled", "Caught", "LBW", "Stumped", "Run Out", "Hit Wicket", "Obstructing"], default: null },
+      batsmanOut: { type: String, default: null },
     },
     totalWickets: {
       type: Number,

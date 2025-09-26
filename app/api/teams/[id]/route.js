@@ -1,4 +1,5 @@
 import dbConnect from "@/lib/mongodb";
+import Profile from "@/models/Profile";
 import Team from "@/models/Team";
 
 export async function GET(request, { params }) {
