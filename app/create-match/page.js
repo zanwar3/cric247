@@ -118,28 +118,37 @@ export default function CreateMatchPage() {
   const handleCreateMatch = async () => {
     setLoading(true);
     try {
+      const matchPayload = {
+        matchNumber: `${matchData.matchType} Match`,
+        status: "upcoming",
+        teams: {
+          teamA: matchData.team1,
+          teamB: matchData.team2,
+        },
+        venue: {
+          name: matchData.venue,
+          city: matchData.location,
+        },
+        scheduledDate: new Date(`${matchData.date}T${matchData.time}`),
+        matchType: matchData.gameType,
+        notes: `${matchData.matchType} match at ${matchData.venue}, ${matchData.location}`,
+      };
+
+      // Add tournament only if matchType is "tournament"
+      if (matchData.matchType === "tournament") {
+        const selectedTournament = tournaments.find(
+          (g) => g.id === matchData.tournament
+        );
+        matchPayload.tournament = {
+          _id: matchData.tournament || null,
+          name: selectedTournament ? selectedTournament.name : null,
+        };
+      }
+
       const response = await fetch("/api/matches", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          matchNumber: `${matchData.matchType} Match`,
-          tournament:{
-            _id: matchData.tournament || null,
-            name: tournaments.filter(g => g.id === matchData.tournament)[0].name,
-          },
-          status: "upcoming",
-          teams: {
-            teamA: matchData.team1,
-            teamB: matchData.team2
-          },
-          venue: {
-            name: matchData.venue,
-            city: matchData.location
-          },
-          scheduledDate: new Date(`${matchData.date}T${matchData.time}`),
-          matchType: matchData.gameType,
-          notes: `${matchData.matchType} match at ${matchData.venue}, ${matchData.location}`
-        }),
+        body: JSON.stringify(matchPayload),
       });
 
       if (response.ok) {
