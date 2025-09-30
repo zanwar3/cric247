@@ -382,12 +382,16 @@ function MatchCard({ match, onEdit, onDelete, getTeamName, getStatusColor, forma
           >
             Edit
           </button>
-          <Link
-            href={`/score/${match._id}`}
-            className="bg-green-600 hover:bg-green-700 text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors text-center"
+          {match.status === 'Live' && <Link
+            href={match.status === "Live" ? `/score/${match._id}` : "#"}
+            className={`py-2 px-3 rounded-lg text-sm font-medium text-center transition-colors
+             ${match.status === "Live"
+              ? "bg-green-600 hover:bg-green-700 text-white"
+              : "bg-gray-400 cursor-not-allowed text-white pointer-events-none"
+            }`}
           >
             Score
-          </Link>
+          </Link>}
           <button
             onClick={() => onDelete(match)}
             className="bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors"
