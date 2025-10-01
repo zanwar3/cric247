@@ -26,6 +26,8 @@ const BallSchema = new Schema(
         balls: { type: Number, default: 0 }
       }
     ],
+    battingTeam: { type: mongoose.Schema.Types.ObjectId, ref: 'Team', required: true },
+    bowlingTeam: { type: mongoose.Schema.Types.ObjectId, ref: 'Team', required: true },
     // Bowling info
     bowling:
       {

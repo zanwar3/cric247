@@ -111,22 +111,55 @@ export default function ScorePage() {
     setCurrentOver(data?.ball?.over || 1);
     setBallHistory(data?.ball?.bowling?.currentOverStats?.balls);
     setCurrentBall(data?.ball?.bowling?.currentOverStats?.balls?.length || 0);
+    
+    // If ball data exists and has team IDs, fetch and set the teams
+    if (data?.ball?.battingTeam && data?.ball?.bowlingTeam) {
+      try {
+        // Fetch both teams' data in parallel
+        const [battingTeamResponse, bowlingTeamResponse] = await Promise.all([
+          fetch(`/api/teams/${data.ball.battingTeam}`),
+          fetch(`/api/teams/${data.ball.bowlingTeam}`)
+        ]);
+
+        const battingTeamData = await battingTeamResponse.json();
+        const bowlingTeamData = await bowlingTeamResponse.json();
+
+        // Set the teams
+        setBattingTeam({ name: battingTeamData.name, _id: battingTeamData._id });
+        setBowlingTeam({ name: bowlingTeamData.name, _id: bowlingTeamData._id });
+
+        // Set the team players
+        setBattingTeamPlayers(battingTeamData.players || []);
+        setBowlingTeamPlayers(bowlingTeamData.players || []);
+
+        // Also update the main team players state
+        if (battingTeamData._id === match?.teams?.teamA) {
+          setTeam1Players(battingTeamData.players || []);
+          setTeam2Players(bowlingTeamData.players || []);
+        } else {
+          setTeam1Players(bowlingTeamData.players || []);
+          setTeam2Players(battingTeamData.players || []);
+        }
+      } catch (error) {
+        console.error("Error fetching team data on refresh:", error);
+      }
+    }
+    
     const strikerData = {
-      name:data?.ball?.batting[0].player,
-      _id: data?.ball?.batting[0]._id
+      name: data?.ball?.batting[0]?.player,
+      _id: data?.ball?.batting[0]?._id
     }
     const nonStrikerData = {
-      name: data?.ball?.batting[1].player,
-      _id: data?.ball?.batting[0]._id
+      name: data?.ball?.batting[1]?.player,
+      _id: data?.ball?.batting[1]?._id
     }
     const bowlerData = {
-      name: data?.ball?.bowling.bowler,
-      _id: data?.ball?.bowling._id
+      name: data?.ball?.bowling?.bowler,
+      _id: data?.ball?.bowling?._id
     }
     setStriker(updatedStriker ? updatedStriker : strikerData)
-    setNonStriker(updatedNonStriker? updatedNonStriker : nonStrikerData)
+    setNonStriker(updatedNonStriker ? updatedNonStriker : nonStrikerData)
     setCurrentBowler(bowlerData)
-
   }
 
   const recordBall = async (ballData) => {
@@ -169,6 +202,8 @@ export default function ScorePage() {
           striker: striker.name,
           nonStriker: nonStriker.name,
           bowler: currentBowler.name,
+          battingTeam: battingTeam._id,
+          bowlingTeam: bowlingTeam._id,
         }),
       });
 
@@ -868,10 +903,10 @@ function PlayerPanel({ onClose, striker, nonStriker, bowler, setStriker, setNonS
             onClick={() => {
               switchTeams()
             }}
-            disabled={true}
+          
             className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors"
           >
-            Switch Teams (Innings Change) (in Progress)
+            Switch Teams (Innings Change) 
           </button>
         </div>
 
