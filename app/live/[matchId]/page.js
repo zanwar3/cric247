@@ -98,7 +98,7 @@ export default function Page() {
 
           {/* Left Section: Team + Score */}
           <div className="flex items-center gap-2 sm:gap-3 border-r border-gray-700 pr-4 sm:pr-6 flex-shrink-0">
-            <PK title="Pakistan" className="w-6 h-4 sm:w-8 sm:h-6 rounded-sm shadow" />
+            {/* <PK title="Pakistan" className="w-6 h-4 sm:w-8 sm:h-6 rounded-sm shadow" /> */}
             <span className="text-green-400 text-base sm:text-lg font-extrabold">{battingTeam?.slug}</span>
             <span className="text-yellow-400 text-lg sm:text-2xl font-black">{currentInnings?.totalRuns}-{currentInnings?.totalWickets}</span>
             <span className="text-gray-300 text-[10px] sm:text-xs">{Math.floor(currentInnings?.ballNumber / 6) || 0}.{(currentInnings?.ballNumber % 6) || 0} ov</span>
@@ -148,7 +148,7 @@ export default function Page() {
             </div>
             {/* Flag (always visible) */}
             <div className=" flex items-center gap-1 sm:gap-2 flex-shrink-0">
-              <IN title="India" className="w-6 h-4 sm:w-8 sm:h-6 rounded-sm shadow" />
+              {/* <IN title="India" className="w-6 h-4 sm:w-8 sm:h-6 rounded-sm shadow" /> */}
               <span className="text-green-400 text-base sm:text-lg font-extrabold">{bowlingTeam?.slug}</span>
             </div>
           </div>
