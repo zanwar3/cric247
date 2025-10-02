@@ -1,10 +1,19 @@
 import dbConnect from "@/lib/mongodb";
 import Team from "@/models/Team";
+import { getAuthenticatedUser, createUnauthorizedResponse } from "@/lib/auth-utils";
 
-export async function GET() {
+export async function GET(request) {
   try {
     await dbConnect();
-    const teams = await Team.find({})
+    
+    // Get authenticated user
+    const { user, error } = await getAuthenticatedUser(request);
+    if (error) {
+      return createUnauthorizedResponse(error);
+    }
+
+    // Fetch only teams belonging to the authenticated user
+    const teams = await Team.find({ user: user.id })
       .sort({ createdAt: -1 });
     
     return Response.json(teams);
@@ -17,11 +26,20 @@ export async function GET() {
 export async function POST(req) {
   try {
     await dbConnect();
+    
+    // Get authenticated user
+    const { user, error } = await getAuthenticatedUser(req);
+    if (error) {
+      return createUnauthorizedResponse(error);
+    }
+
     const data = await req.json();
     
-    // Create team with basic info first
+    // Create team with user reference
     const teamData = {
+      user: user.id, // Add user reference
       name: data.name,
+      slug: data.slug,
       city: data.city,
       captain: data.captain,
       coach: data.coach || '',
@@ -29,7 +47,6 @@ export async function POST(req) {
       description: data.description || '',
       homeGround: data.homeGround || '',
       isActive: data.isActive !== undefined ? data.isActive : true,
-      slug: data.slug,
     };
 
     const newTeam = await Team.create(teamData);
@@ -38,10 +55,15 @@ export async function POST(req) {
   } catch (error) {
     console.error('Error creating team:', error);
     if (error.code === 11000) {
-      return Response.json({ error: 'Team name already exists' }, { status: 400 });
+      // Handle duplicate key error
+      const field = Object.keys(error.keyPattern)[0];
+      if (field === 'name') {
+        return Response.json({ error: 'Team name already exists' }, { status: 400 });
+      } else if (field === 'slug') {
+        return Response.json({ error: 'Team slug already exists' }, { status: 400 });
+      }
+      return Response.json({ error: 'Duplicate entry' }, { status: 400 });
     }
     return Response.json({ error: 'Failed to create team' }, { status: 500 });
   }
 }
-
-

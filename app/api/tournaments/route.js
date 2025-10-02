@@ -1,14 +1,19 @@
 import dbConnect from "@/lib/mongodb";
 import Tournament from "@/models/Tournament";
+import { getAuthenticatedUser, createUnauthorizedResponse } from "@/lib/auth-utils";
 
-export async function GET() {
+export async function GET(request) {
   try {
     await dbConnect();
-    const tournaments = await Tournament.find({})
-      // .populate('teams.team', 'name shortName logo')
-      // .populate('winner', 'name shortName')
-      // .populate('runnerUp', 'name shortName')
-      // .populate('matches')
+    
+    // Get authenticated user
+    const { user, error } = await getAuthenticatedUser(request);
+    if (error) {
+      return createUnauthorizedResponse(error);
+    }
+
+    // Fetch only tournaments belonging to the authenticated user
+    const tournaments = await Tournament.find({ user: user.id })
       .sort({ createdAt: -1 });
 
     return Response.json(tournaments);
@@ -21,17 +26,32 @@ export async function GET() {
 export async function POST(req) {
   try {
     await dbConnect();
+    
+    // Get authenticated user
+    const { user, error } = await getAuthenticatedUser(req);
+    if (error) {
+      return createUnauthorizedResponse(error);
+    }
+
     const data = await req.json();
-    const newTournament = await Tournament.create(data);
+    
+    // Create tournament with user reference
+    const tournamentData = {
+      user: user.id, // Add user reference
+      ...data
+    };
+
+    const newTournament = await Tournament.create(tournamentData);
 
     // Populate the created tournament before returning
-    const populatedTournament = await Tournament.findById(newTournament._id);
+    const populatedTournament = await Tournament.findById(newTournament._id)
 
     return Response.json(populatedTournament, { status: 201 });
   } catch (error) {
     console.error('Error creating tournament:', error);
+    if (error.code === 11000) {
+      return Response.json({ error: 'Tournament name already exists' }, { status: 400 });
+    }
     return Response.json({ error: 'Failed to create tournament' }, { status: 500 });
   }
 }
-
-

@@ -1,14 +1,26 @@
 import dbConnect from "@/lib/mongodb";
 import Team from "@/models/Team";
+import { getAuthenticatedUser, createUnauthorizedResponse, createForbiddenResponse, checkResourceOwnership } from "@/lib/auth-utils";
 
 // Add player to team
 export async function POST(request, { params }) {
   try {
     await dbConnect();
+    
+    // Get authenticated user
+    const { user, error } = await getAuthenticatedUser(request);
+    if (error) {
+      return createUnauthorizedResponse(error);
+    }
+
     const { id } = await params;
     const { playerId, role } = await request.json();
 
-    const team = await Team.findById(id);
+    // Find team and check ownership
+    const team = await Team.findOne({
+      _id: id,
+      user: user.id,
+    });
     if (!team) {
       return Response.json({ error: 'Team not found' }, { status: 404 });
     }
@@ -44,13 +56,22 @@ export async function POST(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     await dbConnect();
-    const { id } = params;
+    
+    // Get authenticated user
+    const { user, error } = await getAuthenticatedUser(request);
+    if (error) {
+      return createUnauthorizedResponse(error);
+    }
+
+    const { id } = await params;
     const { playerId } = await request.json();
 
+    // Find team and check ownership
     const team = await Team.findById(id);
     if (!team) {
       return Response.json({ error: 'Team not found' }, { status: 404 });
     }
+
 
     // Remove player from team
     team.players = team.players.filter(p => p.player.toString() !== playerId);
@@ -67,9 +88,9 @@ export async function DELETE(request, { params }) {
 
     // Return updated team with populated players
     const updatedTeam = await Team.findById(id)
-      .populate('captain', 'fullName')
-      .populate('viceCaptain', 'fullName')
-      .populate('players.player', 'fullName primaryRole');
+      .populate('captain', 'name')
+      .populate('viceCaptain', 'name')
+      .populate('players.player', 'name role');
 
     return Response.json(updatedTeam);
   } catch (error) {
@@ -77,5 +98,3 @@ export async function DELETE(request, { params }) {
     return Response.json({ error: 'Failed to remove player from team' }, { status: 500 });
   }
 }
-
-

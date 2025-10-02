@@ -4,7 +4,7 @@ import Profile from "@/models/Profile";
 export async function PUT(request, { params }) {
   await dbConnect();
   const body = await request.json();
-  const { id } = params;
+  const { id } = await params;
   const profile = await Profile.findByIdAndUpdate(id, body, { new: true, runValidators: true });
   if (!profile) {
     return Response.json({ success: false }, { status: 400 });
@@ -14,7 +14,7 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   await dbConnect();
-  const { id } = params;
+  const { id } = await params;
   const deletedProfile = await Profile.deleteOne({ _id: id });
   if (!deletedProfile) {
     return Response.json({ success: false }, { status: 400 });
@@ -24,7 +24,7 @@ export async function DELETE(request, { params }) {
 
 export async function GET(request, { params }) {
   await dbConnect();
-  const { id } = params;
+  const { id } = await params;
   const profile = await Profile.findById(id);
   if (!profile) {
     return Response.json({ success: false }, { status: 400 });

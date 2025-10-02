@@ -1,12 +1,24 @@
 import dbConnect from "@/lib/mongodb";
 import Match from "@/models/Match";
+import { getAuthenticatedUser, createUnauthorizedResponse, createForbiddenResponse, checkResourceOwnership } from "@/lib/auth-utils";
 
 export async function GET(request, { params }) {
   try {
     await dbConnect();
+    
+    // Get authenticated user
+    const { user, error } = await getAuthenticatedUser(request);
+    if (error) {
+      return createUnauthorizedResponse(error);
+    }
+
     const { id } = await params;
 
-    const match = await Match.findById(id);
+    // Find match and check ownership
+    const match = await Match.findOne({
+      _id: id,
+      user: user.id,
+    });
 
     if (!match) {
       return Response.json({ error: 'Match not found' }, { status: 404 });
@@ -22,8 +34,24 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     await dbConnect();
+    
+    // Get authenticated user
+    const { user, error } = await getAuthenticatedUser(request);
+    if (error) {
+      return createUnauthorizedResponse(error);
+    }
+
     const { id } = await params;
     const data = await request.json();
+
+    // Find match and check ownership
+    const existingMatch = await Match.findOne({
+      _id: id,
+      user: user.id,
+    });
+    if (!existingMatch) {
+      return Response.json({ error: 'Match not found' }, { status: 404 });
+    }
 
     const updateData = {
       matchNumber: data.matchNumber,
@@ -39,11 +67,7 @@ export async function PUT(request, { params }) {
       id,
       updateData,
       { new: true, runValidators: true }
-    );
-
-    if (!match) {
-      return Response.json({ error: 'Match not found' }, { status: 404 });
-    }
+    )
 
     return Response.json(match);
   } catch (error) {
@@ -62,13 +86,25 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     await dbConnect();
-    const { id } = params;
+    
+    // Get authenticated user
+    const { user, error } = await getAuthenticatedUser(request);
+    if (error) {
+      return createUnauthorizedResponse(error);
+    }
 
-    const deletedMatch = await Match.findByIdAndDelete(id);
+    const { id } = await params;
 
-    if (!deletedMatch) {
+    // Find match and check ownership
+    const existingMatch = await Match.findOne({
+      _id: id,
+      user: user.id,
+    });
+    if (!existingMatch) {
       return Response.json({ error: 'Match not found' }, { status: 404 });
     }
+
+    await Match.findByIdAndDelete(id);
 
     return Response.json({ message: 'Match deleted successfully' });
   } catch (error) {
@@ -76,5 +112,3 @@ export async function DELETE(request, { params }) {
     return Response.json({ error: 'Failed to delete match' }, { status: 500 });
   }
 }
-
-

@@ -1,11 +1,11 @@
 import mongoose, { Schema } from "mongoose";
 
 const TeamSchema = new Schema({
-  name: { type: String, required: [true, 'Team name is required'], unique: true, trim: true },
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  name: { type: String, required: [true, 'Team name is required'], trim: true },
   slug: { 
     type: String, 
     required: [true, 'Team slug is required'], 
-    unique: true, 
     trim: true, 
     uppercase: true,
     maxlength: [4, 'Slug cannot be more than 3 characters'],
@@ -34,6 +34,10 @@ const TeamSchema = new Schema({
   }]
 }, { timestamps: true });
 
+// Compound unique index for user-scoped uniqueness
+TeamSchema.index({ user: 1, name: 1 }, { unique: true });
+TeamSchema.index({ user: 1, slug: 1 }, { unique: true });
+
 // Virtual for win percentage
 TeamSchema.virtual('winPercentage').get(function() {
   if (this.statistics.matchesPlayed === 0) return 0;
@@ -44,5 +48,3 @@ TeamSchema.virtual('winPercentage').get(function() {
 TeamSchema.set('toJSON', { virtuals: true });
 
 export default mongoose.models.Team || mongoose.model("Team", TeamSchema);
-
-

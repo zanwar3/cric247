@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const TournamentSchema = new Schema({
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   name: { type: String, required: true },
   description: String,
   format: {
@@ -56,6 +57,9 @@ const TournamentSchema = new Schema({
   isPublic: { type: Boolean, default: true }
 }, { timestamps: true });
 
+// Compound unique index for user-scoped uniqueness
+TournamentSchema.index({ user: 1, name: 1 }, { unique: true });
+
 // Virtual for tournament progress
 TournamentSchema.virtual('registrationProgress').get(function() {
   return `${this.teams.length}/${this.maxTeams}`;
@@ -72,5 +76,3 @@ TournamentSchema.virtual('isRegistrationOpen').get(function() {
 TournamentSchema.set('toJSON', { virtuals: true });
 
 export default mongoose.models.Tournament || mongoose.model("Tournament", TournamentSchema);
-
-

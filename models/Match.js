@@ -36,6 +36,7 @@ const BallSchema = new Schema({
 });
 
 const MatchSchema = new Schema({
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   matchNumber: String, // e.g., "Match 1", "Semi Final 1", "Final"
   tournament: {
     _id: { type: Schema.Types.ObjectId, ref: "Tournament" },
@@ -82,73 +83,70 @@ const MatchSchema = new Schema({
       player: { type: Schema.Types.ObjectId, ref: "Profile" },
       battingOrder: Number,
       runs: { type: Number, default: 0 },
-      balls: { type: Number, default: 0 },
+      ballsFaced: { type: Number, default: 0 },
       fours: { type: Number, default: 0 },
       sixes: { type: Number, default: 0 },
-      dismissal: {
-        type: {
-          type: String,
-          enum: ["Bowled", "Caught", "LBW", "Run Out", "Stumped", "Hit Wicket", "Not Out", "Retired"]
-        },
-        bowler: { type: Schema.Types.ObjectId, ref: "Profile" },
-        fielder: { type: Schema.Types.ObjectId, ref: "Profile" }
-      },
-      strikeRate: { type: Number, default: 0 }
+      strikeRate: { type: Number, default: 0 },
+      isOut: { type: Boolean, default: false },
+      dismissalType: String,
+      bowlerOut: { type: Schema.Types.ObjectId, ref: "Profile" },
+      fielderOut: { type: Schema.Types.ObjectId, ref: "Profile" }
     }],
     bowling: [{
       player: { type: Schema.Types.ObjectId, ref: "Profile" },
       overs: { type: Number, default: 0 },
-      balls: { type: Number, default: 0 },
+      maidens: { type: Number, default: 0 },
       runs: { type: Number, default: 0 },
       wickets: { type: Number, default: 0 },
-      maidens: { type: Number, default: 0 },
       wides: { type: Number, default: 0 },
       noBalls: { type: Number, default: 0 },
       economy: { type: Number, default: 0 }
     }],
-    ballByBall: [BallSchema], // Ball-by-ball scoring
-    currentBatsmen: {
-      striker: { type: Schema.Types.ObjectId, ref: "Profile" },
-      nonStriker: { type: Schema.Types.ObjectId, ref: "Profile" }
-    },
-    currentBowler: { type: Schema.Types.ObjectId, ref: "Profile" },
-    isCompleted: { type: Boolean, default: false }
+    balls: [BallSchema],
+    isCompleted: { type: Boolean, default: false },
+    target: Number // For second innings
   }],
   result: {
     winner: { type: Schema.Types.ObjectId, ref: "Team" },
-    winType: {
-      type: String,
-      enum: ["Runs", "Wickets", "No Result", "Tie", "Draw"]
-    },
-    winMargin: Number, // runs or wickets
-    playerOfTheMatch: { type: Schema.Types.ObjectId, ref: "Profile" }
-  },
-  officials: {
-    umpire1: String,
-    umpire2: String,
-    thirdUmpire: String,
-    matchReferee: String,
-    scorer: String
+    winBy: String, // "runs", "wickets", "tie", "no result"
+    margin: Number, // runs or wickets
+    manOfTheMatch: { type: Schema.Types.ObjectId, ref: "Profile" }
   },
   weather: {
     condition: String,
     temperature: Number,
-    humidity: Number
+    humidity: Number,
+    windSpeed: Number
   },
-  notes: String
+  umpires: [{
+    name: String,
+    role: { type: String, enum: ["Field", "Third", "Reserve"] }
+  }],
+  notes: String,
+  isActive: { type: Boolean, default: true }
 }, { timestamps: true });
 
-// Virtual for current score display
-MatchSchema.virtual('currentScore').get(function() {
-  if (this.innings.length === 0) return "Match not started";
+// Compound index for user-scoped data
+MatchSchema.index({ user: 1, createdAt: -1 });
 
-  const latestInning = this.innings[this.innings.length - 1];
-  return `${latestInning.totalRuns}/${latestInning.totalWickets} (${latestInning.totalOvers}.${latestInning.totalBalls % 6})`;
+// Virtual for match duration
+MatchSchema.virtual('duration').get(function() {
+  if (this.actualStartTime && this.actualEndTime) {
+    return Math.round((this.actualEndTime - this.actualStartTime) / (1000 * 60)); // in minutes
+  }
+  return null;
+});
+
+// Virtual for current status
+MatchSchema.virtual('currentStatus').get(function() {
+  const now = new Date();
+  if (this.status === "Completed") return "Completed";
+  if (this.status === "Live") return "Live";
+  if (this.scheduledDate > now) return "Upcoming";
+  return "Scheduled";
 });
 
 // Ensure virtual fields are serialized
 MatchSchema.set('toJSON', { virtuals: true });
 
 export default mongoose.models.Match || mongoose.model("Match", MatchSchema);
-
-

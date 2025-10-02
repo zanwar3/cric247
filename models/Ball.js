@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const BallSchema = new Schema(
   {
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     match_id: {
       type: Schema.Types.ObjectId,
       ref: "Match",
@@ -81,5 +82,8 @@ const BallSchema = new Schema(
   },
   { timestamps: true }
 );
+
+// Compound index for user-scoped data
+BallSchema.index({ user: 1, match_id: 1, createdAt: -1 });
 
 export default mongoose.models.Ball || mongoose.model("Ball", BallSchema);

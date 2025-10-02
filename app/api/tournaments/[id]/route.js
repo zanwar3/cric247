@@ -1,12 +1,19 @@
 import dbConnect from "@/lib/mongodb";
 import Tournament from "@/models/Tournament";
+import { getAuthenticatedUser, createUnauthorizedResponse } from "@/lib/auth-utils";
 
 export async function GET(request, { params }) {
   try {
     await dbConnect();
-    const { id } = params;
-
-    const tournament = await Tournament.findById(id)
+    const { id } = await params;
+    const { user, error } = await getAuthenticatedUser(request);
+    if (error) {
+      return createUnauthorizedResponse(error);
+    }
+    const tournament = await Tournament.findOne({
+      _id: id,
+      user: user.id,
+    })
       // .populate('teams.team', 'name shortName logo captain viceCaptain')
       // .populate('winner', 'name shortName logo')
       // .populate('runnerUp', 'name shortName logo')
@@ -32,7 +39,7 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     await dbConnect();
-    const { id } = params;
+    const { id } = await params;
     const data = await request.json();
 
 
@@ -56,9 +63,16 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     await dbConnect();
-    const { id } = params;
+    const { id } = await params;
+    const { user, error } = await getAuthenticatedUser(request);
+    if (error) {
+      return createUnauthorizedResponse(error);
+    }
 
-    const deletedTournament = await Tournament.findByIdAndDelete(id);
+    const deletedTournament = await Tournament.findByIdAndDelete({
+      _id: id,
+      user: user.id,
+    });
 
     if (!deletedTournament) {
       return Response.json({ error: 'Tournament not found' }, { status: 404 });
