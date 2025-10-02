@@ -28,7 +28,8 @@ export async function POST(req) {
       founded: data.founded ? data.founded : undefined,
       description: data.description || '',
       homeGround: data.homeGround || '',
-      isActive: data.isActive !== undefined ? data.isActive : true
+      isActive: data.isActive !== undefined ? data.isActive : true,
+      slug: data.slug,
     };
 
     const newTeam = await Team.create(teamData);

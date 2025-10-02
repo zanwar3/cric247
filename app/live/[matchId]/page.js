@@ -9,12 +9,26 @@ export default function Page() {
   const [batting, setBatting] = useState([]);
   const [bowling, setBowling] = useState([]);
   const [currentInnings, setCurrentInnings] = useState(null);
+  const [match, setMatch] = useState(null);
 
   useEffect(() => {
     if (matchId) {
+      fetchMatch();
       fetchBallHistory();
     }
   }, [matchId]);
+
+
+  const fetchMatch = async () => {
+    try {
+      const response = await fetch(`/api/matches/${matchId}`);
+      const data = await response.json();
+      setMatch(data);
+
+    } catch (error) {
+      console.error("Error fetching match:", error);
+    }
+  };
 
   const fetchBallHistory = async () => {
     const response = await fetch(`/api/matches/${matchId}/ball`);
@@ -29,6 +43,24 @@ export default function Page() {
     setBowling(ball.bowling);
     setCurrentInnings(ball);
   }
+
+  const calculateCRR = () => {
+    if (!currentInnings) return "0.00";
+
+    const totalRuns = currentInnings?.totalRuns || 0;
+    const totalBalls = currentInnings?.ballNumber || 0;
+
+    // If less than one over bowled, return 0
+    if (totalBalls === 0) return "0.00";
+
+    // Overs faced in cricket = completed overs + remaining balls/6
+    const oversFaced = Math.floor(totalBalls / 6) + (totalBalls % 6) / 6;
+
+    console.log("CRR", { totalRuns, totalBalls, oversFaced });
+
+    return oversFaced > 0 ? (totalRuns / oversFaced).toFixed(2) : "0.00";
+  };
+
   return (
     <div className="relative min-h-screen flex flex-col bg-gray-100">
       {/* Page Content */}
@@ -43,17 +75,17 @@ export default function Page() {
           {/* Left Section: Team + Score */}
           <div className="flex items-center gap-2 sm:gap-3 border-r border-gray-700 pr-4 sm:pr-6 flex-shrink-0">
             <PK title="Pakistan" className="w-6 h-4 sm:w-8 sm:h-6 rounded-sm shadow" />
-            <span className="text-green-400 text-base sm:text-lg font-extrabold">PAK</span>
-            <span className="text-yellow-400 text-lg sm:text-2xl font-black">64-5</span>
-            <span className="text-gray-300 text-[10px] sm:text-xs">12.4 ov</span>
+            <span className="text-green-400 text-base sm:text-lg font-extrabold">{currentInnings?.battingTeam?.slug}</span>
+            <span className="text-yellow-400 text-lg sm:text-2xl font-black">{currentInnings?.totalRuns}-{currentInnings?.totalWickets}</span>
+            <span className="text-gray-300 text-[10px] sm:text-xs">{Math.floor(currentInnings?.ballNumber / 6) || 0}.{(currentInnings?.ballNumber % 6) || 0} ov</span>
             <div className="ml-2 sm:ml-4 text-[10px] sm:text-xs text-gray-400">
-              CRR: <span className="text-white font-bold">5.05</span>
+              CRR: <span className="text-white font-bold">{calculateCRR()}</span>
             </div>
           </div>
 
           {/* Match Type Badge (T20) */}
           <div className="mx-2 sm:mx-4 bg-white text-black px-3 py-1 rounded-md text-[10px] sm:text-xs font-semibold shadow flex-shrink-0">
-            T20
+          {match?.matchType || "T20"}
           </div>
 
           {/* Middle Section: Batsmen (HIDE on small, SHOW from sm: up) */}
@@ -70,13 +102,13 @@ export default function Page() {
                   <path d="M498.1 14.1c-18.8-18.8-49.2-18.8-67.9 0l-63 63-18.7-18.7-42.4 42.4 18.7 18.7L63 382.3l-42.4 42.4c-18.8 18.8-18.8 49.2 0 67.9s49.2 18.8 67.9 0l42.4-42.4L392.3 178l18.7 18.7 42.4-42.4-18.7-18.7 63-63c-18.9-18.8 18.9-49.2 0-67.9z" />
                 </svg>
                 <span className="text-gray-400 text-[11px] sm:text-sm truncate">{batting?.[0]?.player}*</span>
-                <span className="text-white text-[11px] sm:text-sm font-semibold">5 (7)</span>
+                <span className="text-white text-[11px] sm:text-sm font-semibold">{batting?.[0]?.runs} ({batting?.[0]?.balls})</span>
               </div>
 
               {/* Farhan */}
               <div className="flex items-center gap-1 sm:gap-2 truncate">
                 <span className="text-gray-400 text-[11px] sm:text-sm truncate">{batting?.[1]?.player}</span>
-                <span className="text-white text-[11px] sm:text-sm font-semibold">32 (36)</span>
+                <span className="text-white text-[11px] sm:text-sm font-semibold">{batting?.[1]?.runs} ({batting?.[1]?.balls})</span>
               </div>
             </div>
           </div>
@@ -85,10 +117,10 @@ export default function Page() {
           <div className="flex items-center gap-2 sm:gap-3 pl-4 sm:pl-6">
             {/* Bowler info (HIDE on mobile, SHOW from sm: up) */}
             <div className="hidden sm:flex items-center gap-1 sm:gap-2 min-w-0 overflow-hidden truncate">
-              <span className="text-gray-400 text-[11px] sm:text-sm truncate">KULDEEP</span>
-              <span className="text-white text-[11px] sm:text-sm font-semibold">1-4 (1.4)</span>
+              <span className="text-gray-400 text-[11px] sm:text-sm truncate">{bowling?.bowler}</span>
+              <span className="text-white text-[11px] sm:text-sm font-semibold">({Math.floor(bowling?.totalBallBowled / 6)}.{(bowling?.totalBallBowled % 6)})</span>
             </div>
-
+{/* 1-{bowling?.totalRuns}  */}
             {/* Flag (always visible) */}
             <div className="flex-shrink-0">
               <IN title="India" className="w-6 h-4 sm:w-8 sm:h-6 rounded-sm shadow" />

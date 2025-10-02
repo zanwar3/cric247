@@ -117,8 +117,8 @@ export default function ScorePage() {
       try {
         // Fetch both teams' data in parallel
         const [battingTeamResponse, bowlingTeamResponse] = await Promise.all([
-          fetch(`/api/teams/${data.ball.battingTeam}`),
-          fetch(`/api/teams/${data.ball.bowlingTeam}`)
+          fetch(`/api/teams/${data.ball.battingTeam?._id}`),
+          fetch(`/api/teams/${data.ball.bowlingTeam?._id}`)
         ]);
 
         const battingTeamData = await battingTeamResponse.json();

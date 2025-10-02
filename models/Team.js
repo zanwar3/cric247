@@ -2,6 +2,15 @@ import mongoose, { Schema } from "mongoose";
 
 const TeamSchema = new Schema({
   name: { type: String, required: [true, 'Team name is required'], unique: true, trim: true },
+  slug: { 
+    type: String, 
+    required: [true, 'Team slug is required'], 
+    unique: true, 
+    trim: true, 
+    uppercase: true,
+    maxlength: [4, 'Slug cannot be more than 3 characters'],
+    minlength: [2, 'Slug must be at least 2 characters']
+  },
   city: { type: String, trim: true },
   description: { type: String, trim: true },
   founded: { type: String, trim: true },

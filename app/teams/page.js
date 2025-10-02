@@ -20,6 +20,7 @@ export default function TeamsPage() {
 
   const [formData, setFormData] = useState({
     name: "",
+    slug: "",
     city: "",
     captain: "",
     coach: "",
@@ -59,6 +60,7 @@ export default function TeamsPage() {
       if (response.ok) {
         setFormData({
           name: "",
+          slug: "",
           city: "",
           captain: "",
           coach: "",
@@ -84,6 +86,7 @@ export default function TeamsPage() {
     setEditingTeam(team);
     setFormData({
       name: team.name || "",
+      slug: team.slug || "",
       city: team.city || "",
       captain: team.captain || "",
       coach: team.coach || "",
@@ -262,6 +265,7 @@ export default function TeamsPage() {
                       setEditingTeam(null);
                       setFormData({
                         name: "",
+                        slug: "",
                         city: "",
                         captain: "",
                         coach: "",
@@ -303,6 +307,7 @@ export default function TeamsPage() {
                 setActiveTab("list");
                 setFormData({
                   name: "",
+                  slug: "",
                   city: "",
                   captain: "",
                   coach: "",
@@ -492,12 +497,15 @@ function TeamCard({ team, onEdit, onDelete, onPlayers }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">
-                {team.name?.charAt(0)?.toUpperCase() || "T"}
+              <span className="text-white font-semibold text-xs">
+                {team.slug || team.name?.charAt(0)?.toUpperCase() || "T"}
               </span>
             </div>
             <div>
-              <h3 className="text-slate-100 font-semibold">{team.name || "Unnamed Team"}</h3>
+              <h3 className="text-slate-100 font-semibold">
+                {team.name || "Unnamed Team"}
+                {team.slug && <span className="text-slate-400 text-sm ml-2">({team.slug})</span>}
+              </h3>
               <p className="text-slate-300 text-sm">{team.city || "City not specified"}</p>
             </div>
           </div>
@@ -593,7 +601,13 @@ function TeamCard({ team, onEdit, onDelete, onPlayers }) {
 function TeamForm({ formData, setFormData, onSubmit, editingTeam, onCancel }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === 'slug') {
+      // Convert to uppercase and limit to 3 characters
+      const slugValue = value.toUpperCase().slice(0, 3);
+      setFormData(prev => ({ ...prev, [name]: slugValue }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   return (
@@ -614,6 +628,25 @@ function TeamForm({ formData, setFormData, onSubmit, editingTeam, onCancel }) {
               required
               className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               placeholder="Team name"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-200 mb-2">
+              Team Slug *
+              <span className="text-slate-400 text-xs ml-1">(2-3 chars, e.g., PAK, LQ)</span>
+            </label>
+            <input
+              type="text"
+              name="slug"
+              value={formData.slug}
+              onChange={handleChange}
+              required
+              maxLength={3}
+              minLength={2}
+              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent uppercase"
+              placeholder="PAK"
+              style={{ textTransform: 'uppercase' }}
             />
           </div>
 

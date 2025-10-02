@@ -34,7 +34,8 @@ export async function PUT(request, { params }) {
       homeGround: data.homeGround,
       captain: data.captain || '',
       coach: data.coach || '',
-      isActive: data.isActive !== undefined ? data.isActive : true
+      isActive: data.isActive !== undefined ? data.isActive : true,
+      slug: data.slug,
     };
 
     const team = await Team.findByIdAndUpdate(
