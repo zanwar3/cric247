@@ -1,13 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import MobileLayout from "@/components/MobileLayout";
 
 export default function ProfilePage() {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [userProfile, setUserProfile] = useState({
     name: "",
     email: "",
@@ -26,14 +28,53 @@ export default function ProfilePage() {
 
   const handleSave = async () => {
     setLoading(true);
+    setError("");
+    setSuccess("");
+
     try {
-      // API call to update profile would go here
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      setEditing(false);
+      const response = await fetch("/api/user/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: userProfile.name,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess("Profile updated successfully!");
+        setEditing(false);
+        
+        // Update the session with new user data
+        await signOut({callbackUrl: "/auth/signin"})
+        
+        // Clear success message after 3 seconds
+        setTimeout(() => setSuccess(""), 3000);
+      } else {
+        setError(data.error || "Failed to update profile");
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
+      setError("Network error. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setEditing(false);
+    setError("");
+    setSuccess("");
+    // Reset form to original values
+    if (session?.user) {
+      setUserProfile({
+        name: session.user.name || "",
+        email: session.user.email || "",
+        role: session.user.role || "user",
+      });
     }
   };
 
@@ -80,7 +121,7 @@ export default function ProfilePage() {
               <p className="text-blue-100">Manage your profile and details</p>
             </div>
             <button
-              onClick={() => setEditing(!editing)}
+              onClick={() => editing ? handleCancel() : setEditing(true)}
               className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition-colors"
             >
               {editing ? "Cancel" : "Edit"}
@@ -89,6 +130,29 @@ export default function ProfilePage() {
         </div>
 
         <div className="p-4">
+          {/* Success/Error Messages */}
+          {success && (
+            <div className="bg-green-900/50 border border-green-700 rounded-lg p-3 mb-4">
+              <div className="flex items-center">
+                <svg className="w-5 h-5 text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="text-green-300 text-sm">{success}</span>
+              </div>
+            </div>
+          )}
+
+          {error && (
+            <div className="bg-red-900/50 border border-red-700 rounded-lg p-3 mb-4">
+              <div className="flex items-center">
+                <svg className="w-5 h-5 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="text-red-300 text-sm">{error}</span>
+              </div>
+            </div>
+          )}
+
           {/* Profile Picture Section */}
           <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 mb-6 text-center">
             <div className="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -100,181 +164,70 @@ export default function ProfilePage() {
               {userProfile.name || "Cricket Player"}
             </h2>
             <p className="text-slate-400 capitalize">{userProfile.role}</p>
-            {/*{editing && (*/}
-            {/*  <button className="mt-3 text-blue-400 hover:text-blue-300 text-sm transition-colors">*/}
-            {/*    Change Profile Picture*/}
-            {/*  </button>*/}
-            {/*)}*/}
           </div>
 
           {/* Basic Information */}
           <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 mb-6">
             <h3 className="text-lg font-semibold text-slate-100 mb-4">Basic Information</h3>
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-200 mb-2">Full Name</label>
+              <div className={`${!editing ? "flex items-center space-x-2" : ""}`}>
+                <label className="block text-sm font-medium text-slate-200 ">Full Name:</label>
                 {editing ? (
                   <input
                     type="text"
                     value={userProfile.name}
                     onChange={(e) => setUserProfile({ ...userProfile, name: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100"
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter your full name"
+                    required
                   />
                 ) : (
                   <p className="text-slate-300">{userProfile.name || "Not provided"}</p>
                 )}
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-slate-200 mb-2">Email</label>
+              <div className="flex items-center space-x-2">
+                <label className="block text-sm font-medium text-slate-200">Email:</label>
                 <p className="text-slate-300">{userProfile.email}</p>
+                <p className="text-slate-500 text-xs mt-1">Email cannot be changed</p>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <label className="block text-sm font-medium text-slate-200">Role:</label>
+                <p className="text-slate-300 capitalize">{userProfile.role}</p>
               </div>
             </div>
           </div>
-
-          {/*/!* Cricket Information *!/*/}
-          {/*<div className="bg-slate-800 rounded-xl p-6 border border-slate-700 mb-6">*/}
-          {/*  <h3 className="text-lg font-semibold text-slate-100 mb-4">Cricket Information</h3>*/}
-          {/*  <div className="space-y-4">*/}
-          {/*    <div>*/}
-          {/*      <label className="block text-sm font-medium text-slate-200 mb-2">Playing Position</label>*/}
-          {/*      {editing ? (*/}
-          {/*        <select*/}
-          {/*          value={userProfile.position}*/}
-          {/*          onChange={(e) => setUserProfile({ ...userProfile, position: e.target.value })}*/}
-          {/*          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100"*/}
-          {/*        >*/}
-          {/*          {positions.map((position) => (*/}
-          {/*            <option key={position} value={position.toLowerCase()}>{position}</option>*/}
-          {/*          ))}*/}
-          {/*        </select>*/}
-          {/*      ) : (*/}
-          {/*        <p className="text-slate-300 capitalize">{userProfile.position}</p>*/}
-          {/*      )}*/}
-          {/*    </div>*/}
-
-          {/*    <div>*/}
-          {/*      <label className="block text-sm font-medium text-slate-200 mb-2">Batting Style</label>*/}
-          {/*      {editing ? (*/}
-          {/*        <select*/}
-          {/*          value={userProfile.battingStyle}*/}
-          {/*          onChange={(e) => setUserProfile({ ...userProfile, battingStyle: e.target.value })}*/}
-          {/*          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100"*/}
-          {/*        >*/}
-          {/*          {battingStyles.map((style) => (*/}
-          {/*            <option key={style} value={style.toLowerCase()}>{style}</option>*/}
-          {/*          ))}*/}
-          {/*        </select>*/}
-          {/*      ) : (*/}
-          {/*        <p className="text-slate-300 capitalize">{userProfile.battingStyle}</p>*/}
-          {/*      )}*/}
-          {/*    </div>*/}
-
-          {/*    <div>*/}
-          {/*      <label className="block text-sm font-medium text-slate-200 mb-2">Bowling Style</label>*/}
-          {/*      {editing ? (*/}
-          {/*        <select*/}
-          {/*          value={userProfile.bowlingStyle}*/}
-          {/*          onChange={(e) => setUserProfile({ ...userProfile, bowlingStyle: e.target.value })}*/}
-          {/*          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100"*/}
-          {/*        >*/}
-          {/*          {bowlingStyles.map((style) => (*/}
-          {/*            <option key={style} value={style.toLowerCase()}>{style}</option>*/}
-          {/*          ))}*/}
-          {/*        </select>*/}
-          {/*      ) : (*/}
-          {/*        <p className="text-slate-300 capitalize">{userProfile.bowlingStyle}</p>*/}
-          {/*      )}*/}
-          {/*    </div>*/}
-
-          {/*    <div>*/}
-          {/*      <label className="block text-sm font-medium text-slate-200 mb-2">Bio</label>*/}
-          {/*      {editing ? (*/}
-          {/*        <textarea*/}
-          {/*          value={userProfile.bio}*/}
-          {/*          onChange={(e) => setUserProfile({ ...userProfile, bio: e.target.value })}*/}
-          {/*          className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 h-24 resize-none"*/}
-          {/*          placeholder="Tell us about your cricket journey..."*/}
-          {/*        />*/}
-          {/*      ) : (*/}
-          {/*        <p className="text-slate-300">{userProfile.bio || "No bio provided"}</p>*/}
-          {/*      )}*/}
-          {/*    </div>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
-
-          {/* Recent Activity */}
-          {/*<div className="bg-slate-800 rounded-xl p-6 border border-slate-700 mb-6">*/}
-          {/*  <h3 className="text-lg font-semibold text-slate-100 mb-4">Recent Activity</h3>*/}
-          {/*  <div className="space-y-3">*/}
-          {/*    <div className="flex items-center space-x-3 p-3 bg-slate-700 rounded-lg">*/}
-          {/*      <div className="w-2 h-2 bg-green-400 rounded-full"></div>*/}
-          {/*      <div>*/}
-          {/*        <p className="text-slate-200 text-sm">Created profile</p>*/}
-          {/*        <p className="text-slate-400 text-xs">2 hours ago</p>*/}
-          {/*      </div>*/}
-          {/*    </div>*/}
-          {/*    <div className="flex items-center space-x-3 p-3 bg-slate-700 rounded-lg">*/}
-          {/*      <div className="w-2 h-2 bg-blue-400 rounded-full"></div>*/}
-          {/*      <div>*/}
-          {/*        <p className="text-slate-200 text-sm">Joined cricket app</p>*/}
-          {/*        <p className="text-slate-400 text-xs">1 day ago</p>*/}
-          {/*      </div>*/}
-          {/*    </div>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
-
-          {/* Teams Created */}
-          {/*<div className="bg-slate-800 rounded-xl p-6 border border-slate-700 mb-6">*/}
-          {/*  <h3 className="text-lg font-semibold text-slate-100 mb-4">Teams Created</h3>*/}
-          {/*  <p className="text-slate-400 text-sm">You haven't created any teams yet.</p>*/}
-          {/*  <Link*/}
-          {/*    href="/teams"*/}
-          {/*    className="inline-flex items-center mt-3 text-blue-400 hover:text-blue-300 text-sm transition-colors"*/}
-          {/*  >*/}
-          {/*    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">*/}
-          {/*      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />*/}
-          {/*    </svg>*/}
-          {/*    Create Your First Team*/}
-          {/*  </Link>*/}
-          {/*</div>*/}
 
           {/* Save Button */}
           {editing && (
             <div className="flex space-x-4">
               <button
                 onClick={handleSave}
-                disabled={loading}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white py-3 px-4 rounded-lg font-medium transition-colors"
+                disabled={loading || !userProfile.name.trim()}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white py-3 px-4 rounded-lg font-medium transition-colors"
               >
-                {loading ? "Saving..." : "Save Changes"}
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Saving...
+                  </div>
+                ) : (
+                  "Save Changes"
+                )}
               </button>
               <button
-                onClick={() => setEditing(false)}
-                className="flex-1 bg-slate-600 hover:bg-slate-700 text-slate-200 py-3 px-4 rounded-lg font-medium transition-colors"
+                onClick={handleCancel}
+                disabled={loading}
+                className="flex-1 bg-slate-600 hover:bg-slate-700 disabled:bg-slate-800 text-slate-200 py-3 px-4 rounded-lg font-medium transition-colors"
               >
                 Cancel
               </button>
             </div>
           )}
-
-          {/* Quick Actions */}
-          {/*{!editing && (*/}
-          {/*  <div className="grid grid-cols-2 gap-4 mt-6">*/}
-          {/*    <Link*/}
-          {/*      href="/my-cricket"*/}
-          {/*      className="bg-yellow-600 hover:bg-yellow-700 text-white py-3 px-4 rounded-lg font-medium text-center transition-colors"*/}
-          {/*    >*/}
-          {/*      View Stats*/}
-          {/*    </Link>*/}
-          {/*    <Link*/}
-          {/*      href="/past-matches"*/}
-          {/*      className="bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg font-medium text-center transition-colors"*/}
-          {/*    >*/}
-          {/*      Match History*/}
-          {/*    </Link>*/}
-          {/*  </div>*/}
-          {/*)}*/}
         </div>
       </div>
     </MobileLayout>
