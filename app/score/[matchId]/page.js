@@ -558,17 +558,19 @@ export default function ScorePage() {
                   <div
                     key={i}
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${ball
-                      ? ball.wicket?.isWicket
+                      ? ball.isWicket
                         ? "bg-red-600 text-white"
                         : ball.runs === 4
                           ? "bg-green-600 text-white"
                           : ball.runs === 6
                             ? "bg-purple-600 text-white"
+                            : ball.extras
+                            ? "bg-yellow-600 text-white"
                             : "bg-blue-600 text-white"
                       : "bg-slate-600 text-slate-400"
                       }`}
                   >
-                    {ball ? (ball.isWicket ? "W" : ball.runs) : "•"}
+                    {ball ? (ball.isWicket ? "W" : ball.extras ? `E:${ball.runs}` : ball.runs) : "•"}
                   </div>
                 );
               })}
@@ -624,13 +626,13 @@ export default function ScorePage() {
           </div>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-0 gap-3">
             <button
-              disabled={true}
+          
               onClick={() => setShowExtrasPanel(true)}
               className="h-10 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-all"
             >
-              Extras (coming soon)
+              Extras 
             </button>
             {/*<button className="h-10 bg-slate-600 hover:bg-slate-500 text-white rounded-lg text-sm transition-all">*/}
             {/*  5/7/P*/}
