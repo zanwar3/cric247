@@ -17,6 +17,12 @@ export default function TeamsPage() {
   const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
   const [playerRole, setPlayerRole] = useState("Batsman");
+  
+  // Loading states for different operations
+  const [addPlayerLoading, setAddPlayerLoading] = useState(false);
+  const [removePlayerLoading, setRemovePlayerLoading] = useState({});
+  const [deleteTeamLoading, setDeleteTeamLoading] = useState(false);
+  const [createTeamLoading, setCreateTeamLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -48,6 +54,7 @@ export default function TeamsPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setCreateTeamLoading(true);
       const url = editingTeam ? `/api/teams/${editingTeam._id}` : "/api/teams";
       const method = editingTeam ? "PUT" : "POST";
 
@@ -79,6 +86,8 @@ export default function TeamsPage() {
     } catch (error) {
       console.error("Error saving team:", error);
       alert("Failed to save team. Please try again.");
+    } finally {
+      setCreateTeamLoading(false);
     }
   };
 
@@ -102,6 +111,7 @@ export default function TeamsPage() {
     if (!teamToDelete) return;
 
     try {
+      setDeleteTeamLoading(true);
       const response = await fetch(`/api/teams/${teamToDelete._id}`, {
         method: "DELETE",
       });
@@ -110,9 +120,15 @@ export default function TeamsPage() {
         fetchTeams();
         setShowDeleteDialog(false);
         setTeamToDelete(null);
+      } else {
+        const errorData = await response.json();
+        alert(errorData.error || "Failed to delete team");
       }
     } catch (error) {
       console.error("Error deleting team:", error);
+      alert("Failed to delete team. Please try again.");
+    } finally {
+      setDeleteTeamLoading(false);
     }
   };
 
@@ -152,6 +168,7 @@ export default function TeamsPage() {
     if (!selectedPlayer || !selectedTeam) return;
 
     try {
+      setAddPlayerLoading(true);
       const response = await fetch(`/api/teams/${selectedTeam._id}/players`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -173,6 +190,8 @@ export default function TeamsPage() {
     } catch (error) {
       console.error("Error adding player:", error);
       alert("Failed to add player. Please try again.");
+    } finally {
+      setAddPlayerLoading(false);
     }
   };
 
@@ -180,6 +199,7 @@ export default function TeamsPage() {
     if (!selectedTeam) return;
 
     try {
+      setRemovePlayerLoading(prev => ({ ...prev, [playerId]: true }));
       const response = await fetch(`/api/teams/${selectedTeam._id}/players`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -195,6 +215,8 @@ export default function TeamsPage() {
     } catch (error) {
       console.error("Error removing player:", error);
       alert("Failed to remove player. Please try again.");
+    } finally {
+      setRemovePlayerLoading(prev => ({ ...prev, [playerId]: false }));
     }
   };
 
@@ -301,6 +323,7 @@ export default function TeamsPage() {
               setFormData={setFormData}
               onSubmit={handleSubmit}
               editingTeam={editingTeam}
+              createTeamLoading={createTeamLoading}
               onCancel={() => {
                 setShowForm(false);
                 setEditingTeam(null);
@@ -332,15 +355,27 @@ export default function TeamsPage() {
             <div className="flex space-x-3">
               <button
                 onClick={() => setShowDeleteDialog(false)}
-                className="flex-1 px-4 py-2 text-slate-300 hover:text-slate-100 border border-slate-600 rounded-lg hover:bg-slate-700 transition-colors"
+                disabled={deleteTeamLoading}
+                className="flex-1 px-4 py-2 text-slate-300 hover:text-slate-100 border border-slate-600 rounded-lg hover:bg-slate-700 transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                disabled={deleteTeamLoading}
+                className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white rounded-lg transition-colors flex items-center justify-center"
               >
-                Delete
+                {deleteTeamLoading ? (
+                  <div className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Deleting...
+                  </div>
+                ) : (
+                  "Delete"
+                )}
               </button>
             </div>
           </div>
@@ -406,11 +441,19 @@ export default function TeamsPage() {
                     </div>
                     <button
                       onClick={() => handleRemovePlayer(teamPlayer.player._id)}
-                      className="text-red-400 hover:text-red-300 p-1"
+                      disabled={removePlayerLoading[teamPlayer.player._id]}
+                      className="text-red-400 hover:text-red-300 p-1 disabled:opacity-50 flex items-center"
                     >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
+                      {removePlayerLoading[teamPlayer.player._id] ? (
+                        <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                      ) : (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      )}
                     </button>
                   </div>
                 ))
@@ -470,16 +513,27 @@ export default function TeamsPage() {
                   setSelectedPlayer(null);
                   setPlayerRole("Batsman");
                 }}
-                className="flex-1 px-4 py-2 text-slate-300 hover:text-slate-100 border border-slate-600 rounded-lg hover:bg-slate-700 transition-colors"
+                disabled={addPlayerLoading}
+                className="flex-1 px-4 py-2 text-slate-300 hover:text-slate-100 border border-slate-600 rounded-lg hover:bg-slate-700 transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleAddPlayer}
-                disabled={!selectedPlayer}
-                className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+                disabled={!selectedPlayer || addPlayerLoading}
+                className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors flex items-center justify-center"
               >
-                Add Player
+                {addPlayerLoading ? (
+                  <div className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Adding...
+                  </div>
+                ) : (
+                  "Add Player"
+                )}
               </button>
             </div>
           </div>
@@ -598,7 +652,7 @@ function TeamCard({ team, onEdit, onDelete, onPlayers }) {
   );
 }
 
-function TeamForm({ formData, setFormData, onSubmit, editingTeam, onCancel }) {
+function TeamForm({ formData, setFormData, onSubmit, editingTeam, createTeamLoading, onCancel }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'slug') {
@@ -726,14 +780,26 @@ function TeamForm({ formData, setFormData, onSubmit, editingTeam, onCancel }) {
         <div className="flex space-x-3 pt-4">
           <button
             type="submit"
-            className="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg font-medium transition-colors"
+            disabled={createTeamLoading}
+            className="flex-1 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 disabled:cursor-not-allowed text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center"
           >
-            {editingTeam ? "Update Team" : "Create Team"}
+            {createTeamLoading ? (
+              <div className="flex items-center">
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                {editingTeam ? "Updating..." : "Creating..."}
+              </div>
+            ) : (
+              editingTeam ? "Update Team" : "Create Team"
+            )}
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 bg-slate-600 hover:bg-slate-700 text-slate-200 py-2 px-4 rounded-lg font-medium transition-colors"
+            disabled={createTeamLoading}
+            className="flex-1 bg-slate-600 hover:bg-slate-700 disabled:bg-slate-800 disabled:cursor-not-allowed text-slate-200 py-2 px-4 rounded-lg font-medium transition-colors"
           >
             Cancel
           </button>

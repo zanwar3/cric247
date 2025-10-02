@@ -24,6 +24,10 @@ export default function ScorePage() {
   const [showExtrasPanel, setShowExtrasPanel] = useState(false);
   const [showPlayerPanel, setShowPlayerPanel] = useState(false);
   const [ballHistory, setBallHistory] = useState([]);
+  
+  // Loading states
+  const [undoLoading, setUndoLoading] = useState(false);
+  const [scoringLoading, setScoringLoading] = useState(false);
 
   // Current match state
   const [currentBowler, setCurrentBowler] = useState({ name: '', _id: '' });
@@ -164,6 +168,7 @@ export default function ScorePage() {
 
   const recordBall = async (ballData) => {
     try {
+      setScoringLoading(true);
 
       let ballNumber = currentInnings?.ballNumber || 0;
       let latestCurrentBall = currentBall
@@ -174,6 +179,7 @@ export default function ScorePage() {
       if (ballData.isValidBall) {
 
         if (currentBall >=6 && ballNumber % 6 === 0) {
+          setScoringLoading(false);
           return setShowPlayerPanel(true);
         }
 
@@ -217,6 +223,8 @@ export default function ScorePage() {
       }
     } catch (error) {
       console.error("Error recording ball:", error);
+    } finally {
+      setScoringLoading(false);
     }
   };
 
@@ -240,6 +248,7 @@ export default function ScorePage() {
 
   const undoLastBall = async () => {
     try {
+      setUndoLoading(true);
       console.log(currentInnings);
       const response = await fetch(`/api/matches/${matchId}/undo`, {
         method: "POST",
@@ -254,6 +263,8 @@ export default function ScorePage() {
       }
     } catch (error) {
       console.error("Error undoing ball:", error);
+    } finally {
+      setUndoLoading(false);
     }
   };
 
@@ -586,7 +597,8 @@ export default function ScorePage() {
               <button
                 key={runs}
                 onClick={() => handleRunsScored(runs)}
-                className={`h-16 rounded-lg font-bold text-lg transition-all ${runs === 0
+                disabled={scoringLoading}
+                className={`h-16 rounded-lg font-bold text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${runs === 0
                   ? "bg-slate-600 hover:bg-slate-500 text-white"
                   : runs === 4
                     ? "bg-green-600 hover:bg-green-700 text-white"
@@ -595,7 +607,14 @@ export default function ScorePage() {
                       : "bg-blue-600 hover:bg-blue-700 text-white"
                   }`}
               >
-                {runs}
+                {scoringLoading ? (
+                  <svg className="animate-spin h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                ) : (
+                  runs
+                )}
               </button>
             ))}
 
@@ -619,9 +638,20 @@ export default function ScorePage() {
             </button>
             <button
               onClick={undoLastBall}
-              className="h-12 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-all"
+              disabled={undoLoading}
+              className="h-12 bg-yellow-600 hover:bg-yellow-700 disabled:bg-yellow-800 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-all flex items-center justify-center"
             >
-              UNDO
+              {undoLoading ? (
+                <div className="flex items-center">
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Undoing...
+                </div>
+              ) : (
+                "UNDO"
+              )}
             </button>
           </div>
 

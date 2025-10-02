@@ -88,8 +88,6 @@ export async function DELETE(request, { params }) {
 
     // Return updated team with populated players
     const updatedTeam = await Team.findById(id)
-      .populate('captain', 'name')
-      .populate('viceCaptain', 'name')
       .populate('players.player', 'name role');
 
     return Response.json(updatedTeam);
