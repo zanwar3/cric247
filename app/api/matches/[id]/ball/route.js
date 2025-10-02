@@ -148,8 +148,7 @@ export async function GET(request, { params }) {
     const { id } = await params;
     const ball = await Ball.findOne(
       { match_id: id } // filter
-    ).sort({ createdAt: -1 }).populate('battingTeam')
-    .populate('bowlingTeam');
+    ).sort({ createdAt: -1 })
 
     return NextResponse.json({
       success: true,

@@ -10,6 +10,8 @@ export default function Page() {
   const [bowling, setBowling] = useState([]);
   const [currentInnings, setCurrentInnings] = useState(null);
   const [match, setMatch] = useState(null);
+  const [battingTeam, setBattingTeam] = useState(null);
+  const [bowlingTeam, setBowlingTeam] = useState(null);
 
   useEffect(() => {
     if (!matchId) return;
@@ -48,7 +50,19 @@ export default function Page() {
     }
   }
 
-  const updateData = (ball) => {
+  const updateData = async(ball) => {
+    const [battingTeamResponse, bowlingTeamResponse] = await Promise.all([
+      fetch(`/api/teams/${ball.battingTeam}`),
+      fetch(`/api/teams/${ball.bowlingTeam}`)
+    ]);
+
+    const battingTeamData = await battingTeamResponse.json();
+    const bowlingTeamData = await bowlingTeamResponse.json();
+
+    // Set the teams
+    setBattingTeam(battingTeamData);
+    setBowlingTeam(bowlingTeamData);
+
     setBatting(ball.batting);
     setBowling(ball.bowling);
     setCurrentInnings(ball);
@@ -85,7 +99,7 @@ export default function Page() {
           {/* Left Section: Team + Score */}
           <div className="flex items-center gap-2 sm:gap-3 border-r border-gray-700 pr-4 sm:pr-6 flex-shrink-0">
             <PK title="Pakistan" className="w-6 h-4 sm:w-8 sm:h-6 rounded-sm shadow" />
-            <span className="text-green-400 text-base sm:text-lg font-extrabold">{currentInnings?.battingTeam?.slug}</span>
+            <span className="text-green-400 text-base sm:text-lg font-extrabold">{battingTeam?.slug}</span>
             <span className="text-yellow-400 text-lg sm:text-2xl font-black">{currentInnings?.totalRuns}-{currentInnings?.totalWickets}</span>
             <span className="text-gray-300 text-[10px] sm:text-xs">{Math.floor(currentInnings?.ballNumber / 6) || 0}.{(currentInnings?.ballNumber % 6) || 0} ov</span>
             <div className="ml-2 sm:ml-4 text-[10px] sm:text-xs text-gray-400">
@@ -128,12 +142,14 @@ export default function Page() {
             {/* Bowler info (HIDE on mobile, SHOW from sm: up) */}
             <div className="hidden sm:flex items-center gap-1 sm:gap-2 min-w-0 overflow-hidden truncate">
               <span className="text-gray-400 text-[11px] sm:text-sm truncate">{bowling?.bowler}</span>
-              <span className="text-white text-[11px] sm:text-sm font-semibold">({Math.floor(bowling?.totalBallBowled / 6)}.{(bowling?.totalBallBowled % 6)})</span>
+              {/* <span className="text-white text-[11px] sm:text-sm font-semibold">1-{bowling?.totalRuns} ({Math.floor(bowling?.totalBallBowled / 6)}.{(bowling?.totalBallBowled % 6)})</span> */}
+              <span className="text-white text-[11px] sm:text-sm font-semibold">({(bowling?.totalBallBowled % 6)})</span>
+
             </div>
-{/* 1-{bowling?.totalRuns}  */}
             {/* Flag (always visible) */}
-            <div className="flex-shrink-0">
+            <div className=" flex items-center gap-1 sm:gap-2 flex-shrink-0">
               <IN title="India" className="w-6 h-4 sm:w-8 sm:h-6 rounded-sm shadow" />
+              <span className="text-green-400 text-base sm:text-lg font-extrabold">{bowlingTeam?.slug}</span>
             </div>
           </div>
         </div>
