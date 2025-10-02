@@ -12,10 +12,20 @@ export default function Page() {
   const [match, setMatch] = useState(null);
 
   useEffect(() => {
-    if (matchId) {
+    if (!matchId) return;
+  
+    // initial fetch
+    fetchMatch();
+    fetchBallHistory();
+  
+    // set up interval
+    const interval = setInterval(() => {
       fetchMatch();
       fetchBallHistory();
-    }
+    }, 10000); // 10 sec = 10000 ms
+  
+    // cleanup interval on unmount or matchId change
+    return () => clearInterval(interval);
   }, [matchId]);
 
 
