@@ -1,0 +1,797 @@
+{
+  "info": {
+    "name": "Cric247 API Collection",
+    "description": "Complete API collection for Cric247 cricket application with all endpoints for matches, teams, tournaments, profiles, and authentication.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://cric247-pi.vercel.app",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\",\n  \"confirmPassword\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Register a new user account"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\",\n  \"confirmPassword\": \"password123\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/auth/register",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "auth", "register"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"message\": \"User created successfully\",\n  \"user\": {\n    \"_id\": \"user_id\",\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"role\": \"user\",\n    \"createdAt\": \"2024-01-01T00:00:00.000Z\",\n    \"updatedAt\": \"2024-01-01T00:00:00.000Z\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Sign In (NextAuth)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/signin",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "signin"]
+            },
+            "description": "Sign in using NextAuth credentials"
+          }
+        },
+        {
+          "name": "Get Session",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/auth/session",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "session"]
+            },
+            "description": "Get current user session"
+          }
+        }
+      ],
+      "description": "Authentication endpoints for user registration and login"
+    },
+    {
+      "name": "Matches",
+      "item": [
+        {
+          "name": "Get All Matches",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/matches",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matches"]
+            },
+            "description": "Retrieve all matches sorted by scheduled date"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/matches",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "matches"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"_id\": \"match_id\",\n    \"matchNumber\": \"MAT001\",\n    \"tournament\": \"tournament_id\",\n    \"teams\": {\n      \"teamA\": \"team_a_id\",\n      \"teamB\": \"team_b_id\"\n    },\n    \"venue\": {\n      \"name\": \"Stadium Name\",\n      \"city\": \"City Name\"\n    },\n    \"scheduledDate\": \"2024-01-15T10:00:00.000Z\",\n    \"status\": \"Scheduled\",\n    \"matchType\": \"T20\",\n    \"createdAt\": \"2024-01-01T00:00:00.000Z\",\n    \"updatedAt\": \"2024-01-01T00:00:00.000Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create Match",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"matchNumber\": \"MAT001\",\n  \"tournament\": \"tournament_id\",\n  \"teams\": {\n    \"teamA\": \"team_a_id\",\n    \"teamB\": \"team_b_id\"\n  },\n  \"venue\": {\n    \"name\": \"Stadium Name\",\n    \"city\": \"City Name\",\n    \"capacity\": 50000\n  },\n  \"scheduledDate\": \"2024-01-15T10:00:00.000Z\",\n  \"status\": \"Scheduled\",\n  \"matchType\": \"T20\",\n  \"officials\": {\n    \"umpire1\": \"Umpire One\",\n    \"umpire2\": \"Umpire Two\",\n    \"thirdUmpire\": \"Third Umpire\",\n    \"matchReferee\": \"Match Referee\"\n  },\n  \"notes\": \"Match notes\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/matches",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matches"]
+            },
+            "description": "Create a new match"
+          }
+        },
+        {
+          "name": "Get Match by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/matches/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matches", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "match_id_here",
+                  "description": "Match ID"
+                }
+              ]
+            },
+            "description": "Get a specific match by ID"
+          }
+        },
+        {
+          "name": "Update Match",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"matchNumber\": \"MAT001\",\n  \"teams\": {\n    \"teamA\": \"team_a_id\",\n    \"teamB\": \"team_b_id\"\n  },\n  \"venue\": {\n    \"name\": \"Updated Stadium Name\",\n    \"city\": \"Updated City\"\n  },\n  \"scheduledDate\": \"2024-01-15T10:00:00.000Z\",\n  \"status\": \"Live\",\n  \"matchType\": \"T20\",\n  \"notes\": \"Updated match notes\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/matches/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matches", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "match_id_here",
+                  "description": "Match ID"
+                }
+              ]
+            },
+            "description": "Update a match"
+          }
+        },
+        {
+          "name": "Delete Match",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/matches/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matches", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "match_id_here",
+                  "description": "Match ID"
+                }
+              ]
+            },
+            "description": "Delete a match"
+          }
+        },
+        {
+          "name": "Record Ball",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ballNumber\": 1,\n  \"over\": 1,\n  \"bowler\": \"bowler_profile_id\",\n  \"batsman\": \"batsman_profile_id\",\n  \"nonStriker\": \"non_striker_profile_id\",\n  \"runs\": 4,\n  \"totalRuns\": 4,\n  \"ballType\": \"legal\",\n  \"extras\": {\n    \"isExtra\": false,\n    \"type\": null,\n    \"runs\": 0\n  },\n  \"wicket\": {\n    \"isWicket\": false,\n    \"dismissalType\": null,\n    \"bowler\": null,\n    \"fielder\": null,\n    \"batsmanOut\": null\n  },\n  \"commentary\": \"Four runs scored\",\n  \"isValidBall\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/matches/:id/ball",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matches", ":id", "ball"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "match_id_here",
+                  "description": "Match ID"
+                }
+              ]
+            },
+            "description": "Record a ball in the match"
+          }
+        },
+        {
+          "name": "Undo Last Ball",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/matches/:id/undo",
+              "host": ["{{base_url}}"],
+              "path": ["api", "matches", ":id", "undo"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "match_id_here",
+                  "description": "Match ID"
+                }
+              ]
+            },
+            "description": "Undo the last recorded ball"
+          }
+        }
+      ],
+      "description": "Match management endpoints for creating, updating, and scoring matches"
+    },
+    {
+      "name": "Teams",
+      "item": [
+        {
+          "name": "Get All Teams",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/teams",
+              "host": ["{{base_url}}"],
+              "path": ["api", "teams"]
+            },
+            "description": "Retrieve all teams sorted by creation date"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/teams",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "teams"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"_id\": \"team_id\",\n    \"name\": \"Team Name\",\n    \"city\": \"City Name\",\n    \"captain\": \"captain_profile_id\",\n    \"coach\": \"Coach Name\",\n    \"founded\": 2020,\n    \"description\": \"Team description\",\n    \"homeGround\": \"Home Ground Name\",\n    \"isActive\": true,\n    \"createdAt\": \"2024-01-01T00:00:00.000Z\",\n    \"updatedAt\": \"2024-01-01T00:00:00.000Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create Team",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Team Name\",\n  \"city\": \"City Name\",\n  \"captain\": \"captain_profile_id\",\n  \"coach\": \"Coach Name\",\n  \"founded\": 2020,\n  \"description\": \"Team description\",\n  \"homeGround\": \"Home Ground Name\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/teams",
+              "host": ["{{base_url}}"],
+              "path": ["api", "teams"]
+            },
+            "description": "Create a new team"
+          }
+        },
+        {
+          "name": "Get Team by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/teams/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "teams", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "team_id_here",
+                  "description": "Team ID"
+                }
+              ]
+            },
+            "description": "Get a specific team by ID"
+          }
+        },
+        {
+          "name": "Update Team",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Team Name\",\n  \"city\": \"Updated City\",\n  \"captain\": \"new_captain_profile_id\",\n  \"coach\": \"New Coach Name\",\n  \"founded\": 2021,\n  \"description\": \"Updated team description\",\n  \"homeGround\": \"New Home Ground\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/teams/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "teams", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "team_id_here",
+                  "description": "Team ID"
+                }
+              ]
+            },
+            "description": "Update a team"
+          }
+        },
+        {
+          "name": "Add Player to Team",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"playerId\": \"player_profile_id\",\n  \"role\": \"Batsman\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/teams/:id/players",
+              "host": ["{{base_url}}"],
+              "path": ["api", "teams", ":id", "players"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "team_id_here",
+                  "description": "Team ID"
+                }
+              ]
+            },
+            "description": "Add a player to a team"
+          }
+        },
+        {
+          "name": "Remove Player from Team",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"playerId\": \"player_profile_id\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/teams/:id/players",
+              "host": ["{{base_url}}"],
+              "path": ["api", "teams", ":id", "players"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "team_id_here",
+                  "description": "Team ID"
+                }
+              ]
+            },
+            "description": "Remove a player from a team"
+          }
+        }
+      ],
+      "description": "Team management endpoints for creating, updating, and managing team rosters"
+    },
+    {
+      "name": "Tournaments",
+      "item": [
+        {
+          "name": "Get All Tournaments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/tournaments",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tournaments"]
+            },
+            "description": "Retrieve all tournaments with populated team and match data"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/tournaments",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "tournaments"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"_id\": \"tournament_id\",\n    \"name\": \"Tournament Name\",\n    \"description\": \"Tournament description\",\n    \"format\": \"T20\",\n    \"startDate\": \"2024-01-01T00:00:00.000Z\",\n    \"endDate\": \"2024-01-31T00:00:00.000Z\",\n    \"venue\": \"Tournament Venue\",\n    \"organizer\": {\n      \"name\": \"Organizer Name\",\n      \"email\": \"organizer@example.com\",\n      \"phone\": \"+1234567890\"\n    },\n    \"prizePool\": {\n      \"total\": 10000,\n      \"winner\": 5000,\n      \"runnerUp\": 3000\n    },\n    \"entryFee\": 100,\n    \"maxTeams\": 16,\n    \"minTeams\": 4,\n    \"status\": \"Registration Open\",\n    \"rules\": {\n      \"oversPerMatch\": 20,\n      \"playersPerTeam\": 11,\n      \"powerplayOvers\": 6,\n      \"duckworthLewis\": false,\n      \"supersOver\": false\n    },\n    \"isPublic\": true,\n    \"createdAt\": \"2024-01-01T00:00:00.000Z\",\n    \"updatedAt\": \"2024-01-01T00:00:00.000Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create Tournament",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tournament Name\",\n  \"description\": \"Tournament description\",\n  \"format\": \"T20\",\n  \"startDate\": \"2024-01-01T00:00:00.000Z\",\n  \"endDate\": \"2024-01-31T00:00:00.000Z\",\n  \"registrationDeadline\": \"2023-12-15T00:00:00.000Z\",\n  \"venue\": \"Tournament Venue\",\n  \"organizer\": {\n    \"name\": \"Organizer Name\",\n    \"email\": \"organizer@example.com\",\n    \"phone\": \"+1234567890\"\n  },\n  \"prizePool\": {\n    \"total\": 10000,\n    \"winner\": 5000,\n    \"runnerUp\": 3000,\n    \"other\": \"Best Player: $1000\"\n  },\n  \"entryFee\": 100,\n  \"maxTeams\": 16,\n  \"minTeams\": 4,\n  \"status\": \"Draft\",\n  \"rules\": {\n    \"oversPerMatch\": 20,\n    \"playersPerTeam\": 11,\n    \"powerplayOvers\": 6,\n    \"duckworthLewis\": false,\n    \"supersOver\": false\n  },\n  \"isPublic\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tournaments",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tournaments"]
+            },
+            "description": "Create a new tournament"
+          }
+        },
+        {
+          "name": "Get Tournament by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/tournaments/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tournaments", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "tournament_id_here",
+                  "description": "Tournament ID"
+                }
+              ]
+            },
+            "description": "Get a specific tournament by ID"
+          }
+        },
+        {
+          "name": "Update Tournament",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Tournament Name\",\n  \"description\": \"Updated tournament description\",\n  \"format\": \"T20\",\n  \"startDate\": \"2024-02-01T00:00:00.000Z\",\n  \"endDate\": \"2024-02-28T00:00:00.000Z\",\n  \"venue\": \"Updated Venue\",\n  \"organizer\": {\n    \"name\": \"Updated Organizer\",\n    \"email\": \"updated@example.com\",\n    \"phone\": \"+1234567890\"\n  },\n  \"prizePool\": {\n    \"total\": 15000,\n    \"winner\": 7500,\n    \"runnerUp\": 4500\n  },\n  \"entryFee\": 150,\n  \"maxTeams\": 20,\n  \"minTeams\": 6,\n  \"status\": \"Registration Open\",\n  \"rules\": {\n    \"oversPerMatch\": 20,\n    \"playersPerTeam\": 11,\n    \"powerplayOvers\": 6,\n    \"duckworthLewis\": true,\n    \"supersOver\": true\n  },\n  \"isPublic\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/tournaments/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tournaments", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "tournament_id_here",
+                  "description": "Tournament ID"
+                }
+              ]
+            },
+            "description": "Update a tournament"
+          }
+        },
+        {
+          "name": "Delete Tournament",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/tournaments/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "tournaments", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "tournament_id_here",
+                  "description": "Tournament ID"
+                }
+              ]
+            },
+            "description": "Delete a tournament"
+          }
+        }
+      ],
+      "description": "Tournament management endpoints for creating and managing cricket tournaments"
+    },
+    {
+      "name": "Profiles",
+      "item": [
+        {
+          "name": "Get All Profiles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/profiles",
+              "host": ["{{base_url}}"],
+              "path": ["api", "profiles"]
+            },
+            "description": "Retrieve all player profiles"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/profiles",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "profiles"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"_id\": \"profile_id\",\n    \"fullName\": \"Player Name\",\n    \"gender\": \"Male\",\n    \"city\": \"City Name\",\n    \"mobileNumber\": \"+1234567890\",\n    \"email\": \"player@example.com\",\n    \"primaryRole\": \"Batsman\",\n    \"battingHand\": \"Right-Handed\",\n    \"bowlingHand\": \"Right-Handed\",\n    \"bowlingStyle\": \"Right-arm fast\",\n    \"createdAt\": \"2024-01-01T00:00:00.000Z\",\n    \"updatedAt\": \"2024-01-01T00:00:00.000Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Player Name\",\n  \"gender\": \"Male\",\n  \"city\": \"City Name\",\n  \"mobileNumber\": \"+1234567890\",\n  \"email\": \"player@example.com\",\n  \"primaryRole\": \"Batsman\",\n  \"battingHand\": \"Right-Handed\",\n  \"bowlingHand\": \"Right-Handed\",\n  \"bowlingStyle\": \"Right-arm fast\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/profiles",
+              "host": ["{{base_url}}"],
+              "path": ["api", "profiles"]
+            },
+            "description": "Create a new player profile"
+          }
+        },
+        {
+          "name": "Get Profile by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/profiles/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "profiles", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "profile_id_here",
+                  "description": "Profile ID"
+                }
+              ]
+            },
+            "description": "Get a specific profile by ID"
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Updated Player Name\",\n  \"gender\": \"Male\",\n  \"city\": \"Updated City\",\n  \"mobileNumber\": \"+1234567890\",\n  \"email\": \"updated@example.com\",\n  \"primaryRole\": \"All-Rounder\",\n  \"battingHand\": \"Left-Handed\",\n  \"bowlingHand\": \"Left-Handed\",\n  \"bowlingStyle\": \"Left-arm spin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/profiles/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "profiles", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "profile_id_here",
+                  "description": "Profile ID"
+                }
+              ]
+            },
+            "description": "Update a player profile"
+          }
+        },
+        {
+          "name": "Delete Profile",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/profiles/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "profiles", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "profile_id_here",
+                  "description": "Profile ID"
+                }
+              ]
+            },
+            "description": "Delete a player profile"
+          }
+        }
+      ],
+      "description": "Player profile management endpoints for creating and managing player information"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-set Content-Type for POST/PUT requests",
+          "if (pm.request.method === 'POST' || pm.request.method === 'PUT') {",
+          "    pm.request.headers.add({",
+          "        key: 'Content-Type',",
+          "        value: 'application/json'",
+          "    });",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global test to check response status",
+          "pm.test('Status code is successful', function () {",
+          "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+          "});",
+          "",
+          "// Check if response is JSON",
+          "if (pm.response.headers.get('Content-Type') && pm.response.headers.get('Content-Type').includes('application/json')) {",
+          "    pm.test('Response is JSON', function () {",
+          "        pm.response.to.be.json;",
+          "    });",
+          "}",
+          "",
+          "// Log response for debugging",
+          "console.log('Response Status:', pm.response.status);",
+          "console.log('Response Body:', pm.response.text());"
+        ]
+      }
+    }
+  ]
+}
+
