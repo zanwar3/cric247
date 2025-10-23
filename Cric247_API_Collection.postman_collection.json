@@ -1,9 +1,9 @@
 {
   "info": {
     "name": "Cric247 API Collection",
-    "description": "Complete API collection for Cric247 cricket application with all endpoints for matches, teams, tournaments, profiles, and authentication.",
+    "description": "Complete API collection for Cric247 cricket application with all endpoints for matches, teams, tournaments, profiles, and authentication. Includes both Web (NextAuth with cookies) and Mobile (JWT token-based) authentication methods.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "version": "1.0.0"
+    "version": "2.0.0"
   },
   "auth": {
     "type": "bearer",
@@ -123,7 +123,201 @@
           }
         }
       ],
-      "description": "Authentication endpoints for user registration and login"
+      "description": "Web authentication endpoints using NextAuth (cookie-based sessions)"
+    },
+    {
+      "name": "Mobile Authentication",
+      "item": [
+        {
+          "name": "Mobile Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Save the token to collection variable for subsequent requests",
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.token) {",
+                  "        pm.collectionVariables.set('auth_token', jsonData.token);",
+                  "        console.log('Token saved:', jsonData.token);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/mobile/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "mobile", "login"]
+            },
+            "description": "Mobile login endpoint that returns JWT token directly in response body. Use this token in the Authorization header for all subsequent API calls.\n\nResponse includes:\n- token: JWT token to use for authentication\n- user: User profile information\n\nThe token is automatically saved to the collection variable 'auth_token' for use in other requests."
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"password123\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/auth/mobile/login",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "auth", "mobile", "login"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Login successful\",\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"user\": {\n    \"id\": \"user_id_here\",\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"role\": \"user\",\n    \"avatar\": null,\n    \"profile\": {\n      \"phone\": \"\",\n      \"bio\": \"\",\n      \"location\": \"\"\n    },\n    \"lastLogin\": \"2024-01-01T00:00:00.000Z\"\n  }\n}"
+            },
+            {
+              "name": "Invalid Credentials",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"wrong@example.com\",\n  \"password\": \"wrongpassword\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/auth/mobile/login",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "auth", "mobile", "login"]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"Invalid email or password\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/mobile/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "mobile", "refresh"]
+            },
+            "description": "Refresh the JWT token to extend the session. Requires a valid token in the Authorization header.\n\nSend your current token in the Authorization header as:\nAuthorization: Bearer <your_token>\n\nReturns a new token with extended expiration."
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/auth/mobile/refresh",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "auth", "mobile", "refresh"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"success\": true,\n  \"message\": \"Token refreshed successfully\",\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"user\": {\n    \"id\": \"user_id_here\",\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"role\": \"user\",\n    \"avatar\": null,\n    \"profile\": {\n      \"phone\": \"\",\n      \"bio\": \"\",\n      \"location\": \"\"\n    },\n    \"lastLogin\": \"2024-01-01T00:00:00.000Z\"\n  }\n}"
+            },
+            {
+              "name": "Invalid Token",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer invalid_token",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/auth/mobile/refresh",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "auth", "mobile", "refresh"]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"Invalid or expired token\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "Mobile authentication endpoints that return JWT tokens directly (no cookies). Perfect for mobile apps.\n\n**How to use:**\n1. Call 'Mobile Login' with email/password\n2. Copy the returned token\n3. Use the token in Authorization header for all API calls:\n   `Authorization: Bearer <your_token>`\n4. The token is valid for 30 days (dev mode)\n5. Use 'Refresh Token' to get a new token before expiry\n\n**Note:** The collection is configured to automatically use the Bearer token from the {{auth_token}} variable for authenticated requests."
     },
     {
       "name": "Matches",
