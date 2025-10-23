@@ -1,0 +1,104 @@
+CRIC247 MOBILE API - CURL COMMANDS
+Live Server: https://cric247-pi.vercel.app
+========================================
+
+✅ ENDPOINTS ARE LIVE AND WORKING!
+
+1️⃣ REGISTER USER
+------------------
+curl -X POST https://cric247-pi.vercel.app/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test User","email":"test@example.com","password":"password123","confirmPassword":"password123"}'
+
+
+2️⃣ MOBILE LOGIN (Returns JWT Token)
+-------------------------------------
+curl -X POST https://cric247-pi.vercel.app/api/auth/mobile/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}'
+
+Response:
+{
+  "success": true,
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": { ... }
+}
+
+
+3️⃣ GET MATCHES (Use token from login)
+---------------------------------------
+curl -X GET https://cric247-pi.vercel.app/api/matches \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE"
+
+
+4️⃣ REFRESH TOKEN
+------------------
+curl -X POST https://cric247-pi.vercel.app/api/auth/mobile/refresh \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE"
+
+
+5️⃣ GET TEAMS
+-------------
+curl -X GET https://cric247-pi.vercel.app/api/teams \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE"
+
+
+6️⃣ CREATE TEAM
+---------------
+curl -X POST https://cric247-pi.vercel.app/api/teams \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"My Team","slug":"my-team","city":"City","captain":null}'
+
+
+7️⃣ GET PROFILES
+----------------
+curl -X GET https://cric247-pi.vercel.app/api/profiles \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE"
+
+
+8️⃣ CREATE PROFILE
+------------------
+curl -X POST https://cric247-pi.vercel.app/api/profiles \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{"fullName":"Player Name","gender":"Male","city":"City","email":"player@example.com","primaryRole":"Batsman"}'
+
+
+9️⃣ GET TOURNAMENTS
+-------------------
+curl -X GET https://cric247-pi.vercel.app/api/tournaments \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE"
+
+
+🔟 CREATE MATCH
+----------------
+curl -X POST https://cric247-pi.vercel.app/api/matches \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -H "Content-Type: application/json" \
+  -d '{"matchNumber":"M001","teams":{"teamA":"team_id_1","teamB":"team_id_2"},"venue":{"name":"Stadium","city":"City"},"scheduledDate":"2024-12-01T10:00:00.000Z","matchType":"T20","status":"Scheduled"}'
+
+
+========================================
+AUTOMATED TEST SCRIPT
+========================================
+Run: ./mobile-api-curls.sh
+
+This will automatically:
+- Register a user
+- Login and get token
+- Test all endpoints with the token
+- Show formatted JSON responses
+
+========================================
+NOTES
+========================================
+✅ Both endpoints are LIVE on Vercel
+✅ CORS is configured for mobile apps
+✅ Token valid for 30 days (dev mode)
+✅ All existing APIs work with Bearer token
+✅ No breaking changes to web app
+
+Replace YOUR_TOKEN_HERE with actual token from login response.
+
