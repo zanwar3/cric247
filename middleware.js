@@ -66,6 +66,7 @@ export default withAuth(
 export const config = {
   matcher: [
     // This regex pattern excludes all the routes above from middleware protection.
-    '/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.jpg$|.*\\.jpeg$|.*\\.gif$|.*\\.svg$).*)',
+    // Excludes ALL /api routes (not just /api/auth) so Bearer token auth can work
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.jpg$|.*\\.jpeg$|.*\\.gif$|.*\\.svg$).*)',
   ],
 };
