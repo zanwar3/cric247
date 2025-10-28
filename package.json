@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test:api": "node test-mobile-api.js"
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.10",

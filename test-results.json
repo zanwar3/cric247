@@ -1,0 +1,1995 @@
+{
+  "summary": {
+    "totalTests": 31,
+    "passed": 31,
+    "failed": 0,
+    "successRate": "100.00%",
+    "totalDuration": "18766ms",
+    "timestamp": "2025-10-28T12:02:28.310Z",
+    "baseUrl": "https://cric247-pi.vercel.app"
+  },
+  "createdResources": {
+    "userId": "6900b0c4a3e1e740c34bceb8",
+    "profileId": "6900b0c6a3e1e740c34bcebd",
+    "profileId2": "6900b0c7a3e1e740c34bcebf",
+    "teamId": "6900b0c9a3e1e740c34bcec4",
+    "teamId2": "6900b0c9a3e1e740c34bcec6",
+    "tournamentId": "6900b0cda3e1e740c34bced6",
+    "matchId": "6900b0cfa3e1e740c34bcedc",
+    "ballId": "6900b0d2a3e1e740c34bcee4"
+  },
+  "tests": [
+    {
+      "testName": "Register User",
+      "endpoint": "/api/auth/register",
+      "method": "POST",
+      "timestamp": "2025-10-28T12:02:10.827Z",
+      "status": "success",
+      "statusCode": 201,
+      "duration": 1278,
+      "request": {
+        "headers": {},
+        "body": {
+          "name": "Test User",
+          "email": "test1761652929546@example.com",
+          "password": "password123",
+          "confirmPassword": "password123"
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:12 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/auth/register",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::m6nl5-1761652931915-6a7b46dab8f2"
+        },
+        "body": {
+          "message": "User created successfully",
+          "user": {
+            "name": "Test User",
+            "email": "test1761652929546@example.com",
+            "role": "user",
+            "avatar": null,
+            "isActive": true,
+            "lastLogin": null,
+            "profile": {
+              "phone": "",
+              "bio": "",
+              "location": ""
+            },
+            "_id": "6900b0c4a3e1e740c34bceb8",
+            "createdAt": "2025-10-28T12:02:12.236Z",
+            "updatedAt": "2025-10-28T12:02:12.236Z",
+            "__v": 0
+          }
+        }
+      }
+    },
+    {
+      "testName": "Mobile Login",
+      "endpoint": "/api/auth/mobile/login",
+      "method": "POST",
+      "timestamp": "2025-10-28T12:02:12.019Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 1187,
+      "request": {
+        "headers": {},
+        "body": {
+          "email": "test1761652929546@example.com",
+          "password": "password123"
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:14 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/auth/mobile/login",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::6plf6-1761652933156-2d186b64b50d"
+        },
+        "body": {
+          "success": true,
+          "message": "Login successful",
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI",
+          "user": {
+            "id": "6900b0c4a3e1e740c34bceb8",
+            "name": "Test User",
+            "email": "test1761652929546@example.com",
+            "role": "user",
+            "avatar": null,
+            "profile": {
+              "phone": "",
+              "bio": "",
+              "location": ""
+            },
+            "lastLogin": "2025-10-28T12:02:13.908Z"
+          }
+        }
+      }
+    },
+    {
+      "testName": "Refresh Token",
+      "endpoint": "/api/auth/mobile/refresh",
+      "method": "POST",
+      "timestamp": "2025-10-28T12:02:12.473Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 452,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:14 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/auth/mobile/refresh",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::mnpv6-1761652934248-ffb9966881ae"
+        },
+        "body": {
+          "success": true,
+          "message": "Token refreshed successfully",
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI",
+          "user": {
+            "id": "6900b0c4a3e1e740c34bceb8",
+            "name": "Test User",
+            "email": "test1761652929546@example.com",
+            "role": "user",
+            "avatar": null,
+            "profile": {
+              "phone": "",
+              "bio": "",
+              "location": ""
+            },
+            "lastLogin": "2025-10-28T12:02:13.908Z"
+          }
+        }
+      }
+    },
+    {
+      "testName": "Create Profile",
+      "endpoint": "/api/profiles",
+      "method": "POST",
+      "timestamp": "2025-10-28T12:02:12.937Z",
+      "status": "success",
+      "statusCode": 201,
+      "duration": 463,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "name": "Test Player One",
+          "gender": "Male",
+          "city": "Test City",
+          "phone": "+1234567890",
+          "email": "player1761652929546@example.com",
+          "role": "Batsman",
+          "battingStyle": "Right-Handed",
+          "bowlingStyle": "Right-arm fast"
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:15 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/profiles",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::mnpv6-1761652934703-e436c4071963"
+        },
+        "body": {
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "name": "Test Player One",
+          "gender": "Male",
+          "city": "Test City",
+          "phone": "+1234567890",
+          "email": "player1761652929546@example.com",
+          "role": "Batsman",
+          "battingStyle": "Right-Handed",
+          "bowlingStyle": "Right-arm fast",
+          "_id": "6900b0c6a3e1e740c34bcebd",
+          "createdAt": "2025-10-28T12:02:14.823Z",
+          "updatedAt": "2025-10-28T12:02:14.823Z",
+          "__v": 0
+        }
+      }
+    },
+    {
+      "testName": "Create Second Profile",
+      "endpoint": "/api/profiles",
+      "method": "POST",
+      "timestamp": "2025-10-28T12:02:13.392Z",
+      "status": "success",
+      "statusCode": 201,
+      "duration": 453,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "name": "Test Player Two",
+          "gender": "Male",
+          "city": "Test City",
+          "phone": "+1234567891",
+          "email": "player21761652929546@example.com",
+          "role": "Bowler",
+          "battingStyle": "Left-Handed",
+          "bowlingStyle": "Left-arm spin"
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:15 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/profiles",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::6plf6-1761652935169-cdbe61f8735d"
+        },
+        "body": {
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "name": "Test Player Two",
+          "gender": "Male",
+          "city": "Test City",
+          "phone": "+1234567891",
+          "email": "player21761652929546@example.com",
+          "role": "Bowler",
+          "battingStyle": "Left-Handed",
+          "bowlingStyle": "Left-arm spin",
+          "_id": "6900b0c7a3e1e740c34bcebf",
+          "createdAt": "2025-10-28T12:02:15.287Z",
+          "updatedAt": "2025-10-28T12:02:15.287Z",
+          "__v": 0
+        }
+      }
+    },
+    {
+      "testName": "Get All Profiles",
+      "endpoint": "/api/profiles",
+      "method": "GET",
+      "timestamp": "2025-10-28T12:02:13.842Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 448,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:15 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/profiles",
+          "x-vercel-cache": "BYPASS",
+          "x-vercel-id": "dxb1::iad1::s76vr-1761652935622-645c4d3d23c1"
+        },
+        "body": [
+          {
+            "_id": "6900b0c7a3e1e740c34bcebf",
+            "user": "6900b0c4a3e1e740c34bceb8",
+            "name": "Test Player Two",
+            "gender": "Male",
+            "city": "Test City",
+            "phone": "+1234567891",
+            "email": "player21761652929546@example.com",
+            "role": "Bowler",
+            "battingStyle": "Left-Handed",
+            "bowlingStyle": "Left-arm spin",
+            "createdAt": "2025-10-28T12:02:15.287Z",
+            "updatedAt": "2025-10-28T12:02:15.287Z",
+            "__v": 0
+          },
+          {
+            "_id": "6900b0c6a3e1e740c34bcebd",
+            "user": "6900b0c4a3e1e740c34bceb8",
+            "name": "Test Player One",
+            "gender": "Male",
+            "city": "Test City",
+            "phone": "+1234567890",
+            "email": "player1761652929546@example.com",
+            "role": "Batsman",
+            "battingStyle": "Right-Handed",
+            "bowlingStyle": "Right-arm fast",
+            "createdAt": "2025-10-28T12:02:14.823Z",
+            "updatedAt": "2025-10-28T12:02:14.823Z",
+            "__v": 0
+          }
+        ]
+      }
+    },
+    {
+      "testName": "Get Profile by ID",
+      "endpoint": "/api/profiles/6900b0c6a3e1e740c34bcebd",
+      "method": "GET",
+      "timestamp": "2025-10-28T12:02:14.297Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 452,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:16 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/profiles/[id]",
+          "x-vercel-cache": "BYPASS",
+          "x-vercel-id": "dxb1::iad1::7qx9v-1761652936072-408809a41346"
+        },
+        "body": {
+          "success": true,
+          "data": {
+            "_id": "6900b0c6a3e1e740c34bcebd",
+            "user": "6900b0c4a3e1e740c34bceb8",
+            "name": "Test Player One",
+            "gender": "Male",
+            "city": "Test City",
+            "phone": "+1234567890",
+            "email": "player1761652929546@example.com",
+            "role": "Batsman",
+            "battingStyle": "Right-Handed",
+            "bowlingStyle": "Right-arm fast",
+            "createdAt": "2025-10-28T12:02:14.823Z",
+            "updatedAt": "2025-10-28T12:02:14.823Z",
+            "__v": 0
+          }
+        }
+      }
+    },
+    {
+      "testName": "Update Profile",
+      "endpoint": "/api/profiles/6900b0c6a3e1e740c34bcebd",
+      "method": "PUT",
+      "timestamp": "2025-10-28T12:02:14.756Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 458,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "name": "Test Player One Updated",
+          "city": "Updated City"
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:16 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/profiles/[id]",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::7qx9v-1761652936527-e56564c91da2"
+        },
+        "body": {
+          "success": true,
+          "data": {
+            "_id": "6900b0c6a3e1e740c34bcebd",
+            "user": "6900b0c4a3e1e740c34bceb8",
+            "name": "Test Player One Updated",
+            "gender": "Male",
+            "city": "Updated City",
+            "phone": "+1234567890",
+            "email": "player1761652929546@example.com",
+            "role": "Batsman",
+            "battingStyle": "Right-Handed",
+            "bowlingStyle": "Right-arm fast",
+            "createdAt": "2025-10-28T12:02:14.823Z",
+            "updatedAt": "2025-10-28T12:02:16.646Z",
+            "__v": 0
+          }
+        }
+      }
+    },
+    {
+      "testName": "Create Team",
+      "endpoint": "/api/teams",
+      "method": "POST",
+      "timestamp": "2025-10-28T12:02:15.241Z",
+      "status": "success",
+      "statusCode": 201,
+      "duration": 483,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "name": "Test Team 1761652929546",
+          "slug": "TT1",
+          "city": "Test City",
+          "captain": "Test Captain One",
+          "coach": "Test Coach",
+          "founded": "2024",
+          "description": "Test team for API testing",
+          "homeGround": "Test Ground",
+          "isActive": true
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:17 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/teams",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::7qx9v-1761652936988-45ec069e3a55"
+        },
+        "body": {
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "name": "Test Team 1761652929546",
+          "slug": "TT1",
+          "city": "Test City",
+          "description": "Test team for API testing",
+          "founded": "2024",
+          "homeGround": "Test Ground",
+          "captain": "Test Captain One",
+          "coach": "Test Coach",
+          "statistics": {
+            "matchesPlayed": 0,
+            "matchesWon": 0,
+            "matchesLost": 0,
+            "matchesDrawn": 0,
+            "totalRuns": 0,
+            "totalWickets": 0
+          },
+          "isActive": true,
+          "_id": "6900b0c9a3e1e740c34bcec4",
+          "players": [],
+          "createdAt": "2025-10-28T12:02:17.133Z",
+          "updatedAt": "2025-10-28T12:02:17.133Z",
+          "__v": 0,
+          "winPercentage": 0,
+          "id": "6900b0c9a3e1e740c34bcec4"
+        }
+      }
+    },
+    {
+      "testName": "Create Second Team",
+      "endpoint": "/api/teams",
+      "method": "POST",
+      "timestamp": "2025-10-28T12:02:15.696Z",
+      "status": "success",
+      "statusCode": 201,
+      "duration": 453,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "name": "Test Team Two 1761652929546",
+          "slug": "TT2",
+          "city": "Test City Two",
+          "captain": "Test Captain Two",
+          "coach": "Test Coach Two",
+          "founded": "2024",
+          "description": "Second test team for API testing",
+          "homeGround": "Test Ground Two",
+          "isActive": true
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:17 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/teams",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::cxksm-1761652937472-b10b0cbd2c42"
+        },
+        "body": {
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "name": "Test Team Two 1761652929546",
+          "slug": "TT2",
+          "city": "Test City Two",
+          "description": "Second test team for API testing",
+          "founded": "2024",
+          "homeGround": "Test Ground Two",
+          "captain": "Test Captain Two",
+          "coach": "Test Coach Two",
+          "statistics": {
+            "matchesPlayed": 0,
+            "matchesWon": 0,
+            "matchesLost": 0,
+            "matchesDrawn": 0,
+            "totalRuns": 0,
+            "totalWickets": 0
+          },
+          "isActive": true,
+          "_id": "6900b0c9a3e1e740c34bcec6",
+          "players": [],
+          "createdAt": "2025-10-28T12:02:17.590Z",
+          "updatedAt": "2025-10-28T12:02:17.590Z",
+          "__v": 0,
+          "winPercentage": 0,
+          "id": "6900b0c9a3e1e740c34bcec6"
+        }
+      }
+    },
+    {
+      "testName": "Get All Teams",
+      "endpoint": "/api/teams",
+      "method": "GET",
+      "timestamp": "2025-10-28T12:02:16.158Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 460,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:18 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/teams",
+          "x-vercel-cache": "BYPASS",
+          "x-vercel-id": "dxb1::iad1::jnc2t-1761652937926-929c0ce7ee33"
+        },
+        "body": [
+          {
+            "statistics": {
+              "matchesPlayed": 0,
+              "matchesWon": 0,
+              "matchesLost": 0,
+              "matchesDrawn": 0,
+              "totalRuns": 0,
+              "totalWickets": 0
+            },
+            "_id": "6900b0c9a3e1e740c34bcec6",
+            "user": "6900b0c4a3e1e740c34bceb8",
+            "name": "Test Team Two 1761652929546",
+            "slug": "TT2",
+            "city": "Test City Two",
+            "description": "Second test team for API testing",
+            "founded": "2024",
+            "homeGround": "Test Ground Two",
+            "captain": "Test Captain Two",
+            "coach": "Test Coach Two",
+            "isActive": true,
+            "players": [],
+            "createdAt": "2025-10-28T12:02:17.590Z",
+            "updatedAt": "2025-10-28T12:02:17.590Z",
+            "__v": 0,
+            "winPercentage": 0,
+            "id": "6900b0c9a3e1e740c34bcec6"
+          },
+          {
+            "statistics": {
+              "matchesPlayed": 0,
+              "matchesWon": 0,
+              "matchesLost": 0,
+              "matchesDrawn": 0,
+              "totalRuns": 0,
+              "totalWickets": 0
+            },
+            "_id": "6900b0c9a3e1e740c34bcec4",
+            "user": "6900b0c4a3e1e740c34bceb8",
+            "name": "Test Team 1761652929546",
+            "slug": "TT1",
+            "city": "Test City",
+            "description": "Test team for API testing",
+            "founded": "2024",
+            "homeGround": "Test Ground",
+            "captain": "Test Captain One",
+            "coach": "Test Coach",
+            "isActive": true,
+            "players": [],
+            "createdAt": "2025-10-28T12:02:17.133Z",
+            "updatedAt": "2025-10-28T12:02:17.133Z",
+            "__v": 0,
+            "winPercentage": 0,
+            "id": "6900b0c9a3e1e740c34bcec4"
+          }
+        ]
+      }
+    },
+    {
+      "testName": "Get Team by ID",
+      "endpoint": "/api/teams/6900b0c9a3e1e740c34bcec4",
+      "method": "GET",
+      "timestamp": "2025-10-28T12:02:16.614Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 454,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:18 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/teams/[id]",
+          "x-vercel-cache": "BYPASS",
+          "x-vercel-id": "dxb1::iad1::mnpv6-1761652938387-b5661459b90a"
+        },
+        "body": {
+          "statistics": {
+            "matchesPlayed": 0,
+            "matchesWon": 0,
+            "matchesLost": 0,
+            "matchesDrawn": 0,
+            "totalRuns": 0,
+            "totalWickets": 0
+          },
+          "_id": "6900b0c9a3e1e740c34bcec4",
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "name": "Test Team 1761652929546",
+          "slug": "TT1",
+          "city": "Test City",
+          "description": "Test team for API testing",
+          "founded": "2024",
+          "homeGround": "Test Ground",
+          "captain": "Test Captain One",
+          "coach": "Test Coach",
+          "isActive": true,
+          "players": [],
+          "createdAt": "2025-10-28T12:02:17.133Z",
+          "updatedAt": "2025-10-28T12:02:17.133Z",
+          "__v": 0,
+          "winPercentage": 0,
+          "id": "6900b0c9a3e1e740c34bcec4"
+        }
+      }
+    },
+    {
+      "testName": "Update Team",
+      "endpoint": "/api/teams/6900b0c9a3e1e740c34bcec4",
+      "method": "PUT",
+      "timestamp": "2025-10-28T12:02:17.255Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 640,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "name": "Test Team Updated 1761652929546",
+          "slug": "TTU",
+          "description": "Updated test team description"
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:19 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/teams/[id]",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::88r47-1761652938844-e30813bb5caf"
+        },
+        "body": {
+          "statistics": {
+            "matchesPlayed": 0,
+            "matchesWon": 0,
+            "matchesLost": 0,
+            "matchesDrawn": 0,
+            "totalRuns": 0,
+            "totalWickets": 0
+          },
+          "_id": "6900b0c9a3e1e740c34bcec4",
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "name": "Test Team Updated 1761652929546",
+          "slug": "TTU",
+          "city": "Test City",
+          "description": "Updated test team description",
+          "founded": "2024",
+          "homeGround": "Test Ground",
+          "captain": "",
+          "coach": "",
+          "isActive": true,
+          "players": [],
+          "createdAt": "2025-10-28T12:02:17.133Z",
+          "updatedAt": "2025-10-28T12:02:19.150Z",
+          "__v": 0,
+          "winPercentage": 0,
+          "id": "6900b0c9a3e1e740c34bcec4"
+        }
+      }
+    },
+    {
+      "testName": "Add Player to Team",
+      "endpoint": "/api/teams/6900b0c9a3e1e740c34bcec4/players",
+      "method": "POST",
+      "timestamp": "2025-10-28T12:02:18.271Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 1014,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "playerId": "6900b0c7a3e1e740c34bcebf",
+          "role": "Bowler"
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:20 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/teams/[id]/players",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::7qx9v-1761652939485-998309c1f6b1"
+        },
+        "body": {
+          "statistics": {
+            "matchesPlayed": 0,
+            "matchesWon": 0,
+            "matchesLost": 0,
+            "matchesDrawn": 0,
+            "totalRuns": 0,
+            "totalWickets": 0
+          },
+          "_id": "6900b0c9a3e1e740c34bcec4",
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "name": "Test Team Updated 1761652929546",
+          "slug": "TTU",
+          "city": "Test City",
+          "description": "Updated test team description",
+          "founded": "2024",
+          "homeGround": "Test Ground",
+          "captain": "",
+          "coach": "",
+          "isActive": true,
+          "players": [
+            {
+              "player": {
+                "_id": "6900b0c7a3e1e740c34bcebf",
+                "name": "Test Player Two",
+                "role": "Bowler",
+                "id": "6900b0c7a3e1e740c34bcebf"
+              },
+              "role": "Bowler",
+              "joinedDate": "2025-10-28T12:02:19.789Z",
+              "isActive": true,
+              "_id": "6900b0cba3e1e740c34bcecd",
+              "id": "6900b0cba3e1e740c34bcecd"
+            }
+          ],
+          "createdAt": "2025-10-28T12:02:17.133Z",
+          "updatedAt": "2025-10-28T12:02:19.790Z",
+          "__v": 1,
+          "winPercentage": 0,
+          "id": "6900b0c9a3e1e740c34bcec4"
+        }
+      }
+    },
+    {
+      "testName": "Remove Player from Team",
+      "endpoint": "/api/teams/6900b0c9a3e1e740c34bcec4/players",
+      "method": "DELETE",
+      "timestamp": "2025-10-28T12:02:19.101Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 824,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "playerId": "6900b0c7a3e1e740c34bcebf"
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:21 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/teams/[id]/players",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::7qx9v-1761652940499-3488904c4502"
+        },
+        "body": {
+          "statistics": {
+            "matchesPlayed": 0,
+            "matchesWon": 0,
+            "matchesLost": 0,
+            "matchesDrawn": 0,
+            "totalRuns": 0,
+            "totalWickets": 0
+          },
+          "_id": "6900b0c9a3e1e740c34bcec4",
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "name": "Test Team Updated 1761652929546",
+          "slug": "TTU",
+          "city": "Test City",
+          "description": "Updated test team description",
+          "founded": "2024",
+          "homeGround": "Test Ground",
+          "captain": "",
+          "coach": "",
+          "isActive": true,
+          "players": [],
+          "createdAt": "2025-10-28T12:02:17.133Z",
+          "updatedAt": "2025-10-28T12:02:20.801Z",
+          "__v": 2,
+          "winPercentage": 0,
+          "id": "6900b0c9a3e1e740c34bcec4"
+        }
+      }
+    },
+    {
+      "testName": "Create Tournament",
+      "endpoint": "/api/tournaments",
+      "method": "POST",
+      "timestamp": "2025-10-28T12:02:19.839Z",
+      "status": "success",
+      "statusCode": 201,
+      "duration": 737,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "name": "Test Tournament 1761652929546",
+          "description": "Test tournament for API testing",
+          "format": "T20",
+          "startDate": "2025-11-04T12:02:19.101Z",
+          "endDate": "2025-11-27T12:02:19.101Z",
+          "registrationDeadline": "2025-10-31T12:02:19.101Z",
+          "venue": "Test Venue",
+          "organizer": {
+            "name": "Test Organizer",
+            "email": "organizer1761652929546@example.com",
+            "phone": "+1234567890"
+          },
+          "prizePool": "Winner: $5000, Runner-up: $3000, Best Player: $1000",
+          "entryFee": 100,
+          "maxTeams": 16,
+          "minTeams": 4,
+          "status": "Draft",
+          "rules": {
+            "oversPerMatch": 20,
+            "playersPerTeam": 11,
+            "powerplayOvers": 6,
+            "duckworthLewis": false,
+            "supersOver": false
+          },
+          "isPublic": true
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:21 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/tournaments",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::gxlhh-1761652941428-5db24c31356b"
+        },
+        "body": {
+          "organizer": {
+            "name": "Test Organizer",
+            "email": "organizer1761652929546@example.com",
+            "phone": "+1234567890"
+          },
+          "rules": {
+            "oversPerMatch": 20,
+            "playersPerTeam": 11,
+            "powerplayOvers": 6,
+            "duckworthLewis": false,
+            "supersOver": false
+          },
+          "_id": "6900b0cda3e1e740c34bced6",
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "name": "Test Tournament 1761652929546",
+          "description": "Test tournament for API testing",
+          "format": "T20",
+          "startDate": "2025-11-04T12:02:19.101Z",
+          "endDate": "2025-11-27T12:02:19.101Z",
+          "registrationDeadline": "2025-10-31T12:02:19.101Z",
+          "venue": "Test Venue",
+          "prizePool": "Winner: $5000, Runner-up: $3000, Best Player: $1000",
+          "entryFee": 100,
+          "maxTeams": 16,
+          "minTeams": 4,
+          "matches": [],
+          "status": "Draft",
+          "isPublic": true,
+          "teams": [],
+          "createdAt": "2025-10-28T12:02:21.549Z",
+          "updatedAt": "2025-10-28T12:02:21.549Z",
+          "__v": 0,
+          "registrationProgress": "0/16",
+          "isRegistrationOpen": false,
+          "id": "6900b0cda3e1e740c34bced6"
+        }
+      }
+    },
+    {
+      "testName": "Get All Tournaments",
+      "endpoint": "/api/tournaments",
+      "method": "GET",
+      "timestamp": "2025-10-28T12:02:20.381Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 541,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:22 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/tournaments",
+          "x-vercel-cache": "BYPASS",
+          "x-vercel-id": "dxb1::iad1::6plf6-1761652942163-2bc163f0ea66"
+        },
+        "body": [
+          {
+            "organizer": {
+              "name": "Test Organizer",
+              "email": "organizer1761652929546@example.com",
+              "phone": "+1234567890"
+            },
+            "rules": {
+              "oversPerMatch": 20,
+              "playersPerTeam": 11,
+              "powerplayOvers": 6,
+              "duckworthLewis": false,
+              "supersOver": false
+            },
+            "_id": "6900b0cda3e1e740c34bced6",
+            "user": "6900b0c4a3e1e740c34bceb8",
+            "name": "Test Tournament 1761652929546",
+            "description": "Test tournament for API testing",
+            "format": "T20",
+            "startDate": "2025-11-04T12:02:19.101Z",
+            "endDate": "2025-11-27T12:02:19.101Z",
+            "registrationDeadline": "2025-10-31T12:02:19.101Z",
+            "venue": "Test Venue",
+            "prizePool": "Winner: $5000, Runner-up: $3000, Best Player: $1000",
+            "entryFee": 100,
+            "maxTeams": 16,
+            "minTeams": 4,
+            "matches": [],
+            "status": "Draft",
+            "isPublic": true,
+            "teams": [],
+            "createdAt": "2025-10-28T12:02:21.549Z",
+            "updatedAt": "2025-10-28T12:02:21.549Z",
+            "__v": 0,
+            "registrationProgress": "0/16",
+            "isRegistrationOpen": false,
+            "id": "6900b0cda3e1e740c34bced6"
+          }
+        ]
+      }
+    },
+    {
+      "testName": "Get Tournament by ID",
+      "endpoint": "/api/tournaments/6900b0cda3e1e740c34bced6",
+      "method": "GET",
+      "timestamp": "2025-10-28T12:02:20.832Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 449,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:22 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/tournaments/[id]",
+          "x-vercel-cache": "BYPASS",
+          "x-vercel-id": "dxb1::iad1::bb9lh-1761652942609-fc2f5e2650ae"
+        },
+        "body": {
+          "organizer": {
+            "name": "Test Organizer",
+            "email": "organizer1761652929546@example.com",
+            "phone": "+1234567890"
+          },
+          "rules": {
+            "oversPerMatch": 20,
+            "playersPerTeam": 11,
+            "powerplayOvers": 6,
+            "duckworthLewis": false,
+            "supersOver": false
+          },
+          "_id": "6900b0cda3e1e740c34bced6",
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "name": "Test Tournament 1761652929546",
+          "description": "Test tournament for API testing",
+          "format": "T20",
+          "startDate": "2025-11-04T12:02:19.101Z",
+          "endDate": "2025-11-27T12:02:19.101Z",
+          "registrationDeadline": "2025-10-31T12:02:19.101Z",
+          "venue": "Test Venue",
+          "prizePool": "Winner: $5000, Runner-up: $3000, Best Player: $1000",
+          "entryFee": 100,
+          "maxTeams": 16,
+          "minTeams": 4,
+          "matches": [],
+          "status": "Draft",
+          "isPublic": true,
+          "teams": [],
+          "createdAt": "2025-10-28T12:02:21.549Z",
+          "updatedAt": "2025-10-28T12:02:21.549Z",
+          "__v": 0,
+          "registrationProgress": "0/16",
+          "isRegistrationOpen": false,
+          "id": "6900b0cda3e1e740c34bced6"
+        }
+      }
+    },
+    {
+      "testName": "Update Tournament",
+      "endpoint": "/api/tournaments/6900b0cda3e1e740c34bced6",
+      "method": "PUT",
+      "timestamp": "2025-10-28T12:02:21.288Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 455,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "name": "Test Tournament Updated 1761652929546",
+          "description": "Updated tournament description",
+          "status": "Registration Open"
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:23 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/tournaments/[id]",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::tdzc2-1761652943061-8b3efefbfaf1"
+        },
+        "body": {
+          "organizer": {
+            "name": "Test Organizer",
+            "email": "organizer1761652929546@example.com",
+            "phone": "+1234567890"
+          },
+          "rules": {
+            "oversPerMatch": 20,
+            "playersPerTeam": 11,
+            "powerplayOvers": 6,
+            "duckworthLewis": false,
+            "supersOver": false
+          },
+          "_id": "6900b0cda3e1e740c34bced6",
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "name": "Test Tournament Updated 1761652929546",
+          "description": "Updated tournament description",
+          "format": "T20",
+          "startDate": "2025-11-04T12:02:19.101Z",
+          "endDate": "2025-11-27T12:02:19.101Z",
+          "registrationDeadline": "2025-10-31T12:02:19.101Z",
+          "venue": "Test Venue",
+          "prizePool": "Winner: $5000, Runner-up: $3000, Best Player: $1000",
+          "entryFee": 100,
+          "maxTeams": 16,
+          "minTeams": 4,
+          "matches": [],
+          "status": "Registration Open",
+          "isPublic": true,
+          "teams": [],
+          "createdAt": "2025-10-28T12:02:21.549Z",
+          "updatedAt": "2025-10-28T12:02:23.181Z",
+          "__v": 0,
+          "registrationProgress": "0/16",
+          "isRegistrationOpen": true,
+          "id": "6900b0cda3e1e740c34bced6"
+        }
+      }
+    },
+    {
+      "testName": "Create Match",
+      "endpoint": "/api/matches",
+      "method": "POST",
+      "timestamp": "2025-10-28T12:02:21.924Z",
+      "status": "success",
+      "statusCode": 201,
+      "duration": 635,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "matchNumber": "MAT1761652929546",
+          "tournament": "6900b0cda3e1e740c34bced6",
+          "teams": {
+            "teamA": "6900b0c9a3e1e740c34bcec4",
+            "teamB": "6900b0c9a3e1e740c34bcec6"
+          },
+          "venue": {
+            "name": "Test Stadium",
+            "city": "Test City",
+            "capacity": 50000
+          },
+          "scheduledDate": "2025-11-04T12:02:21.288Z",
+          "status": "Scheduled",
+          "matchType": "T20",
+          "officials": {
+            "umpire1": "Umpire One",
+            "umpire2": "Umpire Two",
+            "thirdUmpire": "Third Umpire",
+            "matchReferee": "Match Referee"
+          },
+          "notes": "Test match for API testing"
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:24 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/matches",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::tdzc2-1761652943516-f742f8e62e90"
+        },
+        "body": {
+          "teams": {
+            "teamA": "6900b0c9a3e1e740c34bcec4",
+            "teamB": "6900b0c9a3e1e740c34bcec6"
+          },
+          "venue": {
+            "name": "Test Stadium",
+            "city": "Test City",
+            "capacity": 50000
+          },
+          "_id": "6900b0cfa3e1e740c34bcedc",
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "matchNumber": "MAT1761652929546",
+          "scheduledDate": "2025-11-04T12:02:21.288Z",
+          "status": "Scheduled",
+          "matchType": "T20",
+          "notes": "Test match for API testing",
+          "isActive": true,
+          "innings": [],
+          "umpires": [],
+          "createdAt": "2025-10-28T12:02:23.632Z",
+          "updatedAt": "2025-10-28T12:02:23.632Z",
+          "__v": 0,
+          "duration": null,
+          "currentStatus": "Upcoming",
+          "id": "6900b0cfa3e1e740c34bcedc"
+        }
+      }
+    },
+    {
+      "testName": "Get All Matches",
+      "endpoint": "/api/matches",
+      "method": "GET",
+      "timestamp": "2025-10-28T12:02:22.380Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 454,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:24 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/matches",
+          "x-vercel-cache": "BYPASS",
+          "x-vercel-id": "dxb1::iad1::phf2d-1761652944156-fd028227146f"
+        },
+        "body": [
+          {
+            "teams": {
+              "teamA": "6900b0c9a3e1e740c34bcec4",
+              "teamB": "6900b0c9a3e1e740c34bcec6"
+            },
+            "venue": {
+              "name": "Test Stadium",
+              "city": "Test City",
+              "capacity": 50000
+            },
+            "_id": "6900b0cfa3e1e740c34bcedc",
+            "user": "6900b0c4a3e1e740c34bceb8",
+            "matchNumber": "MAT1761652929546",
+            "scheduledDate": "2025-11-04T12:02:21.288Z",
+            "status": "Scheduled",
+            "matchType": "T20",
+            "notes": "Test match for API testing",
+            "isActive": true,
+            "innings": [],
+            "umpires": [],
+            "createdAt": "2025-10-28T12:02:23.632Z",
+            "updatedAt": "2025-10-28T12:02:23.632Z",
+            "__v": 0,
+            "duration": null,
+            "currentStatus": "Upcoming",
+            "id": "6900b0cfa3e1e740c34bcedc"
+          }
+        ]
+      }
+    },
+    {
+      "testName": "Get Match by ID",
+      "endpoint": "/api/matches/6900b0cfa3e1e740c34bcedc",
+      "method": "GET",
+      "timestamp": "2025-10-28T12:02:22.886Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 504,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:24 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/matches/[id]",
+          "x-vercel-cache": "BYPASS",
+          "x-vercel-id": "dxb1::iad1::s9c6d-1761652944607-b4bb7509f593"
+        },
+        "body": {
+          "teams": {
+            "teamA": "6900b0c9a3e1e740c34bcec4",
+            "teamB": "6900b0c9a3e1e740c34bcec6"
+          },
+          "venue": {
+            "name": "Test Stadium",
+            "city": "Test City",
+            "capacity": 50000
+          },
+          "_id": "6900b0cfa3e1e740c34bcedc",
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "matchNumber": "MAT1761652929546",
+          "scheduledDate": "2025-11-04T12:02:21.288Z",
+          "status": "Scheduled",
+          "matchType": "T20",
+          "notes": "Test match for API testing",
+          "isActive": true,
+          "innings": [],
+          "umpires": [],
+          "createdAt": "2025-10-28T12:02:23.632Z",
+          "updatedAt": "2025-10-28T12:02:23.632Z",
+          "__v": 0,
+          "duration": null,
+          "currentStatus": "Upcoming",
+          "id": "6900b0cfa3e1e740c34bcedc"
+        }
+      }
+    },
+    {
+      "testName": "Update Match",
+      "endpoint": "/api/matches/6900b0cfa3e1e740c34bcedc",
+      "method": "PUT",
+      "timestamp": "2025-10-28T12:02:23.529Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 642,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "status": "Live",
+          "notes": "Updated match notes",
+          "matchType": "T20",
+          "teams": {
+            "teamA": "6900b0c9a3e1e740c34bcec4",
+            "teamB": "6900b0c9a3e1e740c34bcec6"
+          }
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:25 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/matches/[id]",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::tdzc2-1761652945113-ab6fb15f2294"
+        },
+        "body": {
+          "teams": {
+            "teamA": "6900b0c9a3e1e740c34bcec4",
+            "teamB": "6900b0c9a3e1e740c34bcec6"
+          },
+          "_id": "6900b0cfa3e1e740c34bcedc",
+          "user": "6900b0c4a3e1e740c34bceb8",
+          "matchNumber": "MAT1761652929546",
+          "scheduledDate": "2025-11-04T12:02:21.288Z",
+          "status": "Live",
+          "matchType": "T20",
+          "notes": "Updated match notes",
+          "isActive": true,
+          "innings": [],
+          "umpires": [],
+          "createdAt": "2025-10-28T12:02:23.632Z",
+          "updatedAt": "2025-10-28T12:02:25.423Z",
+          "__v": 0,
+          "duration": null,
+          "currentStatus": "Live",
+          "id": "6900b0cfa3e1e740c34bcedc"
+        }
+      }
+    },
+    {
+      "testName": "Record Ball",
+      "endpoint": "/api/matches/6900b0cfa3e1e740c34bcedc/ball",
+      "method": "POST",
+      "timestamp": "2025-10-28T12:02:24.171Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 640,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "innings_id": "1",
+          "ballNumber": 1,
+          "over": 1,
+          "bowler": "Test Bowler",
+          "striker": "Test Batsman",
+          "nonStriker": "Test Non-Striker",
+          "battingTeam": "6900b0c9a3e1e740c34bcec4",
+          "bowlingTeam": "6900b0c9a3e1e740c34bcec6",
+          "runs": 4,
+          "totalRuns": 4,
+          "totalBalls": 1,
+          "isValidBall": true,
+          "extras": {
+            "wide": false,
+            "noBall": false,
+            "bye": false,
+            "legBye": false
+          },
+          "wicket": {
+            "isWicket": false,
+            "dismissalType": null,
+            "batsmanOut": null
+          },
+          "commentary": "Four runs scored - Test ball",
+          "batting": [
+            {
+              "player": "Test Batsman",
+              "runs": 4,
+              "balls": 1
+            }
+          ],
+          "bowling": {
+            "bowler": "Test Bowler",
+            "totalRuns": 4,
+            "totalBallBowled": 1,
+            "currentOverStats": {}
+          }
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:26 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/matches/[id]/ball",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::kwzzt-1761652945756-5efe61d6acab"
+        },
+        "body": {
+          "success": true,
+          "ball": {
+            "user": "6900b0c4a3e1e740c34bceb8",
+            "match_id": "6900b0cfa3e1e740c34bcedc",
+            "innings_id": "1",
+            "over": 1,
+            "ballNumber": 1,
+            "batting": [
+              {
+                "player": "Test Batsman",
+                "runs": 4,
+                "balls": 1,
+                "_id": "6900b0d2a3e1e740c34bcee5"
+              }
+            ],
+            "battingTeam": "6900b0c9a3e1e740c34bcec4",
+            "bowlingTeam": "6900b0c9a3e1e740c34bcec6",
+            "bowling": {
+              "bowler": "Test Bowler",
+              "totalRuns": 4,
+              "totalBallBowled": 1
+            },
+            "striker": "Test Batsman",
+            "nonStriker": "Test Non-Striker",
+            "bowler": "Test Bowler",
+            "runs": 4,
+            "totalRuns": 4,
+            "totalBalls": 1,
+            "isValidBall": true,
+            "extras": {
+              "wide": false,
+              "noBall": false,
+              "bye": false,
+              "legBye": false
+            },
+            "wicket": {
+              "isWicket": false,
+              "dismissalType": null,
+              "batsmanOut": null
+            },
+            "totalWickets": 0,
+            "commentary": "Four runs scored - Test ball",
+            "_id": "6900b0d2a3e1e740c34bcee4",
+            "createdAt": "2025-10-28T12:02:26.064Z",
+            "updatedAt": "2025-10-28T12:02:26.064Z",
+            "__v": 0
+          }
+        }
+      }
+    },
+    {
+      "testName": "Undo Last Ball",
+      "endpoint": "/api/matches/6900b0cfa3e1e740c34bcedc/undo",
+      "method": "POST",
+      "timestamp": "2025-10-28T12:02:25.002Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 827,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": {
+          "_id": "6900b0d2a3e1e740c34bcee4"
+        }
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:27 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/matches/[id]/undo",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::kwzzt-1761652946399-f4e11ccd985a"
+        },
+        "body": {
+          "success": true,
+          "match": {
+            "teams": {
+              "teamA": "6900b0c9a3e1e740c34bcec4",
+              "teamB": "6900b0c9a3e1e740c34bcec6"
+            },
+            "_id": "6900b0cfa3e1e740c34bcedc",
+            "user": "6900b0c4a3e1e740c34bceb8",
+            "matchNumber": "MAT1761652929546",
+            "scheduledDate": "2025-11-04T12:02:21.288Z",
+            "status": "Live",
+            "matchType": "T20",
+            "notes": "Updated match notes",
+            "isActive": true,
+            "innings": [],
+            "umpires": [],
+            "createdAt": "2025-10-28T12:02:23.632Z",
+            "updatedAt": "2025-10-28T12:02:25.423Z",
+            "__v": 0,
+            "duration": null,
+            "currentStatus": "Live",
+            "id": "6900b0cfa3e1e740c34bcedc"
+          },
+          "undoneAt": "2025-10-28T12:02:27.082Z",
+          "removedBall": {
+            "acknowledged": true,
+            "deletedCount": 1
+          }
+        }
+      }
+    },
+    {
+      "testName": "Delete Match",
+      "endpoint": "/api/matches/6900b0cfa3e1e740c34bcedc",
+      "method": "DELETE",
+      "timestamp": "2025-10-28T12:02:25.639Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 636,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:27 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/matches/[id]",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::kwzzt-1761652947229-a08bfd8db395"
+        },
+        "body": {
+          "message": "Match deleted successfully"
+        }
+      }
+    },
+    {
+      "testName": "Delete Tournament",
+      "endpoint": "/api/tournaments/6900b0cda3e1e740c34bced6",
+      "method": "DELETE",
+      "timestamp": "2025-10-28T12:02:26.090Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 450,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:28 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/tournaments/[id]",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::kwzzt-1761652947866-ace97c5a962e"
+        },
+        "body": {
+          "message": "Tournament deleted successfully"
+        }
+      }
+    },
+    {
+      "testName": "Delete Team 1",
+      "endpoint": "/api/teams/6900b0c9a3e1e740c34bcec4",
+      "method": "DELETE",
+      "timestamp": "2025-10-28T12:02:26.732Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 641,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:28 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/teams/[id]",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::tdzc2-1761652948317-ab1076c578f8"
+        },
+        "body": {
+          "message": "Team deleted successfully"
+        }
+      }
+    },
+    {
+      "testName": "Delete Team 2",
+      "endpoint": "/api/teams/6900b0c9a3e1e740c34bcec6",
+      "method": "DELETE",
+      "timestamp": "2025-10-28T12:02:27.370Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 636,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:29 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/teams/[id]",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::4lqnz-1761652948962-6556d889a011"
+        },
+        "body": {
+          "message": "Team deleted successfully"
+        }
+      }
+    },
+    {
+      "testName": "Delete Profile 1",
+      "endpoint": "/api/profiles/6900b0c6a3e1e740c34bcebd",
+      "method": "DELETE",
+      "timestamp": "2025-10-28T12:02:27.852Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 480,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:29 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/profiles/[id]",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::4lqnz-1761652949596-bd3bd925d6fa"
+        },
+        "body": {
+          "success": true,
+          "data": {}
+        }
+      }
+    },
+    {
+      "testName": "Delete Profile 2",
+      "endpoint": "/api/profiles/6900b0c7a3e1e740c34bcebf",
+      "method": "DELETE",
+      "timestamp": "2025-10-28T12:02:28.309Z",
+      "status": "success",
+      "statusCode": 200,
+      "duration": 454,
+      "request": {
+        "headers": {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+        },
+        "body": null
+      },
+      "response": {
+        "headers": {
+          "access-control-allow-credentials": "true",
+          "access-control-allow-headers": "Content-Type, Authorization, X-Requested-With",
+          "access-control-allow-methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+          "access-control-allow-origin": "*",
+          "access-control-max-age": "86400",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "content-encoding": "br",
+          "content-type": "application/json",
+          "date": "Tue, 28 Oct 2025 12:02:30 GMT",
+          "server": "Vercel",
+          "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+          "transfer-encoding": "chunked",
+          "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+          "x-matched-path": "/api/profiles/[id]",
+          "x-vercel-cache": "MISS",
+          "x-vercel-id": "dxb1::iad1::2knxt-1761652950080-53cf40269406"
+        },
+        "body": {
+          "success": true,
+          "data": {}
+        }
+      }
+    }
+  ]
+}
