@@ -62,6 +62,29 @@ const MatchSchema = new Schema({
     type: String,
     default: "T20"
   },
+  oversLimit: { type: Number, default: 20 }, // T20=20, ODI=50, etc.
+  playersPerTeam: { type: Number, default: 11 }, // Flexible: 5, 7, 9, 11, etc.
+  currentInnings: { type: Number, default: 0 }, // 0, 1, or 2
+  matchSquad: {
+    teamA: {
+      players: [{
+        player: { type: Schema.Types.ObjectId, ref: "Profile" },
+        isCaptain: { type: Boolean, default: false },
+        isKeeper: { type: Boolean, default: false }
+      }],
+      captain: { type: Schema.Types.ObjectId, ref: "Profile" },
+      keeper: { type: Schema.Types.ObjectId, ref: "Profile" }
+    },
+    teamB: {
+      players: [{
+        player: { type: Schema.Types.ObjectId, ref: "Profile" },
+        isCaptain: { type: Boolean, default: false },
+        isKeeper: { type: Boolean, default: false }
+      }],
+      captain: { type: Schema.Types.ObjectId, ref: "Profile" },
+      keeper: { type: Schema.Types.ObjectId, ref: "Profile" }
+    }
+  },
   tossWinner: { type: Schema.Types.ObjectId, ref: "Team" },
   tossDecision: { type: String, enum: ["Bat", "Bowl"] },
   innings: [{
@@ -72,6 +95,11 @@ const MatchSchema = new Schema({
     totalWickets: { type: Number, default: 0 },
     totalOvers: { type: Number, default: 0 },
     totalBalls: { type: Number, default: 0 },
+    currentStriker: { type: Schema.Types.ObjectId, ref: "Profile" },
+    currentNonStriker: { type: Schema.Types.ObjectId, ref: "Profile" },
+    currentBowler: { type: Schema.Types.ObjectId, ref: "Profile" },
+    runRate: { type: Number, default: 0 },
+    requiredRunRate: { type: Number, default: 0 },
     extras: {
       byes: { type: Number, default: 0 },
       legByes: { type: Number, default: 0 },
@@ -94,13 +122,27 @@ const MatchSchema = new Schema({
     }],
     bowling: [{
       player: { type: Schema.Types.ObjectId, ref: "Profile" },
+      ballsBowled: { type: Number, default: 0 },
       overs: { type: Number, default: 0 },
       maidens: { type: Number, default: 0 },
       runs: { type: Number, default: 0 },
       wickets: { type: Number, default: 0 },
       wides: { type: Number, default: 0 },
       noBalls: { type: Number, default: 0 },
-      economy: { type: Number, default: 0 }
+      economy: { type: Number, default: 0 },
+      currentOverRuns: { type: Number, default: 0 }
+    }],
+    partnerships: [{
+      batsman1: { type: Schema.Types.ObjectId, ref: "Profile" },
+      batsman2: { type: Schema.Types.ObjectId, ref: "Profile" },
+      runs: { type: Number, default: 0 },
+      balls: { type: Number, default: 0 }
+    }],
+    fallOfWickets: [{
+      runs: { type: Number },
+      wickets: { type: Number },
+      player: { type: Schema.Types.ObjectId, ref: "Profile" },
+      over: { type: Number }
     }],
     balls: [BallSchema],
     isCompleted: { type: Boolean, default: false },

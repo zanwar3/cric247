@@ -1,0 +1,424 @@
+{
+  "metadata": {
+    "version": "2025-11-08",
+    "context": "Mobile live scoring flow using updated flexible APIs",
+    "notes": [
+      "All ObjectId strings are illustrative.",
+      "Extras are numeric counts (0 when absent).",
+      "Statuses now include \"Innings Break\" and \"Result Pending\" before final completion."
+    ]
+  },
+  "endpoints": [
+    {
+      "name": "Setup Match",
+      "method": "POST",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/setup",
+      "request": {
+        "tossWinner": "672aaa198bfbf6f5ef009111",
+        "tossDecision": "Bat",
+        "oversLimit": 20,
+        "matchSquad": {
+          "teamA": {
+            "players": [
+              { "player": "672ab2018bfbf6f5ef001001", "isCaptain": true, "isKeeper": false },
+              { "player": "672ab2018bfbf6f5ef001002", "isCaptain": false, "isKeeper": true },
+              { "player": "672ab2018bfbf6f5ef001003", "isCaptain": false, "isKeeper": false }
+            ]
+          },
+          "teamB": {
+            "players": [
+              { "player": "672ac0018bfbf6f5ef002001", "isCaptain": true, "isKeeper": false },
+              { "player": "672ac0018bfbf6f5ef002002", "isCaptain": false, "isKeeper": true },
+              { "player": "672ac0018bfbf6f5ef002003", "isCaptain": false, "isKeeper": false }
+            ]
+          }
+        }
+      },
+      "response": {
+        "success": true,
+        "message": "Match setup completed successfully",
+        "match": {
+          "_id": "6739efb18bfbf6f5ef001234",
+          "status": "Ready",
+          "playersPerTeam": 3,
+          "tossWinner": "672aaa198bfbf6f5ef009111",
+          "tossDecision": "Bat",
+          "matchSquad": {
+            "teamA": {
+              "captain": "672ab2018bfbf6f5ef001001",
+              "keeper": "672ab2018bfbf6f5ef001002",
+              "players": [
+                { "player": "672ab2018bfbf6f5ef001001", "isCaptain": true, "isKeeper": false },
+                { "player": "672ab2018bfbf6f5ef001002", "isCaptain": false, "isKeeper": true },
+                { "player": "672ab2018bfbf6f5ef001003", "isCaptain": false, "isKeeper": false }
+              ]
+            },
+            "teamB": {
+              "captain": "672ac0018bfbf6f5ef002001",
+              "keeper": "672ac0018bfbf6f5ef002002",
+              "players": [
+                { "player": "672ac0018bfbf6f5ef002001", "isCaptain": true, "isKeeper": false },
+                { "player": "672ac0018bfbf6f5ef002002", "isCaptain": false, "isKeeper": true },
+                { "player": "672ac0018bfbf6f5ef002003", "isCaptain": false, "isKeeper": false }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Start Match",
+      "method": "POST",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/start",
+      "response": {
+        "success": true,
+        "message": "Match started successfully. Please set opening batsmen and bowler.",
+        "match": {
+          "_id": "6739efb18bfbf6f5ef001234",
+          "status": "Live",
+          "currentInnings": 1
+        },
+        "innings": {
+          "inningNumber": 1,
+          "battingTeam": "672aaa198bfbf6f5ef009111",
+          "bowlingTeam": "672aaa198bfbf6f5ef009222",
+          "totalRuns": 0,
+          "totalWickets": 0,
+          "totalBalls": 0
+        },
+        "needsPlayers": true
+      }
+    },
+    {
+      "name": "Set Opening Players",
+      "method": "POST",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/start-innings",
+      "request": {
+        "striker": "672ab2018bfbf6f5ef001001",
+        "nonStriker": "672ab2018bfbf6f5ef001002",
+        "bowler": "672ac0018bfbf6f5ef002001"
+      },
+      "response": {
+        "success": true,
+        "message": "Innings players set successfully. Ready to start scoring.",
+        "currentInnings": {
+          "inningNumber": 1,
+          "currentStriker": "672ab2018bfbf6f5ef001001",
+          "currentNonStriker": "672ab2018bfbf6f5ef001002",
+          "currentBowler": "672ac0018bfbf6f5ef002001"
+        }
+      }
+    },
+    {
+      "name": "Record Ball (Legal Single)",
+      "method": "POST",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/ball",
+      "request": {
+        "runs": 1
+      },
+      "response": {
+        "success": true,
+        "needsNewBatsman": false,
+        "needsNewBowler": false,
+        "ball": {
+          "_id": "6739f0d28bfbf6f5ef009999",
+          "over": 1,
+          "ballNumber": 1,
+          "striker": "672ab2018bfbf6f5ef001001",
+          "nonStriker": "672ab2018bfbf6f5ef001002",
+          "bowler": "672ac0018bfbf6f5ef002001",
+          "batRuns": 1,
+          "extras": {
+            "wide": 0,
+            "noBall": 0,
+            "bye": 0,
+            "legBye": 0
+          },
+          "strikeSwapped": true,
+          "completedOver": false
+        },
+        "innings": {
+          "totalRuns": 1,
+          "totalBalls": 1,
+          "runRate": 6.0,
+          "currentStriker": "672ab2018bfbf6f5ef001002",
+          "currentNonStriker": "672ab2018bfbf6f5ef001001"
+        }
+      }
+    },
+    {
+      "name": "Record Ball (Wide with Three Runs)",
+      "method": "POST",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/ball",
+      "request": {
+        "runs": 3,
+        "extras": {
+          "wide": 4
+        }
+      },
+      "response": {
+        "success": true,
+        "needsNewBatsman": false,
+        "needsNewBowler": false,
+        "ball": {
+          "_id": "6739f0e58bfbf6f5ef009aa0",
+          "over": 1,
+          "ballNumber": 1,
+          "striker": "672ab2018bfbf6f5ef001002",
+          "nonStriker": "672ab2018bfbf6f5ef001001",
+          "bowler": "672ac0018bfbf6f5ef002001",
+          "batRuns": 0,
+          "extras": {
+            "wide": 4,
+            "noBall": 0,
+            "bye": 0,
+            "legBye": 0
+          },
+          "strikeSwapped": false,
+          "completedOver": false
+        },
+        "innings": {
+          "totalRuns": 5,
+          "totalBalls": 1,
+          "runRate": 30.0,
+          "extras": {
+            "wides": 4,
+            "noBalls": 0,
+            "byes": 0,
+            "legByes": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "Record Ball (No-ball + Boundary)",
+      "method": "POST",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/ball",
+      "request": {
+        "runs": 4,
+        "extras": {
+          "noBall": 1
+        }
+      },
+      "response": {
+        "success": true,
+        "needsNewBatsman": false,
+        "needsNewBowler": false,
+        "ball": {
+          "_id": "6739f1098bfbf6f5ef009aa1",
+          "over": 1,
+          "ballNumber": 1,
+          "batRuns": 4,
+          "extras": {
+            "wide": 0,
+            "noBall": 1,
+            "bye": 0,
+            "legBye": 0
+          },
+          "bowlerRunsConceded": 5,
+          "strikeSwapped": true,
+          "completedOver": false
+        },
+        "innings": {
+          "totalRuns": 10,
+          "totalBalls": 1,
+          "runRate": 60.0
+        }
+      }
+    },
+    {
+      "name": "Change Batsman (New Striker)",
+      "method": "PATCH",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/change-batsman",
+      "request": {
+        "position": "striker",
+        "newBatsman": "672ab2018bfbf6f5ef001004"
+      },
+      "response": {
+        "success": true,
+        "message": "Striker changed successfully",
+        "newBatsman": "672ab2018bfbf6f5ef001004",
+        "position": "striker"
+      }
+    },
+    {
+      "name": "Change Bowler (New Over)",
+      "method": "PATCH",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/change-bowler",
+      "request": {
+        "newBowler": "672ac0018bfbf6f5ef002002"
+      },
+      "response": {
+        "success": true,
+        "message": "Bowler changed successfully",
+        "newBowler": "672ac0018bfbf6f5ef002002"
+      }
+    },
+    {
+      "name": "Live Score Snapshot",
+      "method": "GET",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/live",
+      "response": {
+        "match": {
+          "matchId": "6739efb18bfbf6f5ef001234",
+          "status": "Live",
+          "currentInnings": 1,
+          "oversLimit": 20,
+          "teams": {
+            "teamA": { "_id": "672aaa198bfbf6f5ef009111", "name": "Gladiators" },
+            "teamB": { "_id": "672aaa198bfbf6f5ef009222", "name": "Warriors" }
+          }
+        },
+        "innings": {
+          "inningNumber": 1,
+          "score": {
+            "runs": 35,
+            "wickets": 1,
+            "overs": "3.2",
+            "runRate": 10.5
+          },
+          "currentBatsmen": {
+            "striker": { "_id": "672ab2018bfbf6f5ef001004", "runs": 12, "balls": 7, "strikeRate": 171.43 },
+            "nonStriker": { "_id": "672ab2018bfbf6f5ef001002", "runs": 15, "balls": 10, "strikeRate": 150.0 }
+          },
+          "currentBowler": {
+            "_id": "672ac0018bfbf6f5ef002002",
+            "overs": 1.2,
+            "maidens": 0,
+            "runs": 14,
+            "wickets": 0,
+            "economy": 10.5
+          },
+          "currentOver": {
+            "overNumber": 4,
+            "balls": ["1", "0", "W", "2", "wd", "4"]
+          },
+          "extras": {
+            "byes": 0,
+            "legByes": 0,
+            "wides": 5,
+            "noBalls": 1,
+            "penalties": 0,
+            "total": 6
+          },
+          "toWin": null
+        }
+      }
+    },
+    {
+      "name": "Undo Last Ball",
+      "method": "POST",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/undo",
+      "response": {
+        "success": true,
+        "message": "Ball undone successfully",
+        "innings": {
+          "totalRuns": 35,
+          "totalBalls": 19,
+          "currentStriker": "672ab2018bfbf6f5ef001004",
+          "currentNonStriker": "672ab2018bfbf6f5ef001002",
+          "currentBowler": "672ac0018bfbf6f5ef002002",
+          "runRate": 11.05
+        }
+      }
+    },
+    {
+      "name": "End First Innings",
+      "method": "POST",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/end-innings",
+      "response": {
+        "success": true,
+        "message": "First innings completed. Second innings ready to start.",
+        "inningsSummary": {
+          "inningNumber": 1,
+          "totalRuns": 178,
+          "totalWickets": 6,
+          "totalOvers": 20.0
+        },
+        "target": 179,
+        "nextInnings": 2,
+        "needsPlayers": true,
+        "matchStatus": "Innings Break"
+      }
+    },
+    {
+      "name": "End Second Innings",
+      "method": "POST",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/end-innings",
+      "response": {
+        "success": true,
+        "message": "Second innings completed. Finalize match to lock result.",
+        "result": {
+          "winner": "672aaa198bfbf6f5ef009111",
+          "winBy": "wickets",
+          "margin": 4,
+          "status": "Result Pending",
+          "winnerName": "Gladiators"
+        }
+      }
+    },
+    {
+      "name": "Finalize Match",
+      "method": "POST",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/end-match",
+      "request": {
+        "manOfTheMatch": "672ab2018bfbf6f5ef001004"
+      },
+      "response": {
+        "success": true,
+        "message": "Match completed successfully",
+        "result": {
+          "winner": "672aaa198bfbf6f5ef009111",
+          "winBy": "wickets",
+          "margin": 4,
+          "manOfTheMatch": "672ab2018bfbf6f5ef001004",
+          "resultMessage": "Gladiators won by 4 wickets"
+        },
+        "match": {
+          "_id": "6739efb18bfbf6f5ef001234",
+          "status": "Completed",
+          "actualEndTime": "2025-11-08T13:30:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "Scorecard",
+      "method": "GET",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234/scorecard",
+      "response": {
+        "match": {
+          "matchId": "6739efb18bfbf6f5ef001234",
+          "status": "Completed",
+          "oversLimit": 20,
+          "teams": {
+            "teamA": { "_id": "672aaa198bfbf6f5ef009111", "name": "Gladiators" },
+            "teamB": { "_id": "672aaa198bfbf6f5ef009222", "name": "Warriors" }
+          },
+          "tossWinner": "672aaa198bfbf6f5ef009111",
+          "tossDecision": "Bat"
+        },
+        "innings": [
+          {
+            "inningNumber": 1,
+            "score": { "runs": 178, "wickets": 6, "overs": "20.0", "runRate": 8.9 },
+            "extras": { "byes": 0, "legByes": 4, "wides": 6, "noBalls": 2, "penalties": 0, "total": 12 }
+          },
+          {
+            "inningNumber": 2,
+            "score": { "runs": 179, "wickets": 6, "overs": "19.1", "runRate": 9.35 },
+            "target": 179,
+            "isCompleted": true,
+            "extras": { "byes": 2, "legByes": 0, "wides": 8, "noBalls": 0, "penalties": 0, "total": 10 }
+          }
+        ],
+        "result": {
+          "winner": { "_id": "672aaa198bfbf6f5ef009111", "name": "Gladiators" },
+          "winBy": "wickets",
+          "margin": 4,
+          "manOfTheMatch": { "_id": "672ab2018bfbf6f5ef001004", "name": "A. Khan" }
+        }
+      }
+    }
+  ]
+}
+

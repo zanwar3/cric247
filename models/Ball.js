@@ -61,14 +61,16 @@ const BallSchema = new Schema(
       default: true,
     },
     extras: {
-      wide: { type: Boolean, default: false },
-      noBall: { type: Boolean, default: false },
-      bye: { type: Boolean, default: false },
-      legBye: { type: Boolean, default: false },
+      wide: { type: Number, default: 0 },
+      noBall: { type: Number, default: 0 },
+      bye: { type: Number, default: 0 },
+      legBye: { type: Number, default: 0 },
     },
     wicket: {
       isWicket: { type: Boolean, default: false },
       dismissalType: { type: String, enum: [null, "Bowled", "Caught", "LBW", "Stumped", "Run Out", "Hit Wicket", "Obstructing"], default: null },
+      bowler: { type: String, default: null },
+      fielder: { type: String, default: null },
       batsmanOut: { type: String, default: null },
     },
     totalWickets: {
@@ -79,6 +81,13 @@ const BallSchema = new Schema(
       type: String,
       default: "",
     },
+    batRuns: { type: Number, default: 0 },
+    bowlerRunsConceded: { type: Number, default: 0 },
+    completedOver: { type: Boolean, default: false },
+    wasMaiden: { type: Boolean, default: false },
+    overRunsAfterBall: { type: Number, default: 0 }
+    ,
+    strikeSwapped: { type: Boolean, default: false }
   },
   { timestamps: true }
 );

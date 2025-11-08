@@ -1,37 +1,37 @@
 {
   "summary": {
     "totalTests": 31,
-    "passed": 31,
-    "failed": 0,
-    "successRate": "100.00%",
-    "totalDuration": "18766ms",
-    "timestamp": "2025-10-28T12:02:28.310Z",
+    "passed": 30,
+    "failed": 1,
+    "successRate": "96.77%",
+    "totalDuration": "23758ms",
+    "timestamp": "2025-11-01T10:40:30.131Z",
     "baseUrl": "https://cric247-pi.vercel.app"
   },
   "createdResources": {
-    "userId": "6900b0c4a3e1e740c34bceb8",
-    "profileId": "6900b0c6a3e1e740c34bcebd",
-    "profileId2": "6900b0c7a3e1e740c34bcebf",
-    "teamId": "6900b0c9a3e1e740c34bcec4",
-    "teamId2": "6900b0c9a3e1e740c34bcec6",
-    "tournamentId": "6900b0cda3e1e740c34bced6",
-    "matchId": "6900b0cfa3e1e740c34bcedc",
-    "ballId": "6900b0d2a3e1e740c34bcee4"
+    "userId": "6905e3875b5b4030a3c1c8d8",
+    "profileId": "6905e3895b5b4030a3c1c8dd",
+    "profileId2": "6905e38a5b5b4030a3c1c8df",
+    "teamId": "6905e38c5b5b4030a3c1c8e4",
+    "teamId2": "6905e38c5b5b4030a3c1c8e6",
+    "tournamentId": "6905e3949af7c0af5c50160a",
+    "matchId": "6905e3979af7c0af5c501611",
+    "ballId": "6905e3999af7c0af5c50161a"
   },
   "tests": [
     {
       "testName": "Register User",
       "endpoint": "/api/auth/register",
       "method": "POST",
-      "timestamp": "2025-10-28T12:02:10.827Z",
+      "timestamp": "2025-11-01T10:40:07.706Z",
       "status": "success",
       "statusCode": 201,
-      "duration": 1278,
+      "duration": 1319,
       "request": {
         "headers": {},
         "body": {
           "name": "Test User",
-          "email": "test1761652929546@example.com",
+          "email": "test1761993606382@example.com",
           "password": "password123",
           "confirmPassword": "password123"
         }
@@ -45,20 +45,20 @@
           "access-control-max-age": "86400",
           "cache-control": "public, max-age=0, must-revalidate",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:12 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:07 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/auth/register",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::m6nl5-1761652931915-6a7b46dab8f2"
+          "x-vercel-id": "dxb1::iad1::88f8l-1761993606745-c510692cd6b6"
         },
         "body": {
           "message": "User created successfully",
           "user": {
             "name": "Test User",
-            "email": "test1761652929546@example.com",
+            "email": "test1761993606382@example.com",
             "role": "user",
             "avatar": null,
             "isActive": true,
@@ -68,9 +68,9 @@
               "bio": "",
               "location": ""
             },
-            "_id": "6900b0c4a3e1e740c34bceb8",
-            "createdAt": "2025-10-28T12:02:12.236Z",
-            "updatedAt": "2025-10-28T12:02:12.236Z",
+            "_id": "6905e3875b5b4030a3c1c8d8",
+            "createdAt": "2025-11-01T10:40:07.079Z",
+            "updatedAt": "2025-11-01T10:40:07.079Z",
             "__v": 0
           }
         }
@@ -80,14 +80,14 @@
       "testName": "Mobile Login",
       "endpoint": "/api/auth/mobile/login",
       "method": "POST",
-      "timestamp": "2025-10-28T12:02:12.019Z",
+      "timestamp": "2025-11-01T10:40:08.912Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 1187,
+      "duration": 1195,
       "request": {
         "headers": {},
         "body": {
-          "email": "test1761652929546@example.com",
+          "email": "test1761993606382@example.com",
           "password": "password123"
         }
       },
@@ -101,23 +101,23 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:14 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:08 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/auth/mobile/login",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::6plf6-1761652933156-2d186b64b50d"
+          "x-vercel-id": "dxb1::iad1::vxfnj-1761993608007-ae35abd2e502"
         },
         "body": {
           "success": true,
           "message": "Login successful",
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI",
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDgsImV4cCI6MTc2NDU4NTYwOH0.hPl4iDrlqzca4v177tbtgiOuocdzYsgjWI1SVVisKSU",
           "user": {
-            "id": "6900b0c4a3e1e740c34bceb8",
+            "id": "6905e3875b5b4030a3c1c8d8",
             "name": "Test User",
-            "email": "test1761652929546@example.com",
+            "email": "test1761993606382@example.com",
             "role": "user",
             "avatar": null,
             "profile": {
@@ -125,7 +125,7 @@
               "bio": "",
               "location": ""
             },
-            "lastLogin": "2025-10-28T12:02:13.908Z"
+            "lastLogin": "2025-11-01T10:40:08.766Z"
           }
         }
       }
@@ -134,13 +134,13 @@
       "testName": "Refresh Token",
       "endpoint": "/api/auth/mobile/refresh",
       "method": "POST",
-      "timestamp": "2025-10-28T12:02:12.473Z",
+      "timestamp": "2025-11-01T10:40:09.654Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 452,
+      "duration": 740,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDgsImV4cCI6MTc2NDU4NTYwOH0.hPl4iDrlqzca4v177tbtgiOuocdzYsgjWI1SVVisKSU"
         },
         "body": null
       },
@@ -154,23 +154,23 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:14 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:09 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/auth/mobile/refresh",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::mnpv6-1761652934248-ffb9966881ae"
+          "x-vercel-id": "dxb1::iad1::fj427-1761993609117-bf4b8bdf047a"
         },
         "body": {
           "success": true,
           "message": "Token refreshed successfully",
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI",
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE",
           "user": {
-            "id": "6900b0c4a3e1e740c34bceb8",
+            "id": "6905e3875b5b4030a3c1c8d8",
             "name": "Test User",
-            "email": "test1761652929546@example.com",
+            "email": "test1761993606382@example.com",
             "role": "user",
             "avatar": null,
             "profile": {
@@ -178,7 +178,7 @@
               "bio": "",
               "location": ""
             },
-            "lastLogin": "2025-10-28T12:02:13.908Z"
+            "lastLogin": "2025-11-01T10:40:08.766Z"
           }
         }
       }
@@ -187,20 +187,20 @@
       "testName": "Create Profile",
       "endpoint": "/api/profiles",
       "method": "POST",
-      "timestamp": "2025-10-28T12:02:12.937Z",
+      "timestamp": "2025-11-01T10:40:10.159Z",
       "status": "success",
       "statusCode": 201,
-      "duration": 463,
+      "duration": 502,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
           "name": "Test Player One",
           "gender": "Male",
           "city": "Test City",
           "phone": "+1234567890",
-          "email": "player1761652929546@example.com",
+          "email": "player1761993606382@example.com",
           "role": "Batsman",
           "battingStyle": "Right-Handed",
           "bowlingStyle": "Right-arm fast"
@@ -215,28 +215,28 @@
           "access-control-max-age": "86400",
           "cache-control": "public, max-age=0, must-revalidate",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:15 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:10 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/profiles",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::mnpv6-1761652934703-e436c4071963"
+          "x-vercel-id": "dxb1::iad1::clw9r-1761993609863-65cb19dba1ca"
         },
         "body": {
-          "user": "6900b0c4a3e1e740c34bceb8",
+          "user": "6905e3875b5b4030a3c1c8d8",
           "name": "Test Player One",
           "gender": "Male",
           "city": "Test City",
           "phone": "+1234567890",
-          "email": "player1761652929546@example.com",
+          "email": "player1761993606382@example.com",
           "role": "Batsman",
           "battingStyle": "Right-Handed",
           "bowlingStyle": "Right-arm fast",
-          "_id": "6900b0c6a3e1e740c34bcebd",
-          "createdAt": "2025-10-28T12:02:14.823Z",
-          "updatedAt": "2025-10-28T12:02:14.823Z",
+          "_id": "6905e3895b5b4030a3c1c8dd",
+          "createdAt": "2025-11-01T10:40:09.997Z",
+          "updatedAt": "2025-11-01T10:40:09.997Z",
           "__v": 0
         }
       }
@@ -245,20 +245,20 @@
       "testName": "Create Second Profile",
       "endpoint": "/api/profiles",
       "method": "POST",
-      "timestamp": "2025-10-28T12:02:13.392Z",
+      "timestamp": "2025-11-01T10:40:10.624Z",
       "status": "success",
       "statusCode": 201,
-      "duration": 453,
+      "duration": 464,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
           "name": "Test Player Two",
           "gender": "Male",
           "city": "Test City",
           "phone": "+1234567891",
-          "email": "player21761652929546@example.com",
+          "email": "player21761993606382@example.com",
           "role": "Bowler",
           "battingStyle": "Left-Handed",
           "bowlingStyle": "Left-arm spin"
@@ -273,28 +273,28 @@
           "access-control-max-age": "86400",
           "cache-control": "public, max-age=0, must-revalidate",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:15 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:10 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/profiles",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::6plf6-1761652935169-cdbe61f8735d"
+          "x-vercel-id": "dxb1::iad1::25gdn-1761993610367-c066912854c3"
         },
         "body": {
-          "user": "6900b0c4a3e1e740c34bceb8",
+          "user": "6905e3875b5b4030a3c1c8d8",
           "name": "Test Player Two",
           "gender": "Male",
           "city": "Test City",
           "phone": "+1234567891",
-          "email": "player21761652929546@example.com",
+          "email": "player21761993606382@example.com",
           "role": "Bowler",
           "battingStyle": "Left-Handed",
           "bowlingStyle": "Left-arm spin",
-          "_id": "6900b0c7a3e1e740c34bcebf",
-          "createdAt": "2025-10-28T12:02:15.287Z",
-          "updatedAt": "2025-10-28T12:02:15.287Z",
+          "_id": "6905e38a5b5b4030a3c1c8df",
+          "createdAt": "2025-11-01T10:40:10.494Z",
+          "updatedAt": "2025-11-01T10:40:10.494Z",
           "__v": 0
         }
       }
@@ -303,13 +303,13 @@
       "testName": "Get All Profiles",
       "endpoint": "/api/profiles",
       "method": "GET",
-      "timestamp": "2025-10-28T12:02:13.842Z",
+      "timestamp": "2025-11-01T10:40:11.099Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 448,
+      "duration": 470,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -323,44 +323,44 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:15 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:11 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/profiles",
           "x-vercel-cache": "BYPASS",
-          "x-vercel-id": "dxb1::iad1::s76vr-1761652935622-645c4d3d23c1"
+          "x-vercel-id": "dxb1::iad1::88f8l-1761993610829-64ea19dd97b2"
         },
         "body": [
           {
-            "_id": "6900b0c7a3e1e740c34bcebf",
-            "user": "6900b0c4a3e1e740c34bceb8",
+            "_id": "6905e38a5b5b4030a3c1c8df",
+            "user": "6905e3875b5b4030a3c1c8d8",
             "name": "Test Player Two",
             "gender": "Male",
             "city": "Test City",
             "phone": "+1234567891",
-            "email": "player21761652929546@example.com",
+            "email": "player21761993606382@example.com",
             "role": "Bowler",
             "battingStyle": "Left-Handed",
             "bowlingStyle": "Left-arm spin",
-            "createdAt": "2025-10-28T12:02:15.287Z",
-            "updatedAt": "2025-10-28T12:02:15.287Z",
+            "createdAt": "2025-11-01T10:40:10.494Z",
+            "updatedAt": "2025-11-01T10:40:10.494Z",
             "__v": 0
           },
           {
-            "_id": "6900b0c6a3e1e740c34bcebd",
-            "user": "6900b0c4a3e1e740c34bceb8",
+            "_id": "6905e3895b5b4030a3c1c8dd",
+            "user": "6905e3875b5b4030a3c1c8d8",
             "name": "Test Player One",
             "gender": "Male",
             "city": "Test City",
             "phone": "+1234567890",
-            "email": "player1761652929546@example.com",
+            "email": "player1761993606382@example.com",
             "role": "Batsman",
             "battingStyle": "Right-Handed",
             "bowlingStyle": "Right-arm fast",
-            "createdAt": "2025-10-28T12:02:14.823Z",
-            "updatedAt": "2025-10-28T12:02:14.823Z",
+            "createdAt": "2025-11-01T10:40:09.997Z",
+            "updatedAt": "2025-11-01T10:40:09.997Z",
             "__v": 0
           }
         ]
@@ -368,15 +368,15 @@
     },
     {
       "testName": "Get Profile by ID",
-      "endpoint": "/api/profiles/6900b0c6a3e1e740c34bcebd",
+      "endpoint": "/api/profiles/6905e3895b5b4030a3c1c8dd",
       "method": "GET",
-      "timestamp": "2025-10-28T12:02:14.297Z",
+      "timestamp": "2025-11-01T10:40:11.562Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 452,
+      "duration": 460,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -390,30 +390,30 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:16 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:11 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/profiles/[id]",
           "x-vercel-cache": "BYPASS",
-          "x-vercel-id": "dxb1::iad1::7qx9v-1761652936072-408809a41346"
+          "x-vercel-id": "dxb1::iad1::gs7nn-1761993611304-c619c01d75ba"
         },
         "body": {
           "success": true,
           "data": {
-            "_id": "6900b0c6a3e1e740c34bcebd",
-            "user": "6900b0c4a3e1e740c34bceb8",
+            "_id": "6905e3895b5b4030a3c1c8dd",
+            "user": "6905e3875b5b4030a3c1c8d8",
             "name": "Test Player One",
             "gender": "Male",
             "city": "Test City",
             "phone": "+1234567890",
-            "email": "player1761652929546@example.com",
+            "email": "player1761993606382@example.com",
             "role": "Batsman",
             "battingStyle": "Right-Handed",
             "bowlingStyle": "Right-arm fast",
-            "createdAt": "2025-10-28T12:02:14.823Z",
-            "updatedAt": "2025-10-28T12:02:14.823Z",
+            "createdAt": "2025-11-01T10:40:09.997Z",
+            "updatedAt": "2025-11-01T10:40:09.997Z",
             "__v": 0
           }
         }
@@ -421,15 +421,15 @@
     },
     {
       "testName": "Update Profile",
-      "endpoint": "/api/profiles/6900b0c6a3e1e740c34bcebd",
+      "endpoint": "/api/profiles/6905e3895b5b4030a3c1c8dd",
       "method": "PUT",
-      "timestamp": "2025-10-28T12:02:14.756Z",
+      "timestamp": "2025-11-01T10:40:12.029Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 458,
+      "duration": 465,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
           "name": "Test Player One Updated",
@@ -446,30 +446,30 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:16 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:12 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/profiles/[id]",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::7qx9v-1761652936527-e56564c91da2"
+          "x-vercel-id": "dxb1::iad1::gs7nn-1761993611768-3fa682c9633c"
         },
         "body": {
           "success": true,
           "data": {
-            "_id": "6900b0c6a3e1e740c34bcebd",
-            "user": "6900b0c4a3e1e740c34bceb8",
+            "_id": "6905e3895b5b4030a3c1c8dd",
+            "user": "6905e3875b5b4030a3c1c8d8",
             "name": "Test Player One Updated",
             "gender": "Male",
             "city": "Updated City",
             "phone": "+1234567890",
-            "email": "player1761652929546@example.com",
+            "email": "player1761993606382@example.com",
             "role": "Batsman",
             "battingStyle": "Right-Handed",
             "bowlingStyle": "Right-arm fast",
-            "createdAt": "2025-10-28T12:02:14.823Z",
-            "updatedAt": "2025-10-28T12:02:16.646Z",
+            "createdAt": "2025-11-01T10:40:09.997Z",
+            "updatedAt": "2025-11-01T10:40:11.886Z",
             "__v": 0
           }
         }
@@ -479,16 +479,16 @@
       "testName": "Create Team",
       "endpoint": "/api/teams",
       "method": "POST",
-      "timestamp": "2025-10-28T12:02:15.241Z",
+      "timestamp": "2025-11-01T10:40:12.546Z",
       "status": "success",
       "statusCode": 201,
-      "duration": 483,
+      "duration": 515,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
-          "name": "Test Team 1761652929546",
+          "name": "Test Team 1761993606382",
           "slug": "TT1",
           "city": "Test City",
           "captain": "Test Captain One",
@@ -508,18 +508,18 @@
           "access-control-max-age": "86400",
           "cache-control": "public, max-age=0, must-revalidate",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:17 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:12 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/teams",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::7qx9v-1761652936988-45ec069e3a55"
+          "x-vercel-id": "dxb1::iad1::gs7nn-1761993612236-a810c711ee77"
         },
         "body": {
-          "user": "6900b0c4a3e1e740c34bceb8",
-          "name": "Test Team 1761652929546",
+          "user": "6905e3875b5b4030a3c1c8d8",
+          "name": "Test Team 1761993606382",
           "slug": "TT1",
           "city": "Test City",
           "description": "Test team for API testing",
@@ -536,13 +536,13 @@
             "totalWickets": 0
           },
           "isActive": true,
-          "_id": "6900b0c9a3e1e740c34bcec4",
+          "_id": "6905e38c5b5b4030a3c1c8e4",
           "players": [],
-          "createdAt": "2025-10-28T12:02:17.133Z",
-          "updatedAt": "2025-10-28T12:02:17.133Z",
+          "createdAt": "2025-11-01T10:40:12.353Z",
+          "updatedAt": "2025-11-01T10:40:12.353Z",
           "__v": 0,
           "winPercentage": 0,
-          "id": "6900b0c9a3e1e740c34bcec4"
+          "id": "6905e38c5b5b4030a3c1c8e4"
         }
       }
     },
@@ -550,16 +550,16 @@
       "testName": "Create Second Team",
       "endpoint": "/api/teams",
       "method": "POST",
-      "timestamp": "2025-10-28T12:02:15.696Z",
+      "timestamp": "2025-11-01T10:40:13.008Z",
       "status": "success",
       "statusCode": 201,
-      "duration": 453,
+      "duration": 461,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
-          "name": "Test Team Two 1761652929546",
+          "name": "Test Team Two 1761993606382",
           "slug": "TT2",
           "city": "Test City Two",
           "captain": "Test Captain Two",
@@ -579,18 +579,18 @@
           "access-control-max-age": "86400",
           "cache-control": "public, max-age=0, must-revalidate",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:17 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:13 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/teams",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::cxksm-1761652937472-b10b0cbd2c42"
+          "x-vercel-id": "dxb1::iad1::c6vkr-1761993612758-703a38c87375"
         },
         "body": {
-          "user": "6900b0c4a3e1e740c34bceb8",
-          "name": "Test Team Two 1761652929546",
+          "user": "6905e3875b5b4030a3c1c8d8",
+          "name": "Test Team Two 1761993606382",
           "slug": "TT2",
           "city": "Test City Two",
           "description": "Second test team for API testing",
@@ -607,13 +607,13 @@
             "totalWickets": 0
           },
           "isActive": true,
-          "_id": "6900b0c9a3e1e740c34bcec6",
+          "_id": "6905e38c5b5b4030a3c1c8e6",
           "players": [],
-          "createdAt": "2025-10-28T12:02:17.590Z",
-          "updatedAt": "2025-10-28T12:02:17.590Z",
+          "createdAt": "2025-11-01T10:40:12.879Z",
+          "updatedAt": "2025-11-01T10:40:12.879Z",
           "__v": 0,
           "winPercentage": 0,
-          "id": "6900b0c9a3e1e740c34bcec6"
+          "id": "6905e38c5b5b4030a3c1c8e6"
         }
       }
     },
@@ -621,13 +621,13 @@
       "testName": "Get All Teams",
       "endpoint": "/api/teams",
       "method": "GET",
-      "timestamp": "2025-10-28T12:02:16.158Z",
+      "timestamp": "2025-11-01T10:40:13.479Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 460,
+      "duration": 470,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -641,14 +641,14 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:18 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:13 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/teams",
           "x-vercel-cache": "BYPASS",
-          "x-vercel-id": "dxb1::iad1::jnc2t-1761652937926-929c0ce7ee33"
+          "x-vercel-id": "dxb1::iad1::gs7nn-1761993613214-6e3eaa99fe21"
         },
         "body": [
           {
@@ -660,9 +660,9 @@
               "totalRuns": 0,
               "totalWickets": 0
             },
-            "_id": "6900b0c9a3e1e740c34bcec6",
-            "user": "6900b0c4a3e1e740c34bceb8",
-            "name": "Test Team Two 1761652929546",
+            "_id": "6905e38c5b5b4030a3c1c8e6",
+            "user": "6905e3875b5b4030a3c1c8d8",
+            "name": "Test Team Two 1761993606382",
             "slug": "TT2",
             "city": "Test City Two",
             "description": "Second test team for API testing",
@@ -672,11 +672,11 @@
             "coach": "Test Coach Two",
             "isActive": true,
             "players": [],
-            "createdAt": "2025-10-28T12:02:17.590Z",
-            "updatedAt": "2025-10-28T12:02:17.590Z",
+            "createdAt": "2025-11-01T10:40:12.879Z",
+            "updatedAt": "2025-11-01T10:40:12.879Z",
             "__v": 0,
             "winPercentage": 0,
-            "id": "6900b0c9a3e1e740c34bcec6"
+            "id": "6905e38c5b5b4030a3c1c8e6"
           },
           {
             "statistics": {
@@ -687,9 +687,9 @@
               "totalRuns": 0,
               "totalWickets": 0
             },
-            "_id": "6900b0c9a3e1e740c34bcec4",
-            "user": "6900b0c4a3e1e740c34bceb8",
-            "name": "Test Team 1761652929546",
+            "_id": "6905e38c5b5b4030a3c1c8e4",
+            "user": "6905e3875b5b4030a3c1c8d8",
+            "name": "Test Team 1761993606382",
             "slug": "TT1",
             "city": "Test City",
             "description": "Test team for API testing",
@@ -699,26 +699,26 @@
             "coach": "Test Coach",
             "isActive": true,
             "players": [],
-            "createdAt": "2025-10-28T12:02:17.133Z",
-            "updatedAt": "2025-10-28T12:02:17.133Z",
+            "createdAt": "2025-11-01T10:40:12.353Z",
+            "updatedAt": "2025-11-01T10:40:12.353Z",
             "__v": 0,
             "winPercentage": 0,
-            "id": "6900b0c9a3e1e740c34bcec4"
+            "id": "6905e38c5b5b4030a3c1c8e4"
           }
         ]
       }
     },
     {
       "testName": "Get Team by ID",
-      "endpoint": "/api/teams/6900b0c9a3e1e740c34bcec4",
+      "endpoint": "/api/teams/6905e38c5b5b4030a3c1c8e4",
       "method": "GET",
-      "timestamp": "2025-10-28T12:02:16.614Z",
+      "timestamp": "2025-11-01T10:40:13.938Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 454,
+      "duration": 456,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -732,14 +732,14 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:18 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:13 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/teams/[id]",
           "x-vercel-cache": "BYPASS",
-          "x-vercel-id": "dxb1::iad1::mnpv6-1761652938387-b5661459b90a"
+          "x-vercel-id": "dxb1::iad1::clw9r-1761993613684-57614c914aa0"
         },
         "body": {
           "statistics": {
@@ -750,9 +750,9 @@
             "totalRuns": 0,
             "totalWickets": 0
           },
-          "_id": "6900b0c9a3e1e740c34bcec4",
-          "user": "6900b0c4a3e1e740c34bceb8",
-          "name": "Test Team 1761652929546",
+          "_id": "6905e38c5b5b4030a3c1c8e4",
+          "user": "6905e3875b5b4030a3c1c8d8",
+          "name": "Test Team 1761993606382",
           "slug": "TT1",
           "city": "Test City",
           "description": "Test team for API testing",
@@ -762,28 +762,28 @@
           "coach": "Test Coach",
           "isActive": true,
           "players": [],
-          "createdAt": "2025-10-28T12:02:17.133Z",
-          "updatedAt": "2025-10-28T12:02:17.133Z",
+          "createdAt": "2025-11-01T10:40:12.353Z",
+          "updatedAt": "2025-11-01T10:40:12.353Z",
           "__v": 0,
           "winPercentage": 0,
-          "id": "6900b0c9a3e1e740c34bcec4"
+          "id": "6905e38c5b5b4030a3c1c8e4"
         }
       }
     },
     {
       "testName": "Update Team",
-      "endpoint": "/api/teams/6900b0c9a3e1e740c34bcec4",
+      "endpoint": "/api/teams/6905e38c5b5b4030a3c1c8e4",
       "method": "PUT",
-      "timestamp": "2025-10-28T12:02:17.255Z",
+      "timestamp": "2025-11-01T10:40:14.583Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 640,
+      "duration": 642,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
-          "name": "Test Team Updated 1761652929546",
+          "name": "Test Team Updated 1761993606382",
           "slug": "TTU",
           "description": "Updated test team description"
         }
@@ -798,14 +798,14 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:19 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:14 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/teams/[id]",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::88r47-1761652938844-e30813bb5caf"
+          "x-vercel-id": "dxb1::iad1::clw9r-1761993614143-2c8826c10f13"
         },
         "body": {
           "statistics": {
@@ -816,9 +816,9 @@
             "totalRuns": 0,
             "totalWickets": 0
           },
-          "_id": "6900b0c9a3e1e740c34bcec4",
-          "user": "6900b0c4a3e1e740c34bceb8",
-          "name": "Test Team Updated 1761652929546",
+          "_id": "6905e38c5b5b4030a3c1c8e4",
+          "user": "6905e3875b5b4030a3c1c8d8",
+          "name": "Test Team Updated 1761993606382",
           "slug": "TTU",
           "city": "Test City",
           "description": "Updated test team description",
@@ -828,28 +828,28 @@
           "coach": "",
           "isActive": true,
           "players": [],
-          "createdAt": "2025-10-28T12:02:17.133Z",
-          "updatedAt": "2025-10-28T12:02:19.150Z",
+          "createdAt": "2025-11-01T10:40:12.353Z",
+          "updatedAt": "2025-11-01T10:40:14.449Z",
           "__v": 0,
           "winPercentage": 0,
-          "id": "6900b0c9a3e1e740c34bcec4"
+          "id": "6905e38c5b5b4030a3c1c8e4"
         }
       }
     },
     {
       "testName": "Add Player to Team",
-      "endpoint": "/api/teams/6900b0c9a3e1e740c34bcec4/players",
+      "endpoint": "/api/teams/6905e38c5b5b4030a3c1c8e4/players",
       "method": "POST",
-      "timestamp": "2025-10-28T12:02:18.271Z",
+      "timestamp": "2025-11-01T10:40:15.607Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 1014,
+      "duration": 1022,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
-          "playerId": "6900b0c7a3e1e740c34bcebf",
+          "playerId": "6905e38a5b5b4030a3c1c8df",
           "role": "Bowler"
         }
       },
@@ -863,14 +863,14 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:20 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:15 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/teams/[id]/players",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::7qx9v-1761652939485-998309c1f6b1"
+          "x-vercel-id": "dxb1::iad1::zbpld-1761993614789-f1e5628456fe"
         },
         "body": {
           "statistics": {
@@ -881,9 +881,9 @@
             "totalRuns": 0,
             "totalWickets": 0
           },
-          "_id": "6900b0c9a3e1e740c34bcec4",
-          "user": "6900b0c4a3e1e740c34bceb8",
-          "name": "Test Team Updated 1761652929546",
+          "_id": "6905e38c5b5b4030a3c1c8e4",
+          "user": "6905e3875b5b4030a3c1c8d8",
+          "name": "Test Team Updated 1761993606382",
           "slug": "TTU",
           "city": "Test City",
           "description": "Updated test team description",
@@ -895,40 +895,40 @@
           "players": [
             {
               "player": {
-                "_id": "6900b0c7a3e1e740c34bcebf",
+                "_id": "6905e38a5b5b4030a3c1c8df",
                 "name": "Test Player Two",
                 "role": "Bowler",
-                "id": "6900b0c7a3e1e740c34bcebf"
+                "id": "6905e38a5b5b4030a3c1c8df"
               },
               "role": "Bowler",
-              "joinedDate": "2025-10-28T12:02:19.789Z",
+              "joinedDate": "2025-11-01T10:40:15.096Z",
               "isActive": true,
-              "_id": "6900b0cba3e1e740c34bcecd",
-              "id": "6900b0cba3e1e740c34bcecd"
+              "_id": "6905e38f5b5b4030a3c1c8ed",
+              "id": "6905e38f5b5b4030a3c1c8ed"
             }
           ],
-          "createdAt": "2025-10-28T12:02:17.133Z",
-          "updatedAt": "2025-10-28T12:02:19.790Z",
+          "createdAt": "2025-11-01T10:40:12.353Z",
+          "updatedAt": "2025-11-01T10:40:15.098Z",
           "__v": 1,
           "winPercentage": 0,
-          "id": "6900b0c9a3e1e740c34bcec4"
+          "id": "6905e38c5b5b4030a3c1c8e4"
         }
       }
     },
     {
       "testName": "Remove Player from Team",
-      "endpoint": "/api/teams/6900b0c9a3e1e740c34bcec4/players",
+      "endpoint": "/api/teams/6905e38c5b5b4030a3c1c8e4/players",
       "method": "DELETE",
-      "timestamp": "2025-10-28T12:02:19.101Z",
-      "status": "success",
-      "statusCode": 200,
-      "duration": 824,
+      "timestamp": "2025-11-01T10:40:20.472Z",
+      "status": "failed",
+      "statusCode": 500,
+      "duration": 4862,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
-          "playerId": "6900b0c7a3e1e740c34bcebf"
+          "playerId": "6905e38a5b5b4030a3c1c8df"
         }
       },
       "response": {
@@ -939,69 +939,45 @@
           "access-control-allow-origin": "*",
           "access-control-max-age": "86400",
           "cache-control": "public, max-age=0, must-revalidate",
-          "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:21 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:20 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/teams/[id]/players",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::7qx9v-1761652940499-3488904c4502"
+          "x-vercel-id": "dxb1::iad1::zbpld-1761993615813-bb44ecba44c3"
         },
         "body": {
-          "statistics": {
-            "matchesPlayed": 0,
-            "matchesWon": 0,
-            "matchesLost": 0,
-            "matchesDrawn": 0,
-            "totalRuns": 0,
-            "totalWickets": 0
-          },
-          "_id": "6900b0c9a3e1e740c34bcec4",
-          "user": "6900b0c4a3e1e740c34bceb8",
-          "name": "Test Team Updated 1761652929546",
-          "slug": "TTU",
-          "city": "Test City",
-          "description": "Updated test team description",
-          "founded": "2024",
-          "homeGround": "Test Ground",
-          "captain": "",
-          "coach": "",
-          "isActive": true,
-          "players": [],
-          "createdAt": "2025-10-28T12:02:17.133Z",
-          "updatedAt": "2025-10-28T12:02:20.801Z",
-          "__v": 2,
-          "winPercentage": 0,
-          "id": "6900b0c9a3e1e740c34bcec4"
+          "error": "Failed to remove player from team"
         }
-      }
+      },
+      "error": "Failed to remove player from team"
     },
     {
       "testName": "Create Tournament",
       "endpoint": "/api/tournaments",
       "method": "POST",
-      "timestamp": "2025-10-28T12:02:19.839Z",
+      "timestamp": "2025-11-01T10:40:21.233Z",
       "status": "success",
       "statusCode": 201,
-      "duration": 737,
+      "duration": 760,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
-          "name": "Test Tournament 1761652929546",
+          "name": "Test Tournament 1761993606382",
           "description": "Test tournament for API testing",
           "format": "T20",
-          "startDate": "2025-11-04T12:02:19.101Z",
-          "endDate": "2025-11-27T12:02:19.101Z",
-          "registrationDeadline": "2025-10-31T12:02:19.101Z",
+          "startDate": "2025-11-08T10:40:20.473Z",
+          "endDate": "2025-12-01T10:40:20.473Z",
+          "registrationDeadline": "2025-11-04T10:40:20.473Z",
           "venue": "Test Venue",
           "organizer": {
             "name": "Test Organizer",
-            "email": "organizer1761652929546@example.com",
+            "email": "organizer1761993606382@example.com",
             "phone": "+1234567890"
           },
           "prizePool": "Winner: $5000, Runner-up: $3000, Best Player: $1000",
@@ -1028,19 +1004,19 @@
           "access-control-max-age": "86400",
           "cache-control": "public, max-age=0, must-revalidate",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:21 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:21 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/tournaments",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::gxlhh-1761652941428-5db24c31356b"
+          "x-vercel-id": "dxb1::iad1::25gdn-1761993620776-d2040b7f9175"
         },
         "body": {
           "organizer": {
             "name": "Test Organizer",
-            "email": "organizer1761652929546@example.com",
+            "email": "organizer1761993606382@example.com",
             "phone": "+1234567890"
           },
           "rules": {
@@ -1050,14 +1026,14 @@
             "duckworthLewis": false,
             "supersOver": false
           },
-          "_id": "6900b0cda3e1e740c34bced6",
-          "user": "6900b0c4a3e1e740c34bceb8",
-          "name": "Test Tournament 1761652929546",
+          "_id": "6905e3949af7c0af5c50160a",
+          "user": "6905e3875b5b4030a3c1c8d8",
+          "name": "Test Tournament 1761993606382",
           "description": "Test tournament for API testing",
           "format": "T20",
-          "startDate": "2025-11-04T12:02:19.101Z",
-          "endDate": "2025-11-27T12:02:19.101Z",
-          "registrationDeadline": "2025-10-31T12:02:19.101Z",
+          "startDate": "2025-11-08T10:40:20.473Z",
+          "endDate": "2025-12-01T10:40:20.473Z",
+          "registrationDeadline": "2025-11-04T10:40:20.473Z",
           "venue": "Test Venue",
           "prizePool": "Winner: $5000, Runner-up: $3000, Best Player: $1000",
           "entryFee": 100,
@@ -1067,12 +1043,12 @@
           "status": "Draft",
           "isPublic": true,
           "teams": [],
-          "createdAt": "2025-10-28T12:02:21.549Z",
-          "updatedAt": "2025-10-28T12:02:21.549Z",
+          "createdAt": "2025-11-01T10:40:20.910Z",
+          "updatedAt": "2025-11-01T10:40:20.910Z",
           "__v": 0,
           "registrationProgress": "0/16",
           "isRegistrationOpen": false,
-          "id": "6900b0cda3e1e740c34bced6"
+          "id": "6905e3949af7c0af5c50160a"
         }
       }
     },
@@ -1080,13 +1056,13 @@
       "testName": "Get All Tournaments",
       "endpoint": "/api/tournaments",
       "method": "GET",
-      "timestamp": "2025-10-28T12:02:20.381Z",
+      "timestamp": "2025-11-01T10:40:21.803Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 541,
+      "duration": 569,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -1100,20 +1076,20 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:22 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:21 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/tournaments",
           "x-vercel-cache": "BYPASS",
-          "x-vercel-id": "dxb1::iad1::6plf6-1761652942163-2bc163f0ea66"
+          "x-vercel-id": "dxb1::iad1::69zph-1761993621534-5266cf2bed85"
         },
         "body": [
           {
             "organizer": {
               "name": "Test Organizer",
-              "email": "organizer1761652929546@example.com",
+              "email": "organizer1761993606382@example.com",
               "phone": "+1234567890"
             },
             "rules": {
@@ -1123,14 +1099,14 @@
               "duckworthLewis": false,
               "supersOver": false
             },
-            "_id": "6900b0cda3e1e740c34bced6",
-            "user": "6900b0c4a3e1e740c34bceb8",
-            "name": "Test Tournament 1761652929546",
+            "_id": "6905e3949af7c0af5c50160a",
+            "user": "6905e3875b5b4030a3c1c8d8",
+            "name": "Test Tournament 1761993606382",
             "description": "Test tournament for API testing",
             "format": "T20",
-            "startDate": "2025-11-04T12:02:19.101Z",
-            "endDate": "2025-11-27T12:02:19.101Z",
-            "registrationDeadline": "2025-10-31T12:02:19.101Z",
+            "startDate": "2025-11-08T10:40:20.473Z",
+            "endDate": "2025-12-01T10:40:20.473Z",
+            "registrationDeadline": "2025-11-04T10:40:20.473Z",
             "venue": "Test Venue",
             "prizePool": "Winner: $5000, Runner-up: $3000, Best Player: $1000",
             "entryFee": 100,
@@ -1140,27 +1116,27 @@
             "status": "Draft",
             "isPublic": true,
             "teams": [],
-            "createdAt": "2025-10-28T12:02:21.549Z",
-            "updatedAt": "2025-10-28T12:02:21.549Z",
+            "createdAt": "2025-11-01T10:40:20.910Z",
+            "updatedAt": "2025-11-01T10:40:20.910Z",
             "__v": 0,
             "registrationProgress": "0/16",
             "isRegistrationOpen": false,
-            "id": "6900b0cda3e1e740c34bced6"
+            "id": "6905e3949af7c0af5c50160a"
           }
         ]
       }
     },
     {
       "testName": "Get Tournament by ID",
-      "endpoint": "/api/tournaments/6900b0cda3e1e740c34bced6",
+      "endpoint": "/api/tournaments/6905e3949af7c0af5c50160a",
       "method": "GET",
-      "timestamp": "2025-10-28T12:02:20.832Z",
+      "timestamp": "2025-11-01T10:40:22.263Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 449,
+      "duration": 458,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -1174,19 +1150,19 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:22 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:22 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/tournaments/[id]",
           "x-vercel-cache": "BYPASS",
-          "x-vercel-id": "dxb1::iad1::bb9lh-1761652942609-fc2f5e2650ae"
+          "x-vercel-id": "dxb1::iad1::69zph-1761993622008-4e5fdb78e284"
         },
         "body": {
           "organizer": {
             "name": "Test Organizer",
-            "email": "organizer1761652929546@example.com",
+            "email": "organizer1761993606382@example.com",
             "phone": "+1234567890"
           },
           "rules": {
@@ -1196,14 +1172,14 @@
             "duckworthLewis": false,
             "supersOver": false
           },
-          "_id": "6900b0cda3e1e740c34bced6",
-          "user": "6900b0c4a3e1e740c34bceb8",
-          "name": "Test Tournament 1761652929546",
+          "_id": "6905e3949af7c0af5c50160a",
+          "user": "6905e3875b5b4030a3c1c8d8",
+          "name": "Test Tournament 1761993606382",
           "description": "Test tournament for API testing",
           "format": "T20",
-          "startDate": "2025-11-04T12:02:19.101Z",
-          "endDate": "2025-11-27T12:02:19.101Z",
-          "registrationDeadline": "2025-10-31T12:02:19.101Z",
+          "startDate": "2025-11-08T10:40:20.473Z",
+          "endDate": "2025-12-01T10:40:20.473Z",
+          "registrationDeadline": "2025-11-04T10:40:20.473Z",
           "venue": "Test Venue",
           "prizePool": "Winner: $5000, Runner-up: $3000, Best Player: $1000",
           "entryFee": 100,
@@ -1213,29 +1189,29 @@
           "status": "Draft",
           "isPublic": true,
           "teams": [],
-          "createdAt": "2025-10-28T12:02:21.549Z",
-          "updatedAt": "2025-10-28T12:02:21.549Z",
+          "createdAt": "2025-11-01T10:40:20.910Z",
+          "updatedAt": "2025-11-01T10:40:20.910Z",
           "__v": 0,
           "registrationProgress": "0/16",
           "isRegistrationOpen": false,
-          "id": "6900b0cda3e1e740c34bced6"
+          "id": "6905e3949af7c0af5c50160a"
         }
       }
     },
     {
       "testName": "Update Tournament",
-      "endpoint": "/api/tournaments/6900b0cda3e1e740c34bced6",
+      "endpoint": "/api/tournaments/6905e3949af7c0af5c50160a",
       "method": "PUT",
-      "timestamp": "2025-10-28T12:02:21.288Z",
+      "timestamp": "2025-11-01T10:40:22.738Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 455,
+      "duration": 474,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
-          "name": "Test Tournament Updated 1761652929546",
+          "name": "Test Tournament Updated 1761993606382",
           "description": "Updated tournament description",
           "status": "Registration Open"
         }
@@ -1250,19 +1226,19 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:23 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:22 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/tournaments/[id]",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::tdzc2-1761652943061-8b3efefbfaf1"
+          "x-vercel-id": "dxb1::iad1::clw9r-1761993622472-3b4f5363ba09"
         },
         "body": {
           "organizer": {
             "name": "Test Organizer",
-            "email": "organizer1761652929546@example.com",
+            "email": "organizer1761993606382@example.com",
             "phone": "+1234567890"
           },
           "rules": {
@@ -1272,14 +1248,14 @@
             "duckworthLewis": false,
             "supersOver": false
           },
-          "_id": "6900b0cda3e1e740c34bced6",
-          "user": "6900b0c4a3e1e740c34bceb8",
-          "name": "Test Tournament Updated 1761652929546",
+          "_id": "6905e3949af7c0af5c50160a",
+          "user": "6905e3875b5b4030a3c1c8d8",
+          "name": "Test Tournament Updated 1761993606382",
           "description": "Updated tournament description",
           "format": "T20",
-          "startDate": "2025-11-04T12:02:19.101Z",
-          "endDate": "2025-11-27T12:02:19.101Z",
-          "registrationDeadline": "2025-10-31T12:02:19.101Z",
+          "startDate": "2025-11-08T10:40:20.473Z",
+          "endDate": "2025-12-01T10:40:20.473Z",
+          "registrationDeadline": "2025-11-04T10:40:20.473Z",
           "venue": "Test Venue",
           "prizePool": "Winner: $5000, Runner-up: $3000, Best Player: $1000",
           "entryFee": 100,
@@ -1289,12 +1265,12 @@
           "status": "Registration Open",
           "isPublic": true,
           "teams": [],
-          "createdAt": "2025-10-28T12:02:21.549Z",
-          "updatedAt": "2025-10-28T12:02:23.181Z",
+          "createdAt": "2025-11-01T10:40:20.910Z",
+          "updatedAt": "2025-11-01T10:40:22.591Z",
           "__v": 0,
           "registrationProgress": "0/16",
           "isRegistrationOpen": true,
-          "id": "6900b0cda3e1e740c34bced6"
+          "id": "6905e3949af7c0af5c50160a"
         }
       }
     },
@@ -1302,27 +1278,27 @@
       "testName": "Create Match",
       "endpoint": "/api/matches",
       "method": "POST",
-      "timestamp": "2025-10-28T12:02:21.924Z",
+      "timestamp": "2025-11-01T10:40:23.393Z",
       "status": "success",
       "statusCode": 201,
-      "duration": 635,
+      "duration": 654,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
-          "matchNumber": "MAT1761652929546",
-          "tournament": "6900b0cda3e1e740c34bced6",
+          "matchNumber": "MAT1761993606382",
+          "tournament": "6905e3949af7c0af5c50160a",
           "teams": {
-            "teamA": "6900b0c9a3e1e740c34bcec4",
-            "teamB": "6900b0c9a3e1e740c34bcec6"
+            "teamA": "6905e38c5b5b4030a3c1c8e4",
+            "teamB": "6905e38c5b5b4030a3c1c8e6"
           },
           "venue": {
             "name": "Test Stadium",
             "city": "Test City",
             "capacity": 50000
           },
-          "scheduledDate": "2025-11-04T12:02:21.288Z",
+          "scheduledDate": "2025-11-08T10:40:22.738Z",
           "status": "Scheduled",
           "matchType": "T20",
           "officials": {
@@ -1343,41 +1319,41 @@
           "access-control-max-age": "86400",
           "cache-control": "public, max-age=0, must-revalidate",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:24 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:23 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/matches",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::tdzc2-1761652943516-f742f8e62e90"
+          "x-vercel-id": "dxb1::iad1::d66lm-1761993622944-439cb9757315"
         },
         "body": {
           "teams": {
-            "teamA": "6900b0c9a3e1e740c34bcec4",
-            "teamB": "6900b0c9a3e1e740c34bcec6"
+            "teamA": "6905e38c5b5b4030a3c1c8e4",
+            "teamB": "6905e38c5b5b4030a3c1c8e6"
           },
           "venue": {
             "name": "Test Stadium",
             "city": "Test City",
             "capacity": 50000
           },
-          "_id": "6900b0cfa3e1e740c34bcedc",
-          "user": "6900b0c4a3e1e740c34bceb8",
-          "matchNumber": "MAT1761652929546",
-          "scheduledDate": "2025-11-04T12:02:21.288Z",
+          "_id": "6905e3979af7c0af5c501611",
+          "user": "6905e3875b5b4030a3c1c8d8",
+          "matchNumber": "MAT1761993606382",
+          "scheduledDate": "2025-11-08T10:40:22.738Z",
           "status": "Scheduled",
           "matchType": "T20",
           "notes": "Test match for API testing",
           "isActive": true,
           "innings": [],
           "umpires": [],
-          "createdAt": "2025-10-28T12:02:23.632Z",
-          "updatedAt": "2025-10-28T12:02:23.632Z",
+          "createdAt": "2025-11-01T10:40:23.077Z",
+          "updatedAt": "2025-11-01T10:40:23.077Z",
           "__v": 0,
           "duration": null,
           "currentStatus": "Upcoming",
-          "id": "6900b0cfa3e1e740c34bcedc"
+          "id": "6905e3979af7c0af5c501611"
         }
       }
     },
@@ -1385,13 +1361,13 @@
       "testName": "Get All Matches",
       "endpoint": "/api/matches",
       "method": "GET",
-      "timestamp": "2025-10-28T12:02:22.380Z",
+      "timestamp": "2025-11-01T10:40:23.846Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 454,
+      "duration": 451,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -1405,57 +1381,57 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:24 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:23 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/matches",
           "x-vercel-cache": "BYPASS",
-          "x-vercel-id": "dxb1::iad1::phf2d-1761652944156-fd028227146f"
+          "x-vercel-id": "dxb1::iad1::5b2vg-1761993623597-2acdb30738aa"
         },
         "body": [
           {
             "teams": {
-              "teamA": "6900b0c9a3e1e740c34bcec4",
-              "teamB": "6900b0c9a3e1e740c34bcec6"
+              "teamA": "6905e38c5b5b4030a3c1c8e4",
+              "teamB": "6905e38c5b5b4030a3c1c8e6"
             },
             "venue": {
               "name": "Test Stadium",
               "city": "Test City",
               "capacity": 50000
             },
-            "_id": "6900b0cfa3e1e740c34bcedc",
-            "user": "6900b0c4a3e1e740c34bceb8",
-            "matchNumber": "MAT1761652929546",
-            "scheduledDate": "2025-11-04T12:02:21.288Z",
+            "_id": "6905e3979af7c0af5c501611",
+            "user": "6905e3875b5b4030a3c1c8d8",
+            "matchNumber": "MAT1761993606382",
+            "scheduledDate": "2025-11-08T10:40:22.738Z",
             "status": "Scheduled",
             "matchType": "T20",
             "notes": "Test match for API testing",
             "isActive": true,
             "innings": [],
             "umpires": [],
-            "createdAt": "2025-10-28T12:02:23.632Z",
-            "updatedAt": "2025-10-28T12:02:23.632Z",
+            "createdAt": "2025-11-01T10:40:23.077Z",
+            "updatedAt": "2025-11-01T10:40:23.077Z",
             "__v": 0,
             "duration": null,
             "currentStatus": "Upcoming",
-            "id": "6900b0cfa3e1e740c34bcedc"
+            "id": "6905e3979af7c0af5c501611"
           }
         ]
       }
     },
     {
       "testName": "Get Match by ID",
-      "endpoint": "/api/matches/6900b0cfa3e1e740c34bcedc",
+      "endpoint": "/api/matches/6905e3979af7c0af5c501611",
       "method": "GET",
-      "timestamp": "2025-10-28T12:02:22.886Z",
+      "timestamp": "2025-11-01T10:40:24.310Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 504,
+      "duration": 462,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -1469,63 +1445,63 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:24 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:24 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/matches/[id]",
           "x-vercel-cache": "BYPASS",
-          "x-vercel-id": "dxb1::iad1::s9c6d-1761652944607-b4bb7509f593"
+          "x-vercel-id": "dxb1::iad1::c6vkr-1761993624062-bf90320b0dee"
         },
         "body": {
           "teams": {
-            "teamA": "6900b0c9a3e1e740c34bcec4",
-            "teamB": "6900b0c9a3e1e740c34bcec6"
+            "teamA": "6905e38c5b5b4030a3c1c8e4",
+            "teamB": "6905e38c5b5b4030a3c1c8e6"
           },
           "venue": {
             "name": "Test Stadium",
             "city": "Test City",
             "capacity": 50000
           },
-          "_id": "6900b0cfa3e1e740c34bcedc",
-          "user": "6900b0c4a3e1e740c34bceb8",
-          "matchNumber": "MAT1761652929546",
-          "scheduledDate": "2025-11-04T12:02:21.288Z",
+          "_id": "6905e3979af7c0af5c501611",
+          "user": "6905e3875b5b4030a3c1c8d8",
+          "matchNumber": "MAT1761993606382",
+          "scheduledDate": "2025-11-08T10:40:22.738Z",
           "status": "Scheduled",
           "matchType": "T20",
           "notes": "Test match for API testing",
           "isActive": true,
           "innings": [],
           "umpires": [],
-          "createdAt": "2025-10-28T12:02:23.632Z",
-          "updatedAt": "2025-10-28T12:02:23.632Z",
+          "createdAt": "2025-11-01T10:40:23.077Z",
+          "updatedAt": "2025-11-01T10:40:23.077Z",
           "__v": 0,
           "duration": null,
           "currentStatus": "Upcoming",
-          "id": "6900b0cfa3e1e740c34bcedc"
+          "id": "6905e3979af7c0af5c501611"
         }
       }
     },
     {
       "testName": "Update Match",
-      "endpoint": "/api/matches/6900b0cfa3e1e740c34bcedc",
+      "endpoint": "/api/matches/6905e3979af7c0af5c501611",
       "method": "PUT",
-      "timestamp": "2025-10-28T12:02:23.529Z",
+      "timestamp": "2025-11-01T10:40:24.969Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 642,
+      "duration": 657,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
           "status": "Live",
           "notes": "Updated match notes",
           "matchType": "T20",
           "teams": {
-            "teamA": "6900b0c9a3e1e740c34bcec4",
-            "teamB": "6900b0c9a3e1e740c34bcec6"
+            "teamA": "6905e38c5b5b4030a3c1c8e4",
+            "teamB": "6905e38c5b5b4030a3c1c8e6"
           }
         }
       },
@@ -1539,50 +1515,50 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:25 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:25 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/matches/[id]",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::tdzc2-1761652945113-ab6fb15f2294"
+          "x-vercel-id": "dxb1::iad1::4x2g8-1761993624515-a145f58c74c8"
         },
         "body": {
           "teams": {
-            "teamA": "6900b0c9a3e1e740c34bcec4",
-            "teamB": "6900b0c9a3e1e740c34bcec6"
+            "teamA": "6905e38c5b5b4030a3c1c8e4",
+            "teamB": "6905e38c5b5b4030a3c1c8e6"
           },
-          "_id": "6900b0cfa3e1e740c34bcedc",
-          "user": "6900b0c4a3e1e740c34bceb8",
-          "matchNumber": "MAT1761652929546",
-          "scheduledDate": "2025-11-04T12:02:21.288Z",
+          "_id": "6905e3979af7c0af5c501611",
+          "user": "6905e3875b5b4030a3c1c8d8",
+          "matchNumber": "MAT1761993606382",
+          "scheduledDate": "2025-11-08T10:40:22.738Z",
           "status": "Live",
           "matchType": "T20",
           "notes": "Updated match notes",
           "isActive": true,
           "innings": [],
           "umpires": [],
-          "createdAt": "2025-10-28T12:02:23.632Z",
-          "updatedAt": "2025-10-28T12:02:25.423Z",
+          "createdAt": "2025-11-01T10:40:23.077Z",
+          "updatedAt": "2025-11-01T10:40:24.829Z",
           "__v": 0,
           "duration": null,
           "currentStatus": "Live",
-          "id": "6900b0cfa3e1e740c34bcedc"
+          "id": "6905e3979af7c0af5c501611"
         }
       }
     },
     {
       "testName": "Record Ball",
-      "endpoint": "/api/matches/6900b0cfa3e1e740c34bcedc/ball",
+      "endpoint": "/api/matches/6905e3979af7c0af5c501611/ball",
       "method": "POST",
-      "timestamp": "2025-10-28T12:02:24.171Z",
+      "timestamp": "2025-11-01T10:40:25.636Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 640,
+      "duration": 666,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
           "innings_id": "1",
@@ -1591,8 +1567,8 @@
           "bowler": "Test Bowler",
           "striker": "Test Batsman",
           "nonStriker": "Test Non-Striker",
-          "battingTeam": "6900b0c9a3e1e740c34bcec4",
-          "bowlingTeam": "6900b0c9a3e1e740c34bcec6",
+          "battingTeam": "6905e38c5b5b4030a3c1c8e4",
+          "bowlingTeam": "6905e38c5b5b4030a3c1c8e6",
           "runs": 4,
           "totalRuns": 4,
           "totalBalls": 1,
@@ -1634,20 +1610,20 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:26 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:25 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/matches/[id]/ball",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::kwzzt-1761652945756-5efe61d6acab"
+          "x-vercel-id": "dxb1::iad1::4x2g8-1761993625175-c7a902654fec"
         },
         "body": {
           "success": true,
           "ball": {
-            "user": "6900b0c4a3e1e740c34bceb8",
-            "match_id": "6900b0cfa3e1e740c34bcedc",
+            "user": "6905e3875b5b4030a3c1c8d8",
+            "match_id": "6905e3979af7c0af5c501611",
             "innings_id": "1",
             "over": 1,
             "ballNumber": 1,
@@ -1656,11 +1632,11 @@
                 "player": "Test Batsman",
                 "runs": 4,
                 "balls": 1,
-                "_id": "6900b0d2a3e1e740c34bcee5"
+                "_id": "6905e3999af7c0af5c50161b"
               }
             ],
-            "battingTeam": "6900b0c9a3e1e740c34bcec4",
-            "bowlingTeam": "6900b0c9a3e1e740c34bcec6",
+            "battingTeam": "6905e38c5b5b4030a3c1c8e4",
+            "bowlingTeam": "6905e38c5b5b4030a3c1c8e6",
             "bowling": {
               "bowler": "Test Bowler",
               "totalRuns": 4,
@@ -1686,9 +1662,9 @@
             },
             "totalWickets": 0,
             "commentary": "Four runs scored - Test ball",
-            "_id": "6900b0d2a3e1e740c34bcee4",
-            "createdAt": "2025-10-28T12:02:26.064Z",
-            "updatedAt": "2025-10-28T12:02:26.064Z",
+            "_id": "6905e3999af7c0af5c50161a",
+            "createdAt": "2025-11-01T10:40:25.502Z",
+            "updatedAt": "2025-11-01T10:40:25.502Z",
             "__v": 0
           }
         }
@@ -1696,18 +1672,18 @@
     },
     {
       "testName": "Undo Last Ball",
-      "endpoint": "/api/matches/6900b0cfa3e1e740c34bcedc/undo",
+      "endpoint": "/api/matches/6905e3979af7c0af5c501611/undo",
       "method": "POST",
-      "timestamp": "2025-10-28T12:02:25.002Z",
+      "timestamp": "2025-11-01T10:40:26.750Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 827,
+      "duration": 1113,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": {
-          "_id": "6900b0d2a3e1e740c34bcee4"
+          "_id": "6905e3999af7c0af5c50161a"
         }
       },
       "response": {
@@ -1720,40 +1696,40 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:27 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:26 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/matches/[id]/undo",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::kwzzt-1761652946399-f4e11ccd985a"
+          "x-vercel-id": "dxb1::iad1::77f7d-1761993625840-a57412fbfe46"
         },
         "body": {
           "success": true,
           "match": {
             "teams": {
-              "teamA": "6900b0c9a3e1e740c34bcec4",
-              "teamB": "6900b0c9a3e1e740c34bcec6"
+              "teamA": "6905e38c5b5b4030a3c1c8e4",
+              "teamB": "6905e38c5b5b4030a3c1c8e6"
             },
-            "_id": "6900b0cfa3e1e740c34bcedc",
-            "user": "6900b0c4a3e1e740c34bceb8",
-            "matchNumber": "MAT1761652929546",
-            "scheduledDate": "2025-11-04T12:02:21.288Z",
+            "_id": "6905e3979af7c0af5c501611",
+            "user": "6905e3875b5b4030a3c1c8d8",
+            "matchNumber": "MAT1761993606382",
+            "scheduledDate": "2025-11-08T10:40:22.738Z",
             "status": "Live",
             "matchType": "T20",
             "notes": "Updated match notes",
             "isActive": true,
             "innings": [],
             "umpires": [],
-            "createdAt": "2025-10-28T12:02:23.632Z",
-            "updatedAt": "2025-10-28T12:02:25.423Z",
+            "createdAt": "2025-11-01T10:40:23.077Z",
+            "updatedAt": "2025-11-01T10:40:24.829Z",
             "__v": 0,
             "duration": null,
             "currentStatus": "Live",
-            "id": "6900b0cfa3e1e740c34bcedc"
+            "id": "6905e3979af7c0af5c501611"
           },
-          "undoneAt": "2025-10-28T12:02:27.082Z",
+          "undoneAt": "2025-11-01T10:40:26.809Z",
           "removedBall": {
             "acknowledged": true,
             "deletedCount": 1
@@ -1763,15 +1739,15 @@
     },
     {
       "testName": "Delete Match",
-      "endpoint": "/api/matches/6900b0cfa3e1e740c34bcedc",
+      "endpoint": "/api/matches/6905e3979af7c0af5c501611",
       "method": "DELETE",
-      "timestamp": "2025-10-28T12:02:25.639Z",
+      "timestamp": "2025-11-01T10:40:27.392Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 636,
+      "duration": 640,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -1785,14 +1761,14 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:27 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:27 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/matches/[id]",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::kwzzt-1761652947229-a08bfd8db395"
+          "x-vercel-id": "dxb1::iad1::c6vkr-1761993626954-0b2ddd85c125"
         },
         "body": {
           "message": "Match deleted successfully"
@@ -1801,15 +1777,15 @@
     },
     {
       "testName": "Delete Tournament",
-      "endpoint": "/api/tournaments/6900b0cda3e1e740c34bced6",
+      "endpoint": "/api/tournaments/6905e3949af7c0af5c50160a",
       "method": "DELETE",
-      "timestamp": "2025-10-28T12:02:26.090Z",
+      "timestamp": "2025-11-01T10:40:27.847Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 450,
+      "duration": 453,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -1823,14 +1799,14 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:28 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:27 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/tournaments/[id]",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::kwzzt-1761652947866-ace97c5a962e"
+          "x-vercel-id": "dxb1::iad1::7vcs7-1761993627596-b43aedd33139"
         },
         "body": {
           "message": "Tournament deleted successfully"
@@ -1839,15 +1815,15 @@
     },
     {
       "testName": "Delete Team 1",
-      "endpoint": "/api/teams/6900b0c9a3e1e740c34bcec4",
+      "endpoint": "/api/teams/6905e38c5b5b4030a3c1c8e4",
       "method": "DELETE",
-      "timestamp": "2025-10-28T12:02:26.732Z",
+      "timestamp": "2025-11-01T10:40:28.498Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 641,
+      "duration": 650,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -1861,14 +1837,14 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:28 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:28 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/teams/[id]",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::tdzc2-1761652948317-ab1076c578f8"
+          "x-vercel-id": "dxb1::iad1::7vcs7-1761993628051-056b38ab4373"
         },
         "body": {
           "message": "Team deleted successfully"
@@ -1877,15 +1853,15 @@
     },
     {
       "testName": "Delete Team 2",
-      "endpoint": "/api/teams/6900b0c9a3e1e740c34bcec6",
+      "endpoint": "/api/teams/6905e38c5b5b4030a3c1c8e6",
       "method": "DELETE",
-      "timestamp": "2025-10-28T12:02:27.370Z",
+      "timestamp": "2025-11-01T10:40:29.145Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 636,
+      "duration": 645,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -1899,14 +1875,14 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:29 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:29 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/teams/[id]",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::4lqnz-1761652948962-6556d889a011"
+          "x-vercel-id": "dxb1::iad1::n9n4n-1761993628705-75d8dcf9ceb2"
         },
         "body": {
           "message": "Team deleted successfully"
@@ -1915,15 +1891,15 @@
     },
     {
       "testName": "Delete Profile 1",
-      "endpoint": "/api/profiles/6900b0c6a3e1e740c34bcebd",
+      "endpoint": "/api/profiles/6905e3895b5b4030a3c1c8dd",
       "method": "DELETE",
-      "timestamp": "2025-10-28T12:02:27.852Z",
+      "timestamp": "2025-11-01T10:40:29.619Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 480,
+      "duration": 473,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -1937,14 +1913,14 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:29 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:29 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/profiles/[id]",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::4lqnz-1761652949596-bd3bd925d6fa"
+          "x-vercel-id": "dxb1::iad1::n9n4n-1761993629348-f6723dbf104a"
         },
         "body": {
           "success": true,
@@ -1954,15 +1930,15 @@
     },
     {
       "testName": "Delete Profile 2",
-      "endpoint": "/api/profiles/6900b0c7a3e1e740c34bcebf",
+      "endpoint": "/api/profiles/6905e38a5b5b4030a3c1c8df",
       "method": "DELETE",
-      "timestamp": "2025-10-28T12:02:28.309Z",
+      "timestamp": "2025-11-01T10:40:30.130Z",
       "status": "success",
       "statusCode": 200,
-      "duration": 454,
+      "duration": 510,
       "request": {
         "headers": {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDBiMGM0YTNlMWU3NDBjMzRiY2ViOCIsImVtYWlsIjoidGVzdDE3NjE2NTI5Mjk1NDZAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTAwYjBjNGEzZTFlNzQwYzM0YmNlYjgiLCJpYXQiOjE3NjE2NTI5MzQsImV4cCI6MTc2NDI0NDkzNH0.YAy0_18pEnfaVqLzNAc4iQTMmVuhHdTLeBq_h3ZmgnI"
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDVlMzg3NWI1YjQwMzBhM2MxYzhkOCIsImVtYWlsIjoidGVzdDE3NjE5OTM2MDYzODJAZXhhbXBsZS5jb20iLCJuYW1lIjoiVGVzdCBVc2VyIiwicm9sZSI6InVzZXIiLCJzdWIiOiI2OTA1ZTM4NzViNWI0MDMwYTNjMWM4ZDgiLCJpYXQiOjE3NjE5OTM2MDksImV4cCI6MTc2NDU4NTYwOX0.uPnuFE9ZIyTurrp33XaTuZtOKf5JvwQYycdv1BT8kPE"
         },
         "body": null
       },
@@ -1976,14 +1952,14 @@
           "cache-control": "public, max-age=0, must-revalidate",
           "content-encoding": "br",
           "content-type": "application/json",
-          "date": "Tue, 28 Oct 2025 12:02:30 GMT",
+          "date": "Sat, 01 Nov 2025 10:40:30 GMT",
           "server": "Vercel",
           "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
           "transfer-encoding": "chunked",
           "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
           "x-matched-path": "/api/profiles/[id]",
           "x-vercel-cache": "MISS",
-          "x-vercel-id": "dxb1::iad1::2knxt-1761652950080-53cf40269406"
+          "x-vercel-id": "dxb1::iad1::n9n4n-1761993629829-abab9cc0946d"
         },
         "body": {
           "success": true,
