@@ -24,7 +24,21 @@ export async function GET(request, { params }) {
       return Response.json({ error: 'Match not found' }, { status: 404 });
     }
 
-    return Response.json(match);
+    const matchObj = match.toObject();
+    
+    // Check if innings has started (has current players set)
+    const currentInnings = match.innings && match.innings.length > 0 
+      ? match.innings[match.currentInnings - 1] 
+      : null;
+    
+    matchObj.isStarted = !!(
+      currentInnings && 
+      (currentInnings.currentStriker || 
+       currentInnings.currentNonStriker || 
+       currentInnings.currentBowler)
+    );
+
+    return Response.json(matchObj);
   } catch (error) {
     console.error('Error fetching match:', error);
     return Response.json({ error: 'Failed to fetch match' }, { status: 500 });

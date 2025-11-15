@@ -16,7 +16,26 @@ export async function GET(request) {
     const matches = await Match.find({ user: user.id })
       .sort({ scheduledDate: -1 });
     
-    return Response.json(matches);
+    // Add isStarted property to each match
+    const matchesWithStartedFlag = matches.map(match => {
+      const matchObj = match.toObject();
+      
+      // Check if innings has started (has current players set)
+      const currentInnings = match.innings && match.innings.length > 0 
+        ? match.innings[match.currentInnings - 1] 
+        : null;
+      
+      matchObj.isStarted = !!(
+        currentInnings && 
+        (currentInnings.currentStriker || 
+         currentInnings.currentNonStriker || 
+         currentInnings.currentBowler)
+      );
+      
+      return matchObj;
+    });
+    
+    return Response.json(matchesWithStartedFlag);
   } catch (error) {
     console.error('Error fetching matches:', error);
     return Response.json({ error: 'Failed to fetch matches' }, { status: 500 });

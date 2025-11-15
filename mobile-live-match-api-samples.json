@@ -5,10 +5,83 @@
     "notes": [
       "All ObjectId strings are illustrative.",
       "Extras are numeric counts (0 when absent).",
-      "Statuses now include \"Innings Break\" and \"Result Pending\" before final completion."
+      "Statuses now include \"Innings Break\" and \"Result Pending\" before final completion.",
+      "All match objects now include 'isStarted' boolean to indicate if innings has started (players are set)."
     ]
   },
   "endpoints": [
+    {
+      "name": "Get All Matches",
+      "method": "GET",
+      "url": "/api/matches",
+      "description": "Fetches all matches for the authenticated user. Each match includes an 'isStarted' property.",
+      "response": [
+        {
+          "_id": "6739efb18bfbf6f5ef001234",
+          "matchNumber": "M001",
+          "status": "Live",
+          "currentInnings": 1,
+          "teams": {
+            "teamA": "672aaa198bfbf6f5ef009111",
+            "teamB": "672aaa198bfbf6f5ef009222"
+          },
+          "venue": {
+            "name": "National Stadium",
+            "city": "Karachi"
+          },
+          "scheduledDate": "2025-11-08T10:00:00.000Z",
+          "isStarted": true
+        },
+        {
+          "_id": "6739efb18bfbf6f5ef001235",
+          "matchNumber": "M002",
+          "status": "Scheduled",
+          "teams": {
+            "teamA": "672aaa198bfbf6f5ef009333",
+            "teamB": "672aaa198bfbf6f5ef009444"
+          },
+          "scheduledDate": "2025-11-09T14:00:00.000Z",
+          "isStarted": false
+        }
+      ]
+    },
+    {
+      "name": "Get Single Match",
+      "method": "GET",
+      "url": "/api/matches/6739efb18bfbf6f5ef001234",
+      "description": "Fetches a single match by ID. Includes 'isStarted' property.",
+      "response": {
+        "_id": "6739efb18bfbf6f5ef001234",
+        "matchNumber": "M001",
+        "status": "Live",
+        "currentInnings": 1,
+        "teams": {
+          "teamA": "672aaa198bfbf6f5ef009111",
+          "teamB": "672aaa198bfbf6f5ef009222"
+        },
+        "venue": {
+          "name": "National Stadium",
+          "city": "Karachi"
+        },
+        "scheduledDate": "2025-11-08T10:00:00.000Z",
+        "oversLimit": 20,
+        "playersPerTeam": 11,
+        "tossWinner": "672aaa198bfbf6f5ef009111",
+        "tossDecision": "Bat",
+        "isStarted": true,
+        "innings": [
+          {
+            "inningNumber": 1,
+            "currentStriker": "672ab2018bfbf6f5ef001001",
+            "currentNonStriker": "672ab2018bfbf6f5ef001002",
+            "currentBowler": "672ac0018bfbf6f5ef002001",
+            "totalRuns": 45,
+            "totalWickets": 2,
+            "totalBalls": 36
+          }
+        ]
+      }
+    },
     {
       "name": "Setup and Start Match",
       "method": "POST",
