@@ -101,10 +101,25 @@ export async function POST(request, { params }) {
 
       await match.save();
 
+      // Populate teams for response
+      await match.populate([
+        'teams.teamA',
+        'teams.teamB',
+        'innings.battingTeam',
+        'innings.bowlingTeam'
+      ]);
+
       return Response.json({
         success: true,
         message: 'First innings completed. Second innings ready to start.',
-        inningsSummary,
+        inningsSummary: {
+          inningNumber: inningsSummary.inningNumber,
+          battingTeam: innings.battingTeam,
+          bowlingTeam: innings.bowlingTeam,
+          totalRuns: inningsSummary.totalRuns,
+          totalWickets: inningsSummary.totalWickets,
+          totalOvers: inningsSummary.totalOvers
+        },
         target,
         nextInnings: 2,
         needsPlayers: true,
@@ -146,20 +161,37 @@ export async function POST(request, { params }) {
 
       await match.save();
 
+      // Populate teams for response
+      await match.populate([
+        'teams.teamA',
+        'teams.teamB',
+        'innings.battingTeam',
+        'innings.bowlingTeam'
+      ]);
+
+      const winnerTeam = winner
+        ? (winner.toString() === match.teams.teamA._id.toString()
+          ? match.teams.teamA
+          : match.teams.teamB)
+        : null;
+
       return Response.json({
         success: true,
         message: 'Second innings completed. Finalize match to lock result.',
-        inningsSummary,
+        inningsSummary: {
+          inningNumber: inningsSummary.inningNumber,
+          battingTeam: innings.battingTeam,
+          bowlingTeam: innings.bowlingTeam,
+          totalRuns: inningsSummary.totalRuns,
+          totalWickets: inningsSummary.totalWickets,
+          totalOvers: inningsSummary.totalOvers
+        },
         result: {
-          winner,
+          winner: winnerTeam,
           winBy,
           margin,
           status: match.status,
-          winnerName: winner
-            ? (winner.toString() === match.teams.teamA._id.toString()
-              ? match.teams.teamA.name
-              : match.teams.teamB.name)
-            : null
+          winnerName: winnerTeam ? winnerTeam.name : null
         }
       });
     }

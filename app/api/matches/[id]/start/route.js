@@ -86,19 +86,37 @@ export async function POST(request, { params }) {
     await match.save();
 
     // Populate the match for response
-    await match.populate('teams.teamA teams.teamB');
+    await match.populate([
+      'teams.teamA',
+      'teams.teamB',
+      'innings.battingTeam',
+      'innings.bowlingTeam'
+    ]);
+
+    const battingTeamObj = match.teams.teamA._id.toString() === battingTeam.toString() 
+      ? match.teams.teamA 
+      : match.teams.teamB;
+    
+    const bowlingTeamObj = match.teams.teamA._id.toString() === bowlingTeam.toString() 
+      ? match.teams.teamA 
+      : match.teams.teamB;
 
     return Response.json({ 
       success: true,
       message: 'Match started successfully. Please set opening batsmen and bowler.',
-      match,
-      innings: firstInnings,
-      battingTeam: match.teams.teamA._id.toString() === battingTeam.toString() 
-        ? match.teams.teamA 
-        : match.teams.teamB,
-      bowlingTeam: match.teams.teamA._id.toString() === bowlingTeam.toString() 
-        ? match.teams.teamA 
-        : match.teams.teamB,
+      match: {
+        _id: match._id,
+        status: match.status,
+        currentInnings: match.currentInnings
+      },
+      innings: {
+        inningNumber: firstInnings.inningNumber,
+        battingTeam: battingTeamObj,
+        bowlingTeam: bowlingTeamObj,
+        totalRuns: firstInnings.totalRuns,
+        totalWickets: firstInnings.totalWickets,
+        totalBalls: firstInnings.totalBalls
+      },
       needsPlayers: true
     });
 

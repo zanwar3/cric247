@@ -78,6 +78,14 @@ export async function POST(request, { params }) {
 
     await match.save();
 
+    // Populate winner and manOfTheMatch for response
+    await match.populate([
+      'teams.teamA',
+      'teams.teamB',
+      'result.winner',
+      'result.manOfTheMatch'
+    ]);
+
     // Update team statistics
     if (!alreadyCompleted && winner) {
       try {
@@ -124,16 +132,12 @@ export async function POST(request, { params }) {
 
     // Prepare result message
     let resultMessage;
-    if (winBy === "runs" && winner) {
-      const winnerName = winner.toString() === match.teams.teamA._id.toString() 
-        ? match.teams.teamA.name 
-        : match.teams.teamB.name;
-      resultMessage = `${winnerName} won by ${margin} runs`;
-    } else if (winBy === "wickets") {
-      const winnerName = winner && winner.toString() === match.teams.teamA._id.toString() 
-        ? match.teams.teamA.name 
-        : match.teams.teamB.name;
-      resultMessage = `${winnerName} won by ${margin} wickets`;
+    const winnerTeam = match.result.winner;
+    
+    if (winBy === "runs" && winnerTeam) {
+      resultMessage = `${winnerTeam.name} won by ${margin} runs`;
+    } else if (winBy === "wickets" && winnerTeam) {
+      resultMessage = `${winnerTeam.name} won by ${margin} wickets`;
     } else if (winBy === "tie") {
       resultMessage = "Match tied";
     } else {
@@ -144,7 +148,7 @@ export async function POST(request, { params }) {
       success: true,
       message: 'Match completed successfully',
       result: {
-        winner: winner,
+        winner: winnerTeam,
         winBy: winBy,
         margin: margin,
         manOfTheMatch: match.result.manOfTheMatch,
@@ -153,14 +157,7 @@ export async function POST(request, { params }) {
       match: {
         _id: match._id,
         status: match.status,
-        actualEndTime: match.actualEndTime,
-        innings: match.innings.map(inn => ({
-          inningNumber: inn.inningNumber,
-          battingTeam: inn.battingTeam,
-          totalRuns: inn.totalRuns,
-          totalWickets: inn.totalWickets,
-          totalOvers: inn.totalOvers
-        }))
+        actualEndTime: match.actualEndTime
       }
     });
 

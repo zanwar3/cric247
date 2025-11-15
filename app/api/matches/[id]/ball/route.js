@@ -430,12 +430,44 @@ export async function POST(request, { params }) {
 
     const newBall = await Ball.create(ballData);
 
+    // Populate player references for response
+    await match.populate([
+      'innings.currentStriker',
+      'innings.currentNonStriker',
+      'innings.currentBowler'
+    ]);
+
+    const currentInningsData = match.innings[currentInningsIndex];
+
+    // Calculate overs display
+    const completedOvers = Math.floor(currentInningsData.totalBalls / 6);
+    const ballsInOver = currentInningsData.totalBalls % 6;
+    const oversDisplay = `${completedOvers}.${ballsInOver}`;
+
     return Response.json({
       success: true,
-      ball: newBall,
-      innings: innings,
       needsNewBatsman: isWicket,
-      needsNewBowler: completedOverByBowler
+      needsNewBowler: completedOverByBowler,
+      ball: {
+        _id: newBall._id,
+        over: newBall.over,
+        ballNumber: newBall.ballNumber,
+        striker: preStrikerId,
+        nonStriker: preNonStrikerId,
+        bowler: preBowlerId,
+        batRuns: batRuns,
+        extras: newBall.extras,
+        strikeSwapped: strikeSwapped,
+        completedOver: completedOverByBowler
+      },
+      innings: {
+        totalRuns: currentInningsData.totalRuns,
+        totalBalls: currentInningsData.totalBalls,
+        overs: oversDisplay,
+        runRate: currentInningsData.runRate,
+        currentStriker: currentInningsData.currentStriker,
+        currentNonStriker: currentInningsData.currentNonStriker
+      }
     });
   } catch (error) {
     console.error('Error creating ball data:', error);

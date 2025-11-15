@@ -129,19 +129,22 @@ export async function POST(request, { params }) {
 
     // Populate for response
     await match.populate([
-      { path: 'innings.currentStriker' },
-      { path: 'innings.currentNonStriker' },
-      { path: 'innings.currentBowler' }
+      'innings.currentStriker',
+      'innings.currentNonStriker',
+      'innings.currentBowler'
     ]);
+
+    const currentInningsData = match.innings[currentInningsIndex];
 
     return Response.json({ 
       success: true,
       message: 'Innings players set successfully. Ready to start scoring.',
-      match,
-      currentInnings: match.innings[currentInningsIndex],
-      striker: match.innings[currentInningsIndex].currentStriker,
-      nonStriker: match.innings[currentInningsIndex].currentNonStriker,
-      bowler: match.innings[currentInningsIndex].currentBowler
+      currentInnings: {
+        inningNumber: currentInningsData.inningNumber,
+        currentStriker: currentInningsData.currentStriker,
+        currentNonStriker: currentInningsData.currentNonStriker,
+        currentBowler: currentInningsData.currentBowler
+      }
     });
 
   } catch (error) {

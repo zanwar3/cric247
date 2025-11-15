@@ -226,11 +226,26 @@ export async function POST(request, { params }) {
       user: user.id
     });
 
+    // Populate player references for response
+    await match.populate([
+      'innings.currentStriker',
+      'innings.currentNonStriker',
+      'innings.currentBowler'
+    ]);
+
+    const currentInningsData = match.innings[currentInningsIndex];
+
     return NextResponse.json({
       success: true,
       message: "Ball undone successfully",
-      innings: innings,
-      undoneAt: new Date()
+      innings: {
+        totalRuns: currentInningsData.totalRuns,
+        totalBalls: currentInningsData.totalBalls,
+        currentStriker: currentInningsData.currentStriker,
+        currentNonStriker: currentInningsData.currentNonStriker,
+        currentBowler: currentInningsData.currentBowler,
+        runRate: currentInningsData.runRate
+      }
     });
 
   } catch (error) {

@@ -115,15 +115,93 @@ export async function POST(request, { params }) {
       match.oversLimit = data.oversLimit;
     }
 
-    // Update status to Ready
-    match.status = "Ready";
+    // Determine batting and bowling teams based on toss
+    let battingTeam, bowlingTeam;
+    
+    if (match.tossDecision === "Bat") {
+      battingTeam = match.tossWinner;
+      bowlingTeam = match.tossWinner.toString() === match.teams.teamA.toString() 
+        ? match.teams.teamB 
+        : match.teams.teamA;
+    } else {
+      bowlingTeam = match.tossWinner;
+      battingTeam = match.tossWinner.toString() === match.teams.teamA.toString() 
+        ? match.teams.teamB 
+        : match.teams.teamA;
+    }
+
+    // Initialize first innings
+    const firstInnings = {
+      inningNumber: 1,
+      battingTeam: battingTeam,
+      bowlingTeam: bowlingTeam,
+      totalRuns: 0,
+      totalWickets: 0,
+      totalOvers: 0,
+      totalBalls: 0,
+      runRate: 0,
+      requiredRunRate: 0,
+      extras: {
+        byes: 0,
+        legByes: 0,
+        wides: 0,
+        noBalls: 0,
+        penalties: 0
+      },
+      batting: [],
+      bowling: [],
+      partnerships: [],
+      fallOfWickets: [],
+      balls: [],
+      isCompleted: false
+    };
+
+    match.innings = [firstInnings];
+    match.currentInnings = 1;
+    match.status = "Live";
+    match.actualStartTime = new Date();
 
     await match.save();
 
+    // Populate teams and players for response
+    await match.populate([
+      'teams.teamA',
+      'teams.teamB',
+      'innings.battingTeam',
+      'innings.bowlingTeam',
+      'matchSquad.teamA.players.player',
+      'matchSquad.teamB.players.player',
+      'matchSquad.teamA.captain',
+      'matchSquad.teamA.keeper',
+      'matchSquad.teamB.captain',
+      'matchSquad.teamB.keeper'
+    ]);
+
+    const battingTeamObj = match.teams.teamA._id.toString() === battingTeam.toString() 
+      ? match.teams.teamA 
+      : match.teams.teamB;
+    
+    const bowlingTeamObj = match.teams.teamA._id.toString() === bowlingTeam.toString() 
+      ? match.teams.teamA 
+      : match.teams.teamB;
+
     return Response.json({ 
       success: true,
-      message: 'Match setup completed successfully',
-      match 
+      message: 'Match started successfully. Please set opening batsmen and bowler.',
+      match: {
+        _id: match._id,
+        status: match.status,
+        currentInnings: match.currentInnings
+      },
+      innings: {
+        inningNumber: firstInnings.inningNumber,
+        battingTeam: battingTeamObj,
+        bowlingTeam: bowlingTeamObj,
+        totalRuns: firstInnings.totalRuns,
+        totalWickets: firstInnings.totalWickets,
+        totalBalls: firstInnings.totalBalls
+      },
+      needsPlayers: true
     });
 
   } catch (error) {

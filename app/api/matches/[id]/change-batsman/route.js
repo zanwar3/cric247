@@ -116,10 +116,21 @@ export async function PATCH(request, { params }) {
 
     await match.save();
 
+    // Populate the new batsman for response
+    await match.populate([
+      'innings.currentStriker',
+      'innings.currentNonStriker'
+    ]);
+
+    const currentInningsData = match.innings[currentInningsIndex];
+    const newBatsmanObj = data.position === 'striker' 
+      ? currentInningsData.currentStriker 
+      : currentInningsData.currentNonStriker;
+
     return Response.json({ 
       success: true,
       message: `${data.position === 'striker' ? 'Striker' : 'Non-striker'} changed successfully`,
-      newBatsman: data.newBatsman,
+      newBatsman: newBatsmanObj,
       position: data.position
     });
 

@@ -10,9 +10,10 @@
   },
   "endpoints": [
     {
-      "name": "Setup Match",
+      "name": "Setup and Start Match",
       "method": "POST",
       "url": "/api/matches/6739efb18bfbf6f5ef001234/setup",
+      "description": "Sets up match configuration and automatically starts the match. This combines setup and start into one API call.",
       "request": {
         "tossWinner": "672aaa198bfbf6f5ef009111",
         "tossDecision": "Bat",
@@ -36,42 +37,6 @@
       },
       "response": {
         "success": true,
-        "message": "Match setup completed successfully",
-        "match": {
-          "_id": "6739efb18bfbf6f5ef001234",
-          "status": "Ready",
-          "playersPerTeam": 3,
-          "tossWinner": "672aaa198bfbf6f5ef009111",
-          "tossDecision": "Bat",
-          "matchSquad": {
-            "teamA": {
-              "captain": "672ab2018bfbf6f5ef001001",
-              "keeper": "672ab2018bfbf6f5ef001002",
-              "players": [
-                { "player": "672ab2018bfbf6f5ef001001", "isCaptain": true, "isKeeper": false },
-                { "player": "672ab2018bfbf6f5ef001002", "isCaptain": false, "isKeeper": true },
-                { "player": "672ab2018bfbf6f5ef001003", "isCaptain": false, "isKeeper": false }
-              ]
-            },
-            "teamB": {
-              "captain": "672ac0018bfbf6f5ef002001",
-              "keeper": "672ac0018bfbf6f5ef002002",
-              "players": [
-                { "player": "672ac0018bfbf6f5ef002001", "isCaptain": true, "isKeeper": false },
-                { "player": "672ac0018bfbf6f5ef002002", "isCaptain": false, "isKeeper": true },
-                { "player": "672ac0018bfbf6f5ef002003", "isCaptain": false, "isKeeper": false }
-              ]
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "Start Match",
-      "method": "POST",
-      "url": "/api/matches/6739efb18bfbf6f5ef001234/start",
-      "response": {
-        "success": true,
         "message": "Match started successfully. Please set opening batsmen and bowler.",
         "match": {
           "_id": "6739efb18bfbf6f5ef001234",
@@ -80,8 +45,8 @@
         },
         "innings": {
           "inningNumber": 1,
-          "battingTeam": "672aaa198bfbf6f5ef009111",
-          "bowlingTeam": "672aaa198bfbf6f5ef009222",
+          "battingTeam": { "_id": "672aaa198bfbf6f5ef009111", "name": "Gladiators", "slug": "gladiators" },
+          "bowlingTeam": { "_id": "672aaa198bfbf6f5ef009222", "name": "Warriors", "slug": "warriors" },
           "totalRuns": 0,
           "totalWickets": 0,
           "totalBalls": 0

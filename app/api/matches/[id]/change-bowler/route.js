@@ -71,10 +71,15 @@ export async function PATCH(request, { params }) {
 
     await match.save();
 
+    // Populate the new bowler for response
+    await match.populate('innings.currentBowler');
+
+    const currentInningsData = match.innings[currentInningsIndex];
+
     return Response.json({ 
       success: true,
       message: 'Bowler changed successfully',
-      newBowler: data.newBowler
+      newBowler: currentInningsData.currentBowler
     });
 
   } catch (error) {
