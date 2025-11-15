@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/mongodb";
 import Match from "@/models/Match";
+import Team from "@/models/Team";
 import { getAuthenticatedUser, createUnauthorizedResponse } from "@/lib/auth-utils";
 
 export async function POST(request, { params }) {
@@ -34,79 +35,108 @@ export async function POST(request, { params }) {
 
     if (!data.matchSquad || !data.matchSquad.teamA || !data.matchSquad.teamB) {
       return Response.json({ 
-        error: 'Match squad for both teams is required' 
+        error: 'Team IDs for both teams are required in matchSquad' 
       }, { status: 400 });
     }
 
-    // Validate team A squad
-    const teamAPlayers = data.matchSquad.teamA.players || [];
-    const teamACaptains = teamAPlayers.filter(p => p.isCaptain);
-    const teamAKeepers = teamAPlayers.filter(p => p.isKeeper);
+    // Fetch teams with their players
+    const teamA = await Team.findOne({
+      _id: data.matchSquad.teamA,
+      user: user.id
+    }).populate('players.player');
 
-    if (teamAPlayers.length === 0) {
+    const teamB = await Team.findOne({
+      _id: data.matchSquad.teamB,
+      user: user.id
+    }).populate('players.player');
+
+    if (!teamA) {
       return Response.json({ 
-        error: 'Team A must have at least one player' 
+        error: 'Team A not found' 
+      }, { status: 404 });
+    }
+
+    if (!teamB) {
+      return Response.json({ 
+        error: 'Team B not found' 
+      }, { status: 404 });
+    }
+
+    // Get active players from teams
+    const teamAActivePlayers = teamA.players.filter(p => p.isActive);
+    const teamBActivePlayers = teamB.players.filter(p => p.isActive);
+
+    if (teamAActivePlayers.length === 0) {
+      return Response.json({ 
+        error: 'Team A must have at least one active player' 
       }, { status: 400 });
     }
 
-    if (teamACaptains.length !== 1) {
+    if (teamBActivePlayers.length === 0) {
       return Response.json({ 
-        error: 'Team A must have exactly one captain' 
+        error: 'Team B must have at least one active player' 
       }, { status: 400 });
     }
 
-    if (teamAKeepers.length !== 1) {
+    // Build player arrays with captain and keeper flags
+    const teamAPlayers = teamAActivePlayers.map((p, index) => ({
+      player: p.player._id,
+      isCaptain: index === 0, // First player as captain by default
+      isKeeper: p.player.role === 'Wicket-keeper'
+    }));
+
+    const teamBPlayers = teamBActivePlayers.map((p, index) => ({
+      player: p.player._id,
+      isCaptain: index === 0, // First player as captain by default
+      isKeeper: p.player.role === 'Wicket-keeper'
+    }));
+
+    // Find captain and keeper for each team
+    const teamACaptain = teamAPlayers.find(p => p.isCaptain);
+    const teamAKeeper = teamAPlayers.find(p => p.isKeeper);
+    const teamBCaptain = teamBPlayers.find(p => p.isCaptain);
+    const teamBKeeper = teamBPlayers.find(p => p.isKeeper);
+
+    if (!teamACaptain) {
       return Response.json({ 
-        error: 'Team A must have exactly one wicket keeper' 
+        error: 'Team A must have a captain' 
       }, { status: 400 });
     }
 
-    // Validate team B squad
-    const teamBPlayers = data.matchSquad.teamB.players || [];
-    const teamBCaptains = teamBPlayers.filter(p => p.isCaptain);
-    const teamBKeepers = teamBPlayers.filter(p => p.isKeeper);
-
-    if (teamBPlayers.length === 0) {
+    if (!teamAKeeper) {
       return Response.json({ 
-        error: 'Team B must have at least one player' 
+        error: 'Team A must have a wicket keeper' 
       }, { status: 400 });
     }
 
-    if (teamBCaptains.length !== 1) {
+    if (!teamBCaptain) {
       return Response.json({ 
-        error: 'Team B must have exactly one captain' 
+        error: 'Team B must have a captain' 
       }, { status: 400 });
     }
 
-    if (teamBKeepers.length !== 1) {
+    if (!teamBKeeper) {
       return Response.json({ 
-        error: 'Team B must have exactly one wicket keeper' 
-      }, { status: 400 });
-    }
-
-    // Validate both teams have same number of players
-    if (teamAPlayers.length !== teamBPlayers.length) {
-      return Response.json({ 
-        error: 'Both teams must have the same number of players' 
+        error: 'Team B must have a wicket keeper' 
       }, { status: 400 });
     }
 
     // Update match with setup data
     match.tossWinner = data.tossWinner;
     match.tossDecision = data.tossDecision;
-    match.playersPerTeam = teamAPlayers.length;
+    match.playersPerTeam = Math.min(teamAPlayers.length, teamBPlayers.length);
     
     // Set match squad with captain and keeper
     match.matchSquad = {
       teamA: {
         players: teamAPlayers,
-        captain: teamACaptains[0].player,
-        keeper: teamAKeepers[0].player
+        captain: teamACaptain.player,
+        keeper: teamAKeeper.player
       },
       teamB: {
         players: teamBPlayers,
-        captain: teamBCaptains[0].player,
-        keeper: teamBKeepers[0].player
+        captain: teamBCaptain.player,
+        keeper: teamBKeeper.player
       }
     };
 

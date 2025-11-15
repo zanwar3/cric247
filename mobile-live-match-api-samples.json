@@ -19,20 +19,8 @@
         "tossDecision": "Bat",
         "oversLimit": 20,
         "matchSquad": {
-          "teamA": {
-            "players": [
-              { "player": "672ab2018bfbf6f5ef001001", "isCaptain": true, "isKeeper": false },
-              { "player": "672ab2018bfbf6f5ef001002", "isCaptain": false, "isKeeper": true },
-              { "player": "672ab2018bfbf6f5ef001003", "isCaptain": false, "isKeeper": false }
-            ]
-          },
-          "teamB": {
-            "players": [
-              { "player": "672ac0018bfbf6f5ef002001", "isCaptain": true, "isKeeper": false },
-              { "player": "672ac0018bfbf6f5ef002002", "isCaptain": false, "isKeeper": true },
-              { "player": "672ac0018bfbf6f5ef002003", "isCaptain": false, "isKeeper": false }
-            ]
-          }
+          "teamA": "672aaa198bfbf6f5ef009111",
+          "teamB": "672aaa198bfbf6f5ef009222"
         }
       },
       "response": {
