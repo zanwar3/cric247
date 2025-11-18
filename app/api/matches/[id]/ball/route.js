@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/mongodb";
 import Ball from "@/models/Ball";
 import Match from "@/models/Match";
+import Team from "@/models/Team";
 import { getAuthenticatedUser, createUnauthorizedResponse, createForbiddenResponse } from "@/lib/auth-utils";
 
 export async function GET(request, { params }) {
@@ -379,7 +380,142 @@ export async function POST(request, { params }) {
     innings.currentStriker = nextStriker;
     innings.currentNonStriker = nextNonStriker;
 
+    // Check if all wickets are out (playersPerTeam - 1, since one player is always not out)
+    const maxWickets = match.playersPerTeam - 1;
+    const allWicketsOut = innings.totalWickets >= maxWickets;
+
+    if (allWicketsOut && !innings.isCompleted) {
+      // Mark innings as completed
+      innings.isCompleted = true;
+      innings.totalOvers = Math.floor(innings.totalBalls / 6) + (innings.totalBalls % 6) / 10;
+
+      // Clear current players to set isStarted to false
+      innings.currentStriker = null;
+      innings.currentNonStriker = null;
+      innings.currentBowler = null;
+
+      if (innings.inningNumber === 1) {
+        // First innings ended - create second innings
+        const target = innings.totalRuns + 1;
+        const secondInnings = {
+          inningNumber: 2,
+          battingTeam: innings.bowlingTeam,
+          bowlingTeam: innings.battingTeam,
+          totalRuns: 0,
+          totalWickets: 0,
+          totalOvers: 0,
+          totalBalls: 0,
+          runRate: 0,
+          requiredRunRate: 0,
+          target,
+          extras: {
+            byes: 0,
+            legByes: 0,
+            wides: 0,
+            noBalls: 0,
+            penalties: 0
+          },
+          batting: [],
+          bowling: [],
+          partnerships: [],
+          fallOfWickets: [],
+          balls: [],
+          isCompleted: false
+        };
+
+        match.innings.push(secondInnings);
+        match.currentInnings = 2;
+        match.status = "Innings Break";
+      } else if (innings.inningNumber === 2) {
+        // Second innings ended - calculate result and complete match
+        const firstInnings = match.innings[0];
+        const target = firstInnings.totalRuns + 1;
+
+        let winner = null;
+        let winBy = null;
+        let margin = 0;
+
+        if (innings.totalRuns >= target) {
+          winner = innings.battingTeam;
+          winBy = "wickets";
+          margin = Math.max(match.playersPerTeam - innings.totalWickets, 0);
+        } else if (innings.totalRuns === firstInnings.totalRuns) {
+          winBy = "tie";
+          margin = 0;
+          winner = null;
+        } else {
+          winner = innings.bowlingTeam;
+          winBy = "runs";
+          margin = firstInnings.totalRuns - innings.totalRuns;
+        }
+
+        match.result = {
+          winner,
+          winBy,
+          margin,
+          manOfTheMatch: match.result?.manOfTheMatch || null
+        };
+
+        // Complete the match
+        match.status = "Completed";
+        match.actualEndTime = new Date();
+
+        // Mark all innings as completed
+        match.innings.forEach(inn => {
+          inn.isCompleted = true;
+        });
+      }
+    }
+
     await match.save();
+
+    // Update team statistics if match was just completed
+    if (allWicketsOut && innings.isCompleted && innings.inningNumber === 2) {
+      try {
+        // Populate teams first to get team IDs
+        await match.populate('teams.teamA teams.teamB');
+        
+        const winner = match.result?.winner;
+        const winBy = match.result?.winBy;
+
+        if (winner && winBy !== "tie") {
+          await Team.findByIdAndUpdate(winner, {
+            $inc: {
+              'statistics.matchesPlayed': 1,
+              'statistics.matchesWon': 1
+            }
+          });
+
+          const loser = winner.toString() === match.teams.teamA._id.toString() 
+            ? match.teams.teamB._id 
+            : match.teams.teamA._id;
+          
+          await Team.findByIdAndUpdate(loser, {
+            $inc: {
+              'statistics.matchesPlayed': 1,
+              'statistics.matchesLost': 1
+            }
+          });
+        } else if (winBy === "tie") {
+          await Team.findByIdAndUpdate(match.teams.teamA._id, {
+            $inc: {
+              'statistics.matchesPlayed': 1,
+              'statistics.matchesDrawn': 1
+            }
+          });
+          
+          await Team.findByIdAndUpdate(match.teams.teamB._id, {
+            $inc: {
+              'statistics.matchesPlayed': 1,
+              'statistics.matchesDrawn': 1
+            }
+          });
+        }
+      } catch (teamError) {
+        console.error('Error updating team statistics:', teamError);
+        // Continue even if team stats update fails
+      }
+    }
 
     const overIndexBase = Math.max(0, isValidBall ? innings.totalBalls - 1 : innings.totalBalls);
     const computedOver = Math.floor(overIndexBase / 6) + 1;
@@ -438,23 +574,40 @@ export async function POST(request, { params }) {
     const newBall = await Ball.create(ballData);
 
     // Populate player references for response
-    await match.populate([
+    const populatePaths = [
       'innings.currentStriker',
       'innings.currentNonStriker',
       'innings.currentBowler'
-    ]);
+    ];
 
-    const currentInningsData = match.innings[currentInningsIndex];
+    // If innings ended, populate teams for response
+    if (allWicketsOut && innings.isCompleted) {
+      populatePaths.push('teams.teamA', 'teams.teamB', 'innings.battingTeam', 'innings.bowlingTeam');
+      
+      // If match ended (second innings), also populate result.winner
+      if (innings.inningNumber === 2) {
+        populatePaths.push('result.winner');
+      }
+    }
+
+    await match.populate(populatePaths);
+
+    // Get the innings data to show in response
+    // If innings ended, show the completed innings, otherwise show current innings
+    const inningsDataToShow = allWicketsOut && innings.isCompleted 
+      ? innings 
+      : match.innings[match.currentInnings - 1];
 
     // Calculate overs display
-    const completedOvers = Math.floor(currentInningsData.totalBalls / 6);
-    const ballsInOver = currentInningsData.totalBalls % 6;
+    const completedOvers = Math.floor(inningsDataToShow.totalBalls / 6);
+    const ballsInOver = inningsDataToShow.totalBalls % 6;
     const oversDisplay = `${completedOvers}.${ballsInOver}`;
 
-    return Response.json({
+    const response = {
       success: true,
-      needsNewBatsman: isWicket,
+      needsNewBatsman: isWicket && !allWicketsOut,
       needsNewBowler: completedOverByBowler,
+      inningsEnded: allWicketsOut && innings.isCompleted,
       ball: {
         _id: newBall._id,
         over: newBall.over,
@@ -468,14 +621,41 @@ export async function POST(request, { params }) {
         completedOver: completedOverByBowler
       },
       innings: {
-        totalRuns: currentInningsData.totalRuns,
-        totalBalls: currentInningsData.totalBalls,
+        totalRuns: inningsDataToShow.totalRuns,
+        totalBalls: inningsDataToShow.totalBalls,
         overs: oversDisplay,
-        runRate: currentInningsData.runRate,
-        currentStriker: currentInningsData.currentStriker,
-        currentNonStriker: currentInningsData.currentNonStriker
+        runRate: inningsDataToShow.runRate,
+        currentStriker: inningsDataToShow.currentStriker,
+        currentNonStriker: inningsDataToShow.currentNonStriker,
+        totalWickets: inningsDataToShow.totalWickets,
+        isCompleted: inningsDataToShow.isCompleted
       }
-    });
+    };
+
+    // Add innings end information if innings ended
+    if (allWicketsOut && innings.isCompleted) {
+      if (innings.inningNumber === 1) {
+        response.inningsEnded = true;
+        response.message = 'First innings completed. All wickets out.';
+        response.target = innings.totalRuns + 1;
+        response.nextInnings = 2;
+        response.matchStatus = match.status;
+        response.needsPlayers = true;
+      } else if (innings.inningNumber === 2) {
+        response.inningsEnded = true;
+        response.matchEnded = true;
+        response.message = 'Match completed. All wickets out.';
+        response.matchStatus = match.status;
+        response.result = match.result;
+        
+        // Add winner name if available (already populated above)
+        if (match.result?.winner && typeof match.result.winner === 'object') {
+          response.result.winnerName = match.result.winner.name || null;
+        }
+      }
+    }
+
+    return Response.json(response);
   } catch (error) {
     console.error('Error creating ball data:', error);
     return Response.json({ 
