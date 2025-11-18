@@ -86,7 +86,7 @@ const MatchSchema = new Schema({
     }
   },
   tossWinner: { type: Schema.Types.ObjectId, ref: "Team" },
-  tossDecision: { type: String, enum: ["Bat", "Bowl"] },
+  tossDecision: { type: String, enum: ["Bat", "Ball"] },
   innings: [{
     inningNumber: { type: Number, required: true }, // 1 or 2
     battingTeam: { type: Schema.Types.ObjectId, ref: "Team", required: true },

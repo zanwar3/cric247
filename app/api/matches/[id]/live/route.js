@@ -95,18 +95,22 @@ export async function GET(request, { params }) {
       return (ball.runs ?? 0).toString();
     });
 
+
     // Get striker and non-striker stats
     const strikerStats = innings.batting.find(b => 
-      innings.currentStriker && b.player._id.toString() === innings.currentStriker._id.toString()
+      innings.currentStriker && b.player && b.player._id && 
+      b.player._id.toString() === innings.currentStriker._id.toString()
     );
     
     const nonStrikerStats = innings.batting.find(b => 
-      innings.currentNonStriker && b.player._id.toString() === innings.currentNonStriker._id.toString()
+      innings.currentNonStriker && b.player && b.player._id && 
+      b.player._id.toString() === innings.currentNonStriker._id.toString()
     );
 
     // Get current bowler stats
     const bowlerStats = innings.bowling.find(b => 
-      innings.currentBowler && b.player._id.toString() === innings.currentBowler._id.toString()
+      innings.currentBowler && b.player && b.player._id && 
+      b.player._id.toString() === innings.currentBowler._id.toString()
     );
 
     // Calculate total extras
@@ -243,33 +247,37 @@ export async function GET(request, { params }) {
         }
       },
       scorecard: {
-        batting: innings.batting.map(b => ({
-          player: {
-            _id: b.player._id,
-            name: b.player.name
-          },
-          battingOrder: b.battingOrder,
-          runs: b.runs,
-          balls: b.ballsFaced,
-          fours: b.fours,
-          sixes: b.sixes,
-          strikeRate: parseFloat(b.strikeRate) || 0,
-          isOut: b.isOut,
-          dismissalType: b.dismissalType || null
-        })),
-        bowling: innings.bowling.map(b => ({
-          player: {
-            _id: b.player._id,
-            name: b.player.name
-          },
-          overs: b.overs,
-          maidens: b.maidens,
-          runs: b.runs,
-          wickets: b.wickets,
-          wides: b.wides,
-          noBalls: b.noBalls,
-          economy: parseFloat(b.economy) || 0
-        }))
+        batting: innings.batting
+          .filter(b => b.player && b.player._id) // Filter out null/undefined players
+          .map(b => ({
+            player: {
+              _id: b.player._id,
+              name: b.player.name
+            },
+            battingOrder: b.battingOrder,
+            runs: b.runs,
+            balls: b.ballsFaced,
+            fours: b.fours,
+            sixes: b.sixes,
+            strikeRate: parseFloat(b.strikeRate) || 0,
+            isOut: b.isOut,
+            dismissalType: b.dismissalType || null
+          })),
+        bowling: innings.bowling
+          .filter(b => b.player && b.player._id) // Filter out null/undefined players
+          .map(b => ({
+            player: {
+              _id: b.player._id,
+              name: b.player.name
+            },
+            overs: b.overs,
+            maidens: b.maidens,
+            runs: b.runs,
+            wickets: b.wickets,
+            wides: b.wides,
+            noBalls: b.noBalls,
+            economy: parseFloat(b.economy) || 0
+          }))
       },
       target: innings.target || null,
       toWin: toWinMessage

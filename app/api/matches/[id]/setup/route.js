@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/mongodb";
 import Match from "@/models/Match";
 import Team from "@/models/Team";
+import Profile from "@/models/Profile";
 import { getAuthenticatedUser, createUnauthorizedResponse } from "@/lib/auth-utils";
 
 export async function POST(request, { params }) {
@@ -43,12 +44,18 @@ export async function POST(request, { params }) {
     const teamA = await Team.findOne({
       _id: data.matchSquad.teamA,
       user: user.id
-    }).populate('players.player');
+    }).populate({
+      path: 'players.player',
+      model: 'Profile'
+    });
 
     const teamB = await Team.findOne({
       _id: data.matchSquad.teamB,
       user: user.id
-    }).populate('players.player');
+    }).populate({
+      path: 'players.player',
+      model: 'Profile'
+    });
 
     if (!teamA) {
       return Response.json({ 
@@ -62,9 +69,10 @@ export async function POST(request, { params }) {
       }, { status: 404 });
     }
 
-    // Get active players from teams
-    const teamAActivePlayers = teamA.players.filter(p => p.isActive);
-    const teamBActivePlayers = teamB.players.filter(p => p.isActive);
+    // Get active players from teams (filter out null/undefined players)
+    const teamAActivePlayers = teamA.players.filter(p => p.isActive && p.player);
+    const teamBActivePlayers = teamB.players.filter(p => p.isActive && p.player);
+
 
     if (teamAActivePlayers.length === 0) {
       return Response.json({ 
@@ -79,23 +87,40 @@ export async function POST(request, { params }) {
     }
 
     // Build player arrays with captain and keeper flags
-    const teamAPlayers = teamAActivePlayers.map((p, index) => ({
-      player: p.player._id,
-      isCaptain: index === 0, // First player as captain by default
-      isKeeper: p.player.role === 'Wicket-keeper'
-    }));
+    const teamAPlayers = teamAActivePlayers
+      .filter(p => p.player && p.player._id) // Additional safety check
+      .map((p, index) => ({
+        player: p.player._id,
+        isCaptain: index === 0, // First player as captain by default
+        // isKeeper: p.player.role === 'Wicket-keeper'
+      }));
 
-    const teamBPlayers = teamBActivePlayers.map((p, index) => ({
-      player: p.player._id,
-      isCaptain: index === 0, // First player as captain by default
-      isKeeper: p.player.role === 'Wicket-keeper'
-    }));
+    const teamBPlayers = teamBActivePlayers
+      .filter(p => p.player && p.player._id) // Additional safety check
+      .map((p, index) => ({
+        player: p.player._id,
+        isCaptain: index === 0, // First player as captain by default
+        // isKeeper: p.player.role === 'Wicket-keeper'
+      }));
+
+    // Ensure we still have players after filtering
+    if (teamAPlayers.length === 0) {
+      return Response.json({ 
+        error: 'Team A must have at least one valid active player' 
+      }, { status: 400 });
+    }
+
+    if (teamBPlayers.length === 0) {
+      return Response.json({ 
+        error: 'Team B must have at least one valid active player' 
+      }, { status: 400 });
+    }
 
     // Find captain and keeper for each team
     const teamACaptain = teamAPlayers.find(p => p.isCaptain);
-    const teamAKeeper = teamAPlayers.find(p => p.isKeeper);
+    // const teamAKeeper = teamAPlayers.find(p => p.isKeeper);
     const teamBCaptain = teamBPlayers.find(p => p.isCaptain);
-    const teamBKeeper = teamBPlayers.find(p => p.isKeeper);
+    // const teamBKeeper = teamBPlayers.find(p => p.isKeeper);
 
     if (!teamACaptain) {
       return Response.json({ 
@@ -103,11 +128,11 @@ export async function POST(request, { params }) {
       }, { status: 400 });
     }
 
-    if (!teamAKeeper) {
-      return Response.json({ 
-        error: 'Team A must have a wicket keeper' 
-      }, { status: 400 });
-    }
+    // if (!teamAKeeper) {
+    //   return Response.json({ 
+    //     error: 'Team A must have a wicket keeper' 
+    //   }, { status: 400 });
+    // }
 
     if (!teamBCaptain) {
       return Response.json({ 
@@ -115,11 +140,11 @@ export async function POST(request, { params }) {
       }, { status: 400 });
     }
 
-    if (!teamBKeeper) {
-      return Response.json({ 
-        error: 'Team B must have a wicket keeper' 
-      }, { status: 400 });
-    }
+    // if (!teamBKeeper) {
+    //   return Response.json({ 
+    //     error: 'Team B must have a wicket keeper' 
+    //   }, { status: 400 });
+    // }
 
     // Update match with setup data
     match.tossWinner = data.tossWinner;
@@ -131,12 +156,12 @@ export async function POST(request, { params }) {
       teamA: {
         players: teamAPlayers,
         captain: teamACaptain.player,
-        keeper: teamAKeeper.player
+        // keeper: teamAKeeper.player
       },
       teamB: {
         players: teamBPlayers,
         captain: teamBCaptain.player,
-        keeper: teamBKeeper.player
+        // keeper: teamBKeeper.player
       }
     };
 
@@ -202,10 +227,17 @@ export async function POST(request, { params }) {
       'matchSquad.teamA.players.player',
       'matchSquad.teamB.players.player',
       'matchSquad.teamA.captain',
-      'matchSquad.teamA.keeper',
+      // 'matchSquad.teamA.keeper',
       'matchSquad.teamB.captain',
-      'matchSquad.teamB.keeper'
+      // 'matchSquad.teamB.keeper'
     ]);
+
+    // Ensure teams are populated before accessing _id
+    if (!match.teams.teamA || !match.teams.teamB) {
+      return Response.json({ 
+        error: 'Teams not found in match' 
+      }, { status: 404 });
+    }
 
     const battingTeamObj = match.teams.teamA._id.toString() === battingTeam.toString() 
       ? match.teams.teamA 
