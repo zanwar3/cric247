@@ -123,11 +123,10 @@ export async function POST(request, { params }) {
       batRuns = Math.max(batRuns - legByeRuns, 0);
     }
 
-    if (wideRuns > 0) {
-      batRuns = 0;
-    }
-
+    // For wide balls, batsman doesn't get credit for runs
+    // but additional runs are still counted in total runs and bowler's conceded runs
     const isWide = wideRuns > 0;
+    const batRunsForBatsman = isWide ? 0 : batRuns;
     const isNoBall = noBallPenalty > 0;
     const isBye = byeRuns > 0;
     const isLegBye = legByeRuns > 0;
@@ -173,9 +172,9 @@ export async function POST(request, { params }) {
     }
 
     if (strikerStats) {
-      strikerStats.runs += batRuns;
-      if (batRuns === 4) strikerStats.fours += 1;
-      if (batRuns === 6) strikerStats.sixes += 1;
+      strikerStats.runs += batRunsForBatsman;
+      if (batRunsForBatsman === 4) strikerStats.fours += 1;
+      if (batRunsForBatsman === 6) strikerStats.sixes += 1;
 
       if (isValidBall) {
         strikerStats.ballsFaced += 1;
@@ -231,6 +230,10 @@ export async function POST(request, { params }) {
       let total = 0;
       if (isWide) {
         total += wideRuns;
+        // Add additional runs scored on wide ball (similar to no-ball)
+        if (!isBye && !isLegBye) {
+          total += batRuns;
+        }
       }
       if (isNoBall) {
         total += noBallPenalty;

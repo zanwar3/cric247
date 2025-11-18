@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/mongodb";
 import Match from "@/models/Match";
+import Profile from "@/models/Profile";
 import { getAuthenticatedUser, createUnauthorizedResponse } from "@/lib/auth-utils";
 
 export async function GET(request) {
@@ -14,9 +15,11 @@ export async function GET(request) {
 
     // Fetch only matches belonging to the authenticated user
     const matches = await Match.find({ user: user.id })
+      .populate('matchSquad.teamA.players.player')
+      .populate('matchSquad.teamB.players.player')
       .sort({ scheduledDate: -1 });
     
-    // Add isStarted property to each match
+    // Add isStarted property and flatten player structure
     const matchesWithStartedFlag = matches.map(match => {
       const matchObj = match.toObject();
       
@@ -31,6 +34,54 @@ export async function GET(request) {
          currentInnings.currentNonStriker || 
          currentInnings.currentBowler)
       );
+      
+      // Flatten player structure for teamA
+      if (matchObj.matchSquad?.teamA?.players) {
+        matchObj.matchSquad.teamA.players = matchObj.matchSquad.teamA.players.map(playerEntry => {
+          if (playerEntry.player && typeof playerEntry.player === 'object') {
+            return {
+              _id: playerEntry.player._id,
+              name: playerEntry.player.name,
+              email: playerEntry.player.email,
+              role: playerEntry.player.role,
+              gender: playerEntry.player.gender,
+              city: playerEntry.player.city,
+              age: playerEntry.player.age,
+              phone: playerEntry.player.phone,
+              experience: playerEntry.player.experience,
+              battingStyle: playerEntry.player.battingStyle,
+              bowlingStyle: playerEntry.player.bowlingStyle,
+              isCaptain: playerEntry.isCaptain || false,
+              isKeeper: playerEntry.isKeeper || false
+            };
+          }
+          return playerEntry;
+        });
+      }
+      
+      // Flatten player structure for teamB
+      if (matchObj.matchSquad?.teamB?.players) {
+        matchObj.matchSquad.teamB.players = matchObj.matchSquad.teamB.players.map(playerEntry => {
+          if (playerEntry.player && typeof playerEntry.player === 'object') {
+            return {
+              _id: playerEntry.player._id,
+              name: playerEntry.player.name,
+              email: playerEntry.player.email,
+              role: playerEntry.player.role,
+              gender: playerEntry.player.gender,
+              city: playerEntry.player.city,
+              age: playerEntry.player.age,
+              phone: playerEntry.player.phone,
+              experience: playerEntry.player.experience,
+              battingStyle: playerEntry.player.battingStyle,
+              bowlingStyle: playerEntry.player.bowlingStyle,
+              isCaptain: playerEntry.isCaptain || false,
+              isKeeper: playerEntry.isKeeper || false
+            };
+          }
+          return playerEntry;
+        });
+      }
       
       return matchObj;
     });
