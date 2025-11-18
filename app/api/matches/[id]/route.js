@@ -18,7 +18,11 @@ export async function GET(request, { params }) {
     const match = await Match.findOne({
       _id: id,
       user: user.id,
-    });
+    })
+      .populate('teams.teamA')
+      .populate('teams.teamB')
+      .populate('matchSquad.teamA.players.player')
+      .populate('matchSquad.teamB.players.player');
 
     if (!match) {
       return Response.json({ error: 'Match not found' }, { status: 404 });
@@ -37,6 +41,68 @@ export async function GET(request, { params }) {
        currentInnings.currentNonStriker || 
        currentInnings.currentBowler)
     );
+
+    // Simplify team data to just name and _id
+    if (matchObj.teams?.teamA && typeof matchObj.teams.teamA === 'object') {
+      matchObj.teams.teamA = {
+        _id: matchObj.teams.teamA._id,
+        name: matchObj.teams.teamA.name
+      };
+    }
+    if (matchObj.teams?.teamB && typeof matchObj.teams.teamB === 'object') {
+      matchObj.teams.teamB = {
+        _id: matchObj.teams.teamB._id,
+        name: matchObj.teams.teamB.name
+      };
+    }
+
+    // Flatten player structure for teamA
+    if (matchObj.matchSquad?.teamA?.players) {
+      matchObj.matchSquad.teamA.players = matchObj.matchSquad.teamA.players.map(playerEntry => {
+        if (playerEntry.player && typeof playerEntry.player === 'object') {
+          return {
+            _id: playerEntry.player._id,
+            name: playerEntry.player.name,
+            email: playerEntry.player.email,
+            role: playerEntry.player.role,
+            gender: playerEntry.player.gender,
+            city: playerEntry.player.city,
+            age: playerEntry.player.age,
+            phone: playerEntry.player.phone,
+            experience: playerEntry.player.experience,
+            battingStyle: playerEntry.player.battingStyle,
+            bowlingStyle: playerEntry.player.bowlingStyle,
+            isCaptain: playerEntry.isCaptain || false,
+            isKeeper: playerEntry.isKeeper || false
+          };
+        }
+        return playerEntry;
+      });
+    }
+
+    // Flatten player structure for teamB
+    if (matchObj.matchSquad?.teamB?.players) {
+      matchObj.matchSquad.teamB.players = matchObj.matchSquad.teamB.players.map(playerEntry => {
+        if (playerEntry.player && typeof playerEntry.player === 'object') {
+          return {
+            _id: playerEntry.player._id,
+            name: playerEntry.player.name,
+            email: playerEntry.player.email,
+            role: playerEntry.player.role,
+            gender: playerEntry.player.gender,
+            city: playerEntry.player.city,
+            age: playerEntry.player.age,
+            phone: playerEntry.player.phone,
+            experience: playerEntry.player.experience,
+            battingStyle: playerEntry.player.battingStyle,
+            bowlingStyle: playerEntry.player.bowlingStyle,
+            isCaptain: playerEntry.isCaptain || false,
+            isKeeper: playerEntry.isKeeper || false
+          };
+        }
+        return playerEntry;
+      });
+    }
 
     return Response.json(matchObj);
   } catch (error) {

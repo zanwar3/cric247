@@ -15,6 +15,8 @@ export async function GET(request) {
 
     // Fetch only matches belonging to the authenticated user
     const matches = await Match.find({ user: user.id })
+      .populate('teams.teamA')
+      .populate('teams.teamB')
       .populate('matchSquad.teamA.players.player')
       .populate('matchSquad.teamB.players.player')
       .sort({ scheduledDate: -1 });
@@ -34,6 +36,20 @@ export async function GET(request) {
          currentInnings.currentNonStriker || 
          currentInnings.currentBowler)
       );
+      
+      // Simplify team data to just name and _id
+      if (matchObj.teams?.teamA && typeof matchObj.teams.teamA === 'object') {
+        matchObj.teams.teamA = {
+          _id: matchObj.teams.teamA._id,
+          name: matchObj.teams.teamA.name
+        };
+      }
+      if (matchObj.teams?.teamB && typeof matchObj.teams.teamB === 'object') {
+        matchObj.teams.teamB = {
+          _id: matchObj.teams.teamB._id,
+          name: matchObj.teams.teamB.name
+        };
+      }
       
       // Flatten player structure for teamA
       if (matchObj.matchSquad?.teamA?.players) {

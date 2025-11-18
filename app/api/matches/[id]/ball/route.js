@@ -139,12 +139,17 @@ export async function POST(request, { params }) {
     }
 
     const isValidBall = !isWide && !isNoBall;
+    let completedOverByBowler = false;
 
     const totalRunsThisBall = batRuns + byeRuns + legByeRuns + wideRuns + noBallPenalty;
 
     innings.totalRuns += totalRunsThisBall;
     if (isValidBall) {
       innings.totalBalls += 1;
+      // Check if over is complete (6 valid balls)
+      if (innings.totalBalls % 6 === 0 && innings.totalBalls > 0) {
+        completedOverByBowler = true;
+      }
     }
 
     innings.extras.byes += byeRuns;
@@ -246,7 +251,6 @@ export async function POST(request, { params }) {
       return total;
     })();
 
-    let completedOverByBowler = false;
     let wasMaiden = false;
     let overRunsAfterBall = 0;
 
