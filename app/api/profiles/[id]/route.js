@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/mongodb";
-import Profile from "@/models/Profile";
+import { Profile } from "@/lib/models";
 
 export async function PUT(request, { params }) {
   await dbConnect();

@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/mongodb";
-import Match from "@/models/Match";
+import { Match } from "@/lib/models";
 import { getAuthenticatedUser, createUnauthorizedResponse } from "@/lib/auth-utils";
 
 export async function GET(request, { params }) {

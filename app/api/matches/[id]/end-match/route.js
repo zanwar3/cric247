@@ -1,6 +1,5 @@
 import dbConnect from "@/lib/mongodb";
-import Match from "@/models/Match";
-import Team from "@/models/Team";
+import { Match, Team } from "@/lib/models";
 import { getAuthenticatedUser, createUnauthorizedResponse } from "@/lib/auth-utils";
 
 export async function POST(request, { params }) {

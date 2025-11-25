@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/mongodb";
-import Team from "@/models/Team";
+import { Team } from "@/lib/models";
 import { getAuthenticatedUser, createUnauthorizedResponse, createForbiddenResponse, checkResourceOwnership } from "@/lib/auth-utils";
 
 // Add player to team

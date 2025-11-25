@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
-import Match from "@/models/Match";
-import Ball from "@/models/Ball";
+import { Match, Ball } from "@/lib/models";
 import { getAuthenticatedUser, createUnauthorizedResponse, createForbiddenResponse, checkResourceOwnership } from "@/lib/auth-utils";
 
 export async function POST(request, { params }) {

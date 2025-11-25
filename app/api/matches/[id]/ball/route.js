@@ -1,7 +1,5 @@
 import dbConnect from "@/lib/mongodb";
-import Ball from "@/models/Ball";
-import Match from "@/models/Match";
-import Team from "@/models/Team";
+import { Ball, Match, Team } from "@/lib/models";
 import { getAuthenticatedUser, createUnauthorizedResponse, createForbiddenResponse } from "@/lib/auth-utils";
 
 export async function GET(request, { params }) {

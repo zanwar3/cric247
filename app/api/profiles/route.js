@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/mongodb";
-import Profile from "@/models/Profile";
+import { Profile } from "@/lib/models";
 import { getAuthenticatedUser, createUnauthorizedResponse } from "@/lib/auth-utils";
 
 export async function GET(request) {
