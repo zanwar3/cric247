@@ -44,10 +44,16 @@ export async function PUT(request, { params }) {
 
     const updatedFields = [];
 
+    // Check if we're swapping striker and non-striker
+    const isSwapping = data.striker && data.nonStriker &&
+                       innings.currentStriker && innings.currentNonStriker &&
+                       data.striker === innings.currentNonStriker.toString() &&
+                       data.nonStriker === innings.currentStriker.toString();
+
     // Handle striker change
     if (data.striker) {
-      // Validate: striker cannot be the same as non-striker
-      if (innings.currentNonStriker && 
+      // Validate: striker cannot be the same as non-striker (unless we're swapping)
+      if (!isSwapping && innings.currentNonStriker && 
           innings.currentNonStriker.toString() === data.striker) {
         return Response.json({ 
           error: 'Striker cannot be the same as non-striker' 
@@ -83,8 +89,8 @@ export async function PUT(request, { params }) {
 
     // Handle non-striker change
     if (data.nonStriker) {
-      // Validate: non-striker cannot be the same as striker
-      if (innings.currentStriker && 
+      // Validate: non-striker cannot be the same as striker (unless we're swapping)
+      if (!isSwapping && innings.currentStriker && 
           innings.currentStriker.toString() === data.nonStriker) {
         return Response.json({ 
           error: 'Non-striker cannot be the same as striker' 

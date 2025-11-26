@@ -77,7 +77,15 @@ export async function GET(request, { params }) {
       };
 
       const wideRuns = normalizeExtra(extras.wide);
-      if (wideRuns > 0) return `${wideRuns}wd`;
+      if (wideRuns > 0) {
+        // For wide balls, total runs = wide penalty + any additional runs scored (excluding byes/leg-byes)
+        // Check if there are byes or leg-byes - if so, don't add runs to wide display
+        const byeRuns = normalizeExtra(extras.bye);
+        const legByeRuns = normalizeExtra(extras.legBye);
+        const additionalRuns = (byeRuns === 0 && legByeRuns === 0) ? (ball.runs || 0) : 0;
+        const totalWideRuns = wideRuns + additionalRuns;
+        return `${totalWideRuns}wd`;
+      }
 
       const noBallRuns = normalizeExtra(extras.noBall);
       if (noBallRuns > 0) {
