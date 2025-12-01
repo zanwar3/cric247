@@ -14,6 +14,7 @@ export async function GET(request) {
 
     // Fetch only teams belonging to the authenticated user
     const teams = await Team.find({ user: user.id })
+      .populate('players.player', 'name role battingStyle bowlingStyle experience age')
       .sort({ createdAt: -1 });
     
     return Response.json(teams);
