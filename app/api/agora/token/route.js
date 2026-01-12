@@ -39,7 +39,7 @@ export async function POST(request) {
     }
       // Get Agora credentials from environment variables
       const appId = process.env.AGORA_APP_ID || 'eb2e227ffd404032957fcd027e64db5d';
-      const appCertificate = process.env.AGORA_APP_CERTIFICATE || '9331a0c3395a4520bb7afa7afd032cb4';
+      const appCertificate = process.env.AGORA_APP_CERTIFICATE;
 
       // CRITICAL: Validate Agora credentials
       if (!appId || appId === 'YOUR_AGORA_APP_ID') {
@@ -48,17 +48,6 @@ export async function POST(request) {
           { 
             error: "Agora App ID not configured",
             message: "Please set AGORA_APP_ID in your environment variables or update the default value"
-          },
-          { status: 500 }
-        );
-      }
-
-      if (!appCertificate || appCertificate === 'YOUR_AGORA_APP_CERTIFICATE') {
-        console.error('❌ AGORA_APP_CERTIFICATE not configured or using default placeholder');
-        return NextResponse.json(
-          { 
-            error: "Agora App Certificate not configured",
-            message: "Please set AGORA_APP_CERTIFICATE in your environment variables or update the default value"
           },
           { status: 500 }
         );
@@ -90,24 +79,22 @@ export async function POST(request) {
     console.log('Channel name length:', normalizedChannelName.length);
     console.log('UID received:', normalizedUid);
     console.log('App ID:', appId.substring(0, 8) + '...');
-    console.log('App Certificate:', appCertificate.substring(0, 4) + '...' + appCertificate.substring(appCertificate.length - 4));
-    console.log('App Certificate length:', appCertificate.length, appCertificate.length === 32 ? '✅' : '⚠️ Should be 32 chars');
+    if (appCertificate) {
+      console.log('App Certificate:', appCertificate.substring(0, 4) + '...' + appCertificate.substring(appCertificate.length - 4));
+      console.log('App Certificate length:', appCertificate.length, appCertificate.length === 32 ? '✅' : '⚠️ Should be 32 chars');
+    } else {
+      console.log('App Certificate: Not set');
+    }
     console.log('User:', user.email || user.name || user.id);
     console.log('============================================');
 
   
-
-    if (!appId || !appCertificate) {
-      console.error("Agora credentials not configured. Please set AGORA_APP_ID and AGORA_APP_CERTIFICATE environment variables.");
+    if (!appId) {
+      console.error("Agora App ID not configured. Please set AGORA_APP_ID environment variable.");
       return NextResponse.json(
         { error: "Agora service not configured" },
         { status: 500 }
       );
-    }
-
-    // Validate App Certificate format (should be 32 characters for Agora)
-    if (appCertificate.length !== 32) {
-      console.warn(`⚠️ App Certificate length is ${appCertificate.length}, expected 32 characters. This might cause token validation issues.`);
     }
 
     // Calculate expiration time if not provided (default: 24 hours from now)
@@ -126,6 +113,22 @@ export async function POST(request) {
         uid: normalizedUid, // Use normalized UID
         expireTimestamp: expiresAt,
       });
+      
+      // If no certificate, token will be null (no token needed)
+      if (token === null) {
+        console.log("No certificate provided, returning null token");
+        return NextResponse.json(
+          {
+            success: true,
+            token: null,
+            channelName: normalizedChannelName,
+            uid: normalizedUid,
+            expiresAt: null,
+            appId: appId.substring(0, 8) + '...',
+          },
+          { status: 200 }
+        );
+      }
       
       console.log("✅ Agora token generated successfully");
       console.log("   Token length:", token.length);
@@ -152,7 +155,6 @@ export async function POST(request) {
       return NextResponse.json(
         { 
           error: `Failed to generate token: ${tokenError.message}`,
-          details: "Please verify that AGORA_APP_ID and AGORA_APP_CERTIFICATE are correct in your Agora Console"
         },
         { status: 500 }
       );
