@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.10",
+    "agora-token": "^2.0.5",
     "bcryptjs": "^3.0.2",
     "country-flag-icons": "^1.5.20",
     "jsonwebtoken": "^9.0.2",
