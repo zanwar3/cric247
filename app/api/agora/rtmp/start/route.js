@@ -70,9 +70,11 @@ export async function POST(request) {
 
     console.log('🎥 Starting RTMP push...');
     console.log(`   Channel: ${channelName}`);
-    console.log(`   UID: ${uid}`);
+    console.log(`   UID: ${uid} (type: ${typeof uid})`);
     console.log(`   RTMP URL: ${rtmpUrl.split('/').slice(0, -1).join('/')}/***`);
     console.log(`   User: ${user.email || user.name || user.id}`);
+    console.log(`   ⚠️  CRITICAL: Ensure publisher is already in channel with UID ${uid}`);
+    console.log(`   ⚠️  If UID mismatch, video will be black!`);
 
     // Call Agora REST API to start RTMP push
     const apiUrl = `https://api.agora.io/v1/projects/${AGORA_APP_ID}/rtmp-converters`;
@@ -96,6 +98,8 @@ export async function POST(request) {
             },
             layout: [
               {
+                // CRITICAL: This UID must match the actual publisher UID in the channel
+                // If UID is 0, Agora auto-assigned it - check actual UID from onJoinChannelSuccess
                 rtcStreamUid: uid,
                 region: {
                   xPos: 0,
@@ -104,7 +108,8 @@ export async function POST(request) {
                   width: 1280,
                   height: 720,
                 },
-                placeholderImageUrl: 'https://via.placeholder.com/1280x720',
+                // Removed placeholderImageUrl - let Agora use the actual video stream
+                // If stream is not immediately available, Agora will wait for it
               },
             ],
             bitrate: 2000,
@@ -118,6 +123,7 @@ export async function POST(request) {
     };
 
     console.log('📡 Calling Agora REST API...');
+    console.log('📋 Request body:', JSON.stringify(requestBody, null, 2));
 
     // Create Basic Auth header
     const credentials = Buffer.from(
@@ -132,16 +138,23 @@ export async function POST(request) {
       },
       body: JSON.stringify(requestBody),
     });
+    
+    console.log('📡 Agora API Response Status:', response.status);
 
     const responseData = await response.json();
+    console.log('📡 Agora API Response:', JSON.stringify(responseData, null, 2));
 
     if (!response.ok) {
       console.error('❌ Agora API Error:', responseData);
+      console.error('   Status:', response.status);
+      console.error('   Channel:', channelName);
+      console.error('   UID:', uid);
       return NextResponse.json(
         {
           error: 'Failed to start RTMP push',
           agoraError: responseData,
           statusCode: response.status,
+          details: `Channel: ${channelName}, UID: ${uid}`,
         },
         { status: response.status }
       );
@@ -149,6 +162,10 @@ export async function POST(request) {
 
     console.log('✅ RTMP push started successfully');
     console.log('   Converter ID:', responseData.converter?.id);
+    console.log('   Channel:', channelName);
+    console.log('   UID:', uid);
+    console.log('   ⚠️  Note: Video stream must be active in channel for RTMP to work');
+    console.log('   ⚠️  If video is black, ensure screen capture is publishing to channel');
 
     return NextResponse.json(
       {
