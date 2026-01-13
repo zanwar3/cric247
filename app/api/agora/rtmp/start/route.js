@@ -53,9 +53,9 @@ export async function POST(request) {
     }
 
     // Get Agora credentials
-    const AGORA_APP_ID = process.env.AGORA_APP_ID || 'eb2e227ffd404032957fcd027e64db5d';
-    const AGORA_CUSTOMER_ID = process.env.AGORA_CUSTOMER_ID;
-    const AGORA_CUSTOMER_SECRET = process.env.AGORA_CUSTOMER_SECRET;
+    const AGORA_APP_ID = process.env.AGORA_APP_ID || '4b6e6e59522a436eb93310633ad2b51d';
+    const AGORA_CUSTOMER_ID = process.env.AGORA_CUSTOMER_ID ||'7986fb36ca964687b172e54c0dffd938';
+    const AGORA_CUSTOMER_SECRET = process.env.AGORA_CUSTOMER_SECRET || '5d338b3a4b21407ca4a34cb1a6fa7a19';
 
     if (!AGORA_CUSTOMER_ID || !AGORA_CUSTOMER_SECRET) {
       console.error('❌ AGORA_CUSTOMER_ID and AGORA_CUSTOMER_SECRET must be set');
