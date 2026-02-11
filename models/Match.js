@@ -146,6 +146,7 @@ const MatchSchema = new Schema({
     }],
     balls: [BallSchema],
     isCompleted: { type: Boolean, default: false },
+    isDeclared: { type: Boolean, default: false }, // Batting team declared (voluntary closure)
     target: Number // For second innings
   }],
   result: {

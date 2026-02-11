@@ -173,6 +173,7 @@ export async function GET(request, { params }) {
       },
       innings: {
         inningNumber: innings.inningNumber,
+        isDeclared: innings.isDeclared || false,
         battingTeam: {
           _id: innings.battingTeam._id,
           name: innings.battingTeam.name,

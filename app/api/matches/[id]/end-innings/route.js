@@ -13,6 +13,8 @@ export async function POST(request, { params }) {
     }
 
     const { id } = await params;
+    const body = await request.json().catch(() => ({}));
+    const declare = body.declare === true;
 
     // Find match and check ownership
     const match = await Match.findOne({
@@ -46,8 +48,11 @@ export async function POST(request, { params }) {
       }, { status: 400 });
     }
 
-    // Mark innings as completed
+    // Mark innings as completed (optionally as declared)
     innings.isCompleted = true;
+    if (declare && innings.inningNumber === 1) {
+      innings.isDeclared = true;
+    }
 
     // Calculate final overs
     innings.totalOvers = Math.floor(innings.totalBalls / 6) + (innings.totalBalls % 6) / 10;
@@ -60,6 +65,7 @@ export async function POST(request, { params }) {
       totalWickets: innings.totalWickets,
       totalOvers: innings.totalOvers,
       runRate: innings.runRate,
+      isDeclared: innings.isDeclared || false,
       extras: innings.extras,
       batting: innings.batting,
       bowling: innings.bowling,
@@ -111,7 +117,9 @@ export async function POST(request, { params }) {
 
       return Response.json({
         success: true,
-        message: 'First innings completed. Second innings ready to start.',
+        message: declare
+          ? 'Innings declared. Second innings ready to start.'
+          : 'First innings completed. Second innings ready to start.',
         inningsSummary: {
           inningNumber: inningsSummary.inningNumber,
           battingTeam: innings.battingTeam,

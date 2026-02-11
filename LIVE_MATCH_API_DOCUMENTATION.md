@@ -287,7 +287,11 @@ Get comprehensive live match state in a single call.
 
 Complete current innings and prepare for next or end match.
 
-**Request Body:** None
+**Request Body (optional):**
+```json
+{ "declare": true }
+```
+- `declare`: When `true` (first innings only), marks the innings as **declared** (batting team voluntary closure). Response message will indicate "Innings declared."
 
 **Response (First Innings):**
 ```json
