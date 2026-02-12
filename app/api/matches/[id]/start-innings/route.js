@@ -32,9 +32,10 @@ export async function POST(request, { params }) {
       return Response.json({ error: 'Match not found' }, { status: 404 });
     }
 
-    if (match.status !== "Live") {
+    const allowedStatuses = ["Live", "Innings Break"];
+    if (!allowedStatuses.includes(match.status)) {
       return Response.json({ 
-        error: 'Match must be live to start innings' 
+        error: 'Match must be Live or Innings Break to set innings players' 
       }, { status: 400 });
     }
 
@@ -123,6 +124,11 @@ export async function POST(request, { params }) {
     }
     if (currentInnings.totalBalls === undefined) {
       currentInnings.totalBalls = 0;
+    }
+
+    // When starting second innings (was Innings Break), set status back to Live
+    if (match.status === "Innings Break") {
+      match.status = "Live";
     }
 
     await match.save();

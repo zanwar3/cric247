@@ -70,6 +70,14 @@ export async function POST(request, { params }) {
       return Response.json({ error: 'No active innings found' }, { status: 400 });
     }
 
+    const maxBallsForInnings = (match.oversLimit ?? 20) * 6;
+    if (innings.totalBalls >= maxBallsForInnings) {
+      return Response.json({
+        error: 'Overs limit reached. Innings is complete. Please end innings.',
+        inningsComplete: true
+      }, { status: 400 });
+    }
+
     // Validate required players are set
     if (!innings.currentStriker || !innings.currentNonStriker || !innings.currentBowler) {
       return Response.json({ 
@@ -381,8 +389,9 @@ export async function POST(request, { params }) {
     // Check if all wickets are out (playersPerTeam - 1, since one player is always not out)
     const maxWickets = match.playersPerTeam - 1;
     const allWicketsOut = innings.totalWickets >= maxWickets;
+    const oversLimitReached = innings.totalBalls >= maxBallsForInnings;
 
-    if (allWicketsOut && !innings.isCompleted) {
+    if ((allWicketsOut || oversLimitReached) && !innings.isCompleted) {
       // Mark innings as completed
       innings.isCompleted = true;
       innings.totalOvers = Math.floor(innings.totalBalls / 6) + (innings.totalBalls % 6) / 10;
@@ -467,8 +476,8 @@ export async function POST(request, { params }) {
 
     await match.save();
 
-    // Update team statistics if match was just completed
-    if (allWicketsOut && innings.isCompleted && innings.inningNumber === 2) {
+    // Update team statistics if match was just completed (by wickets or overs limit)
+    if (innings.isCompleted && innings.inningNumber === 2 && match.status === "Completed") {
       try {
         // Populate teams first to get team IDs
         await match.populate('teams.teamA teams.teamB');
