@@ -68,6 +68,33 @@ Set up match squad, toss, and other pre-match details.
 
 ---
 
+### 1b. PATCH or PUT /api/matches/:id/revise-overs
+
+Revise (update) the overs limit for a match. Allowed when match status is **Scheduled** or **Live**. When the match is Live, the new overs limit must be at least the number of overs already bowled in the current innings.
+
+**Request Body:**
+```json
+{
+  "oversLimit": 20
+}
+```
+
+**Validation:**
+- `oversLimit` (number) is required; must be between 1 and 50
+- Match must be in status "Scheduled" or "Live"
+- If Live: new overs cannot be less than balls already bowled (minimum overs = ceil(totalBalls / 6))
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Match overs revised successfully",
+  "oversLimit": 20
+}
+```
+
+---
+
 ## Match Start APIs
 
 ### 2. POST /api/matches/:id/start
