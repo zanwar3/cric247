@@ -12,8 +12,12 @@ export async function GET(request) {
       return createUnauthorizedResponse(error);
     }
 
-    // Fetch only matches belonging to the authenticated user
-    const matches = await Match.find({ user: user.id })
+    // Optional: ?all or ?all=true returns matches of all users
+    const { searchParams } = new URL(request.url);
+    const scopeAll = searchParams.get('all') != null && searchParams.get('all') !== 'false';
+
+    const matchQuery = scopeAll ? {} : { user: user.id };
+    const matches = await Match.find(matchQuery)
       .populate('teams.teamA')
       .populate('teams.teamB')
       .populate('matchSquad.teamA.players.player')
