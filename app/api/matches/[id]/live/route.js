@@ -14,11 +14,8 @@ export async function GET(request, { params }) {
 
     const { id } = await params;
 
-    // Find match and check ownership
-    const match = await Match.findOne({
-      _id: id,
-      user: user.id,
-    })
+    // Find match by id only — any authenticated user can view live match data
+    const match = await Match.findOne({ _id: id })
     .populate('teams.teamA teams.teamB')
     .populate('innings.battingTeam innings.bowlingTeam')
     .populate('innings.currentStriker innings.currentNonStriker innings.currentBowler')
@@ -56,7 +53,6 @@ export async function GET(request, { params }) {
     const currentOver = Math.floor(innings.totalBalls / 6) + 1;
     const ballsInCurrentOver = await Ball.find({
       match_id: id,
-      user: user.id,
       innings_id: innings.inningNumber.toString(),
       over: currentOver
     }).sort({ createdAt: 1 }).limit(6);

@@ -14,11 +14,8 @@ export async function GET(request, { params }) {
 
     const { id } = await params;
 
-    // Find match and check ownership
-    const match = await Match.findOne({
-      _id: id,
-      user: user.id,
-    })
+    // Find match by id only — any authenticated user can view scorecard
+    const match = await Match.findOne({ _id: id })
     .populate('teams.teamA teams.teamB')
     .populate('innings.battingTeam innings.bowlingTeam')
     .populate('innings.batting.player')
